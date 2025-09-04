@@ -1,0 +1,135 @@
+.calendar{
+    background-color:none;
+    display: flex;
+    gap: 10px;
+}
+.ol{
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(7 ,1fr);
+    gap: 3px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.39);
+    padding: 5px;
+    background-color: none;
+    flex-grow: 1;
+}
+.numerWeek{
+    grid-template-columns: repeat(1,1fr);
+    display: grid;
+    list-style: none;
+    border: 1px solid rgba(0, 0, 0, 0.39);
+    border-radius: 5px;
+    place-items: center;
+    padding-right: 3px;
+    padding-left: 0;
+}
+.numerW-title {
+    background-color: rgb(17, 1, 107);
+    color: rgb(255, 251, 251) ;
+    border-radius: 3px;
+    font-size:13px;
+    padding-left: 1px;
+    text-align: center;
+    margin-top: 20%;
+}
+
+li.numerW-title{
+    padding: 10%;
+    position: relative;
+}
+
+.card{
+  border: 1px solid black;
+}
+
+
+.firstday{
+    grid-column-start: var(--dayStart);
+}
+
+.dayLetter{
+  background-color: rgb(17, 1, 107);
+  color: rgb(255, 251, 251);
+  text-align: center;
+  border-radius: 3px;
+  padding: 5px 2px;
+  font-size: 14px;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-content {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    margin: 50px; /* Agrega un margen de 20px entre los calendarios */
+}
+.card{
+    margin:10px
+}
+.card-title{
+    text-align: center;
+}
+
+.weekdays{
+    background-color: none
+    ;
+}
+
+.year-input {
+    top:50px;
+    border-radius: 15%;
+    position: relative;
+    width: 100px;
+    height: 60px;
+    font-family: "Courier New";
+    font-size: 30px;
+    text-align: center;
+    left: 60px;
+  }            
+
+  .btn.numerW {  
+    font-size: 12px;
+  }
+  .btn.numerW:hover {  
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .card-profiles{
+    grid-template-columns: repeat(4, 1fr); /* Divide en 4 columnas de igual tamaño */   
+    gap: 20px; 
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .cardcalendario{
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 7px;
+    background: linear-gradient(145deg, #ffffff, #e1e1e6);
+    box-shadow:  1px 1px 3px #a5a5a8,
+                 -1px -1px 3px #ffffff; 
+    margin: 20px;
+                         }
+    .cardprofile{
+        display: flex;
+        flex-wrap: wrap;
+        border-radius: 7px;
+        background: linear-gradient(145deg, #ffffff, #e1e1e6);
+        box-shadow:  1px 1px 3px #a5a5a8,
+                     -1px -1px 3px #ffffff; 
+        margin: 20px;
+    
+
+    }
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  padding: 20px;
+}

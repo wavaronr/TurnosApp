@@ -1,0 +1,14 @@
+
+{
+  "advisers": [
+    { "id": 1, "name": "John Doe" },
+    { "id": 2, "name": "Jane Smith" }
+  ],
+  "profiles": [
+    { "id": 1, "name": "Alice", "specialty": "React" },
+    { "id": 2, "name": "Bob", "specialty": "Vue" }
+  ],
+  "posts": {
+    "randomProfiles": {}
+  }
+}

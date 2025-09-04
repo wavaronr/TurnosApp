@@ -1,0 +1,67 @@
+[
+{    "id": 123456789,   
+    "name": "Juan Perez",
+    "cargo": "Gestor de servicios I",
+    "buttons": ["Botón 1", "Botón 2"]
+  },
+  { "id": 1234567891,   
+    "name": "Pedro Gonzalez",
+    "cargo": "Gestor de servicios II",
+    "buttons": ["Botón 3", "Botón 4"]
+  },
+  { "id": 1234567892, 
+    "name": "Luis Rodriguez",
+    "cargo": "Gestor de servicios III",
+    "buttons": ["Botón 5", "Botón 6"]
+  },
+  {  "id": 1234567893,
+    "name": "Jose Rodriguez",
+    "cargo": "Gestor de servicios I",
+    "buttons": ["Botón 7", "Botón 8"]
+  },
+
+  {  "id": 12345678902,   
+    "name": "Juan Perez segundo",
+    "cargo": "Gestor de servicios I",
+    "buttons": ["Botón 1", "Botón 2"]
+  },
+  { "id": 12345678912,   
+    "name": "Pedro Gonzalez segundo",
+    "cargo": "Gestor de servicios II",
+    "buttons": ["Botón 3", "Botón 4"]
+  },
+  { "id": 12345678922, 
+    "name": "Luis Rodriguez segundo",
+    "cargo": "Gestor de servicios III",
+    "buttons": ["Botón 5", "Botón 6"]
+  },
+  {  "id": 12345678932,
+    "name": "Jose Rodriguez segundo",
+    "cargo": "Gestor de servicios I",
+    "buttons": ["Botón 7", "Botón 8"]
+  },
+
+  {  "id": 12345678903,   
+  "name": "Juan Perez tercero",
+  "cargo": "Gestor de servicios I",
+  "buttons": ["Botón 1", "Botón 2"]
+},
+{ "id": 12345678913,   
+  "name": "Pedro Gonzalez tercero",
+  "cargo": "Gestor de servicios II",
+  "buttons": ["Botón 3", "Botón 4"]
+},
+{ "id": 12345678923, 
+  "name": "Luis Rodriguez tercero",
+  "cargo": "Gestor de servicios III",
+  "buttons": ["Botón 5", "Botón 6"]
+},
+{  "id": 12345678933,
+  "name": "Jose Rodriguez tercero",
+  "cargo": "Gestor de servicios I",
+  "buttons": ["Botón 7", "Botón 8"]
+}
+
+
+
+]

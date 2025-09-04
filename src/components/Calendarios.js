@@ -20,7 +20,7 @@ function
 
   const countDays = new Date(yearSet, monthCalendario + 1, 0).getDate();
   const days = Array.from({ length: countDays }, (_, index) => index + 1);
-  const daysTitle = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];
+  const daysTitle = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
 
   return (
     <div className="calendar">

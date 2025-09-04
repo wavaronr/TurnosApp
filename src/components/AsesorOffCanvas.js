@@ -3,7 +3,7 @@ import ProfileAsesor from './ProfileAsesor';
 function AsesorOffCanvas({ weekNumber }) {
   return (
     <div
-      className="offcanvas offcanvas-start"
+      className="offcanvas offcanvas-start offcanvas-wide"
       data-bs-scroll="true"
       id="offcanvasWithBothOptions"
       aria-labelledby="offcanvasWithBothOptionsLabel"

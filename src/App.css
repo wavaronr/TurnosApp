@@ -55,3 +55,7 @@
 .nav-button.active::after {
   transform: scaleX(1);
 }
+
+.offcanvas-wide {
+  width: calc(100vw * 2 / 3);
+}

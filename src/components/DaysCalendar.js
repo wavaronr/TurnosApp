@@ -10,8 +10,8 @@ function DaysCalendar({ day, colombianHolidays, monthCalendario, yearSet }) {
   // Obtiene el primer día de la semana (0 para Domingo, 1 para Lunes, etc.)
   const firstDayOfMonth = new Date(yearSet, monthCalendario, 1).getDay();
 
-  // Ajusta el valor para que Lunes sea 2 y Domingo sea 8
-  const dayStart = (firstDayOfMonth === 0) ? 8 : firstDayOfMonth + 1;
+  // Ajusta el valor para que Domingo sea 1, Lunes 2, etc.
+  const dayStart = firstDayOfMonth + 1;
 
   const listItemStyle = {
     ...(isHoliday && { color: "red", fontWeight: "bold" }),

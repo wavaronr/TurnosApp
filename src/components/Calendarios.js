@@ -6,7 +6,7 @@ import DaysCalendar from './DaysCalendar.js';
 import WeekCount from './WeekCount.js';
 
 function
- Calendarios({ monthCalendario, yearSet, setWeekNumber }) {
+ Calendarios({ monthCalendario, yearSet, setSelectedWeek, setMonthCalendario }) {
   const [colombianHolidays, setColombianHolidays] = useState([]);
 
   useEffect(() => {
@@ -27,7 +27,8 @@ function
       <WeekCount
         monthCalendario={monthCalendario}
         yearSet={yearSet}
-        setWeekNumber={setWeekNumber}
+        setSelectedWeek={setSelectedWeek}
+        setMonthCalendario={setMonthCalendario}
       />
       <ol className="ol">
         {daysTitle.map((dayL, index) => (

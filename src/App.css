@@ -56,6 +56,6 @@
   transform: scaleX(1);
 }
 
-.offcanvas-wide {
+.offcanvas.offcanvas-start.offcanvas-wide {
   width: calc(100vw * 2 / 3);
 }

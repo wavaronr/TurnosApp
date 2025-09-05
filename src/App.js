@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 import Login from './components/Login.js';
@@ -6,10 +6,15 @@ import CardsCald from './components/CardsCald.js';
 import Header from './components/Header.js';
 import Home from './components/Home.js';
 import CardProfile from './components/CardProfile.js';
+import AsesorOffCanvas from './components/AsesorOffCanvas.js';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 // BrowserRouter as Router,
 function App() {
+  const [selectedWeek, setSelectedWeek] = useState(null);
+  const [yearSet, setYearSet] = useState(new Date().getFullYear());
+  const [monthCalendario, setMonthCalendario] = useState(new Date().getMonth());
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -21,7 +26,7 @@ function App() {
           <Route
             exact
             path="/Calendario"
-            element={<CardsCald />}
+            element={<CardsCald setSelectedWeek={setSelectedWeek} yearSet={yearSet} setYearSet={setYearSet} setMonthCalendario={setMonthCalendario} />}
             key="cardcalendario"
           ></Route>
           <Route
@@ -31,6 +36,7 @@ function App() {
             key="profiles"
           ></Route>
         </Routes>
+        <AsesorOffCanvas selectedWeek={selectedWeek} yearSet={yearSet} monthCalendario={monthCalendario} />
       </BrowserRouter>
     </div>
   );

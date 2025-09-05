@@ -3,12 +3,10 @@ import '../css/calendario.css';
 
 import Calendarios from './Calendarios.js';
 import YearInput from './yearinput';
+import { getMonthsTitule } from '../utils/getMonthsTitule.js';
 
 function CardsCald({ setSelectedWeek, yearSet, setYearSet, setMonthCalendario, colombianHolidays }) {
-  const months = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
-  ];
+  const months = getMonthsTitule();
 
   const handleYearChange = (newYear) => {
     setYearSet(newYear);

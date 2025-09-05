@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { getAllDataAdvisers } from './getDataAsesor';
+import { getAllDataPersons } from './getDataPerson';
 
-function ProfileAsesor({ weekNumber }) {
+function ProfilePerson({ weekNumber }) {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const profile = await getAllDataAdvisers();
+      const profile = await getAllDataPersons();
       setProfiles(profile);
       setLoading(false);
     };
@@ -16,7 +16,7 @@ function ProfileAsesor({ weekNumber }) {
     fetchData();
   }, []);
 
-  const weeklyAdvisers = profiles.find(
+  const weeklyPersons = profiles.find(
     (profile) => profile.week === weekNumber
   );
 
@@ -24,13 +24,13 @@ function ProfileAsesor({ weekNumber }) {
     <>
       {loading ? (
         <div>Cargando...</div>
-      ) : weeklyAdvisers ? (
+      ) : weeklyPersons ? (
         <div className="card">
-          <h5 className="card-title">Semana {weeklyAdvisers.week}</h5>
+          <h5 className="card-title">Semana {weeklyPersons.week}</h5>
           <div className="card-body">
-            {weeklyAdvisers.asigned?.map(({ name, cargo, buttons }, index) => (
+            {weeklyPersons.asigned?.map(({ name, cargo, buttons }, index) => (
               <p className="card-text" key={name + index}>
-                Asesor:{name}
+                Persona:{name}
                 <br />
                 Cargo:{cargo}
                 <br />
@@ -57,4 +57,4 @@ function ProfileAsesor({ weekNumber }) {
   );
 }
 
-export default ProfileAsesor;
+export default ProfilePerson;

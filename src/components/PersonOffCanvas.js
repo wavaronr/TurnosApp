@@ -1,6 +1,10 @@
 import WeekDetail from './WeekDetail';
+import { getMonthsTitule } from '../utils/getMonthsTitule';
 
-function AsesorOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHolidays }) {
+function PersonOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHolidays }) {
+  const months = getMonthsTitule();
+  const monthName = months[monthCalendario];
+
   return (
     <div
       className="offcanvas offcanvas-start offcanvas-wide"
@@ -9,6 +13,7 @@ function AsesorOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHoli
       aria-labelledby="offcanvasWithBothOptionsLabel"
     >
       <div className="offcanvas-header">
+        <h4 className='monthToday' id='monthToday'>{monthName}</h4>
         <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">
           {selectedWeek ? `Semana ${selectedWeek}` : 'Detalles de la Semana'}
         </h5>
@@ -25,4 +30,5 @@ function AsesorOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHoli
     </div>
   );
 }
-export default AsesorOffCanvas;
+
+export default PersonOffCanvas;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 import Login from './components/Login.js';
@@ -8,12 +8,24 @@ import Home from './components/Home.js';
 import CardProfile from './components/CardProfile.js';
 import AsesorOffCanvas from './components/AsesorOffCanvas.js';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { holidays } from './components/holidays.js';
 
 // BrowserRouter as Router,
 function App() {
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [yearSet, setYearSet] = useState(new Date().getFullYear());
   const [monthCalendario, setMonthCalendario] = useState(new Date().getMonth());
+  const [colombianHolidays, setColombianHolidays] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const holidaysData = await holidays(yearSet);
+      setColombianHolidays(holidaysData);
+    };
+
+    fetchData();
+  }, [yearSet]);
+
 
   return (
     <div className="App">
@@ -26,7 +38,7 @@ function App() {
           <Route
             exact
             path="/Calendario"
-            element={<CardsCald setSelectedWeek={setSelectedWeek} yearSet={yearSet} setYearSet={setYearSet} setMonthCalendario={setMonthCalendario} />}
+            element={<CardsCald setSelectedWeek={setSelectedWeek} yearSet={yearSet} setYearSet={setYearSet} setMonthCalendario={setMonthCalendario} colombianHolidays={colombianHolidays} />}
             key="cardcalendario"
           ></Route>
           <Route
@@ -36,7 +48,7 @@ function App() {
             key="profiles"
           ></Route>
         </Routes>
-        <AsesorOffCanvas selectedWeek={selectedWeek} yearSet={yearSet} monthCalendario={monthCalendario} />
+        <AsesorOffCanvas selectedWeek={selectedWeek} yearSet={yearSet} monthCalendario={monthCalendario} colombianHolidays={colombianHolidays} />
       </BrowserRouter>
     </div>
   );

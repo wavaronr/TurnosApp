@@ -9,7 +9,7 @@ export const holidays = async (year) => {
       const fechaArray = item.date.split("-");
       const diaF = parseInt(fechaArray[2]);
       const mesF = parseInt(fechaArray[1]);
-      days.push({ dia: diaF, mes: mesF - 1 });
+      days.push({ dia: diaF, mes: mesF  });
     });
   } else {
     console.error("Error al obtener los dias festivos");

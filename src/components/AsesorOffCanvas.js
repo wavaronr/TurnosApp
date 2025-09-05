@@ -1,6 +1,6 @@
 import WeekDetail from './WeekDetail';
 
-function AsesorOffCanvas({ selectedWeek, yearSet, monthCalendario }) {
+function AsesorOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHolidays }) {
   return (
     <div
       className="offcanvas offcanvas-start offcanvas-wide"
@@ -20,7 +20,7 @@ function AsesorOffCanvas({ selectedWeek, yearSet, monthCalendario }) {
         ></button>
       </div>
       <div className="offcanvas-body">
-       <WeekDetail selectedWeek={selectedWeek} yearSet={yearSet} monthCalendario={monthCalendario} /> 
+       <WeekDetail selectedWeek={selectedWeek} yearSet={yearSet} monthCalendario={monthCalendario} colombianHolidays={colombianHolidays} /> 
       </div>
     </div>
   );

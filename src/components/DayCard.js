@@ -1,12 +1,30 @@
 import React from 'react';
 import '../css/WeekDetail.css';
 
-function DayCard({ day }) {
+function DayCard({ day, colombianHolidays }) {
+  const dayOfMonth = day.getDate();
+  const month = day.getMonth() + 1;
+
+  const isHoliday = colombianHolidays.some(
+    (festivo) => festivo.dia === dayOfMonth && festivo.mes === month
+  );
+
+  const dayName = day.toLocaleDateString('es-ES', { weekday: 'short' });
+
+  const cardStyle = {
+    ...(isHoliday && { backgroundColor: '#fdd' }), 
+    listStyle: 'none'
+  };
+
+  const dayNumberStyle = {
+    ...(isHoliday && { color: 'red', fontWeight: 'bold' }),
+  }
+
   return (
-    <li className="day-card">
-      <div className="day-name">{day.dayName}</div>
-      <div className="day-number">{ day.day}</div>
-    </li>
+    <div className="day-card" style={cardStyle}>
+      <div className="day-name">{dayName}</div>
+      <div className="day-number" style={dayNumberStyle}>{dayOfMonth}</div>
+    </div>
   );
 }
 

@@ -4,7 +4,7 @@ import '../css/calendario.css';
 import Calendarios from './Calendarios.js';
 import YearInput from './yearinput';
 
-function CardsCald({ setSelectedWeek, yearSet, setYearSet, setMonthCalendario }) {
+function CardsCald({ setSelectedWeek, yearSet, setYearSet, setMonthCalendario, colombianHolidays }) {
   const months = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
@@ -31,6 +31,7 @@ function CardsCald({ setSelectedWeek, yearSet, setYearSet, setMonthCalendario })
                 yearSet={yearSet}
                 setSelectedWeek={setSelectedWeek}
                 setMonthCalendario={setMonthCalendario}
+                colombianHolidays={colombianHolidays}
               />
             </div>
           </div>

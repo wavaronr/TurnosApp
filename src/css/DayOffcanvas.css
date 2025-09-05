@@ -1,0 +1,116 @@
+
+.offcanvas-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end; 
+}
+
+.offcanvas-content {
+  background: #f4f7f9;
+  width: 90%;
+  max-width: 450px;
+  height: 100%;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.offcanvas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #0e007b;
+  color: white;
+}
+
+.offcanvas-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.offcanvas-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.shift-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.shift-title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #0e007b;
+}
+
+.people-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.person-pill {
+  display: inline-flex;
+  align-items: center;
+  background: #e0e0e0;
+  color: #333;
+  border-radius: 15px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+.remove-person-btn {
+  background: none;
+  border: none;
+  color: #888;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.add-person-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-person-btn:hover {
+  background: #0056b3;
+}

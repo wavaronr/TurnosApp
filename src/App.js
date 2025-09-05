@@ -10,12 +10,12 @@ import PersonOffCanvas from './components/PersonOffCanvas.js';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { holidays } from './components/holidays.js';
 
-// BrowserRouter as Router,
 function App() {
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [yearSet, setYearSet] = useState(new Date().getFullYear());
   const [monthCalendario, setMonthCalendario] = useState(new Date().getMonth());
   const [colombianHolidays, setColombianHolidays] = useState([]);
+  const [people, setPeople] = useState([]); // Estado para almacenar las personas
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,6 +26,20 @@ function App() {
     fetchData();
   }, [yearSet]);
 
+  useEffect(() => {
+    // Carga los datos de las personas desde la base de datos
+    const fetchPeople = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/people');
+        const data = await response.json();
+        setPeople(data);
+      } catch (error) {
+        console.error("Error fetching people data:", error);
+      }
+    };
+
+    fetchPeople();
+  }, []);
 
   return (
     <div className="App">
@@ -48,7 +62,13 @@ function App() {
             key="profiles"
           ></Route>
         </Routes>
-        <PersonOffCanvas selectedWeek={selectedWeek} yearSet={yearSet} monthCalendario={monthCalendario} colombianHolidays={colombianHolidays} />
+        <PersonOffCanvas 
+          selectedWeek={selectedWeek} 
+          yearSet={yearSet} 
+          monthCalendario={monthCalendario} 
+          colombianHolidays={colombianHolidays}
+          people={people} // Pasa las personas al componente OffCanvas
+        />
       </BrowserRouter>
     </div>
   );

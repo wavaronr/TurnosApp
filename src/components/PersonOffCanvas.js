@@ -1,7 +1,7 @@
 import WeekDetail from './WeekDetail';
 import { getMonthsTitule } from '../utils/getMonthsTitule';
 
-function PersonOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHolidays }) {
+function PersonOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHolidays, people }) {
   const months = getMonthsTitule();
   const monthName = months[monthCalendario];
 
@@ -25,7 +25,13 @@ function PersonOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHoli
         ></button>
       </div>
       <div className="offcanvas-body">
-       <WeekDetail selectedWeek={selectedWeek} yearSet={yearSet} monthCalendario={monthCalendario} colombianHolidays={colombianHolidays} /> 
+       <WeekDetail 
+        selectedWeek={selectedWeek} 
+        yearSet={yearSet} 
+        monthCalendario={monthCalendario} 
+        colombianHolidays={colombianHolidays}
+        people={people} // Pasa las personas a WeekDetail
+      /> 
       </div>
     </div>
   );

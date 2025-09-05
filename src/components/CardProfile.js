@@ -1,4 +1,4 @@
-import { getDataProfile } from './getDataAsesor';
+import { getDataProfile } from './getDataPerson';
 import React, { useState, useEffect } from 'react';
 import '../css/Profile.css';
 

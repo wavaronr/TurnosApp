@@ -1,7 +1,7 @@
 import WeekDetail from './WeekDetail';
 import { getMonthsTitule } from '../utils/getMonthsTitule';
 
-function AsesorOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHolidays }) {
+function PersonOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHolidays }) {
   const months = getMonthsTitule();
   const monthName = months[monthCalendario];
 
@@ -31,4 +31,4 @@ function AsesorOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHoli
   );
 }
 
-export default AsesorOffCanvas;
+export default PersonOffCanvas;

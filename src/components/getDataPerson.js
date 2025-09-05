@@ -5,7 +5,7 @@ export const getDataProfile = async () => {
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
-      return data.profiles;
+      return data.persons;
     } else {
       console.error('sin data');
     }
@@ -15,13 +15,13 @@ export const getDataProfile = async () => {
   return dataProfile;
 };
 
-export const getAllDataAdvisers = async () => {
+export const getAllDataPersons = async () => {
   const url = `/db.json`;
   try {
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
-      return data.advisers;
+      return data.persons;
     } else {
       console.error('sin data');
       return [];

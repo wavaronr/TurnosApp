@@ -6,7 +6,7 @@ import CardsCald from './components/CardsCald.js';
 import Header from './components/Header.js';
 import Home from './components/Home.js';
 import CardProfile from './components/CardProfile.js';
-import AsesorOffCanvas from './components/AsesorOffCanvas.js';
+import PersonOffCanvas from './components/PersonOffCanvas.js';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { holidays } from './components/holidays.js';
 
@@ -48,7 +48,7 @@ function App() {
             key="profiles"
           ></Route>
         </Routes>
-        <AsesorOffCanvas selectedWeek={selectedWeek} yearSet={yearSet} monthCalendario={monthCalendario} colombianHolidays={colombianHolidays} />
+        <PersonOffCanvas selectedWeek={selectedWeek} yearSet={yearSet} monthCalendario={monthCalendario} colombianHolidays={colombianHolidays} />
       </BrowserRouter>
     </div>
   );

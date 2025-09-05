@@ -1,19 +1,22 @@
-export const getDataProfile = async () => {
+export const getDataPersons = async () => {
   const url = `/db.json`;
-  let dataProfile = [];
+  
   try {
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
-      return data.persons;
+      return data.persons || [];
     } else {
       console.error('sin data');
+      return [];
     }
   } catch (error) {
     console.error("Error fetching data: ", error);
+    return [];
   }
-  return dataProfile;
+  
 };
+
 
 export const getAllDataPersons = async () => {
   const url = `/db.json`;
@@ -21,13 +24,13 @@ export const getAllDataPersons = async () => {
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
-      return data.persons;
+      return data.persons || [];
     } else {
       console.error('sin data');
       return [];
     }
   } catch (error) {
     console.error("Error fetching data: ", error);
+    return [];
   }
-  return [];
 };

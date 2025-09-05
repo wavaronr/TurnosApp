@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../css/calendario.css';
 
-import AsesorOffCanvas from './AsesorOffCanvas';
 import Calendarios from './Calendarios.js';
 import YearInput from './yearinput';
 
-function CardsCald() {
-  const currentYear = new Date().getFullYear();
-  const [weekNumber, setWeekNumber] = useState(1);
-  const [yearSet, setYearSet] = useState(currentYear);
-
+function CardsCald({ setSelectedWeek, yearSet, setYearSet, setMonthCalendario, colombianHolidays }) {
   const months = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
@@ -34,13 +29,14 @@ function CardsCald() {
               <Calendarios
                 monthCalendario={index}
                 yearSet={yearSet}
-                setWeekNumber={setWeekNumber}
+                setSelectedWeek={setSelectedWeek}
+                setMonthCalendario={setMonthCalendario}
+                colombianHolidays={colombianHolidays}
               />
             </div>
           </div>
         ))}
       </div>
-      <AsesorOffCanvas weekNumber={weekNumber} />
     </div>
   );
 }

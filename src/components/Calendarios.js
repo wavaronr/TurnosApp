@@ -1,33 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import '../css/calendario.css';
 
-import { holidays } from './holidays.js';
 import DaysCalendar from './DaysCalendar.js';
 import WeekCount from './WeekCount.js';
 
 function
- Calendarios({ monthCalendario, yearSet, setWeekNumber }) {
-  const [colombianHolidays, setColombianHolidays] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const holidaysData = await holidays(yearSet);
-      setColombianHolidays(holidaysData);
-    };
-
-    fetchData();
-  }, [yearSet]);
-
+ Calendarios({ monthCalendario, yearSet, setSelectedWeek, setMonthCalendario, colombianHolidays }) {
+  
   const countDays = new Date(yearSet, monthCalendario + 1, 0).getDate();
   const days = Array.from({ length: countDays }, (_, index) => index + 1);
-  const daysTitle = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];
+  const daysTitle = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
 
   return (
     <div className="calendar">
       <WeekCount
         monthCalendario={monthCalendario}
         yearSet={yearSet}
-        setWeekNumber={setWeekNumber}
+        setSelectedWeek={setSelectedWeek}
+        setMonthCalendario={setMonthCalendario}
       />
       <ol className="ol">
         {daysTitle.map((dayL, index) => (

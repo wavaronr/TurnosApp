@@ -2,7 +2,7 @@ import { getISOWeek } from 'date-fns';
 
 import { getMondayNumbers } from './getMondayNumbers';
 
-function WeekCount({ monthCalendario, yearSet, setWeekNumber }) {
+function WeekCount({ monthCalendario, yearSet, setSelectedWeek, setMonthCalendario }) {
   const day = [
     1,
     ...getMondayNumbers(monthCalendario, yearSet).filter(
@@ -11,7 +11,8 @@ function WeekCount({ monthCalendario, yearSet, setWeekNumber }) {
   ];
 
   const handleClick = (selectedWeek) => {
-    setWeekNumber(selectedWeek);
+    setSelectedWeek(selectedWeek);
+    setMonthCalendario(monthCalendario);
   };
 
   const weekNumbers = day.map((dayItem) => {
@@ -41,7 +42,8 @@ function WeekCount({ monthCalendario, yearSet, setWeekNumber }) {
           Sem
         </li>
         {weekNumbers}
-      </ol>
+      </ol
+      >
     </>
   );
 }

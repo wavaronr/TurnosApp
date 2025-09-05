@@ -1,0 +1,21 @@
+
+.week-detail-container {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.day-card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+}
+
+.day-name {
+  font-weight: bold;
+  color: #FF8C00;
+}

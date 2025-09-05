@@ -1,16 +1,16 @@
-import ProfileAsesor from './ProfileAsesor';
+import WeekDetail from './WeekDetail';
 
-function AsesorOffCanvas({ weekNumber }) {
+function AsesorOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHolidays }) {
   return (
     <div
-      className="offcanvas offcanvas-start"
+      className="offcanvas offcanvas-start offcanvas-wide"
       data-bs-scroll="true"
       id="offcanvasWithBothOptions"
       aria-labelledby="offcanvasWithBothOptionsLabel"
     >
       <div className="offcanvas-header">
         <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">
-          Asesores
+          {selectedWeek ? `Semana ${selectedWeek}` : 'Detalles de la Semana'}
         </h5>
         <button
           type="button"
@@ -20,7 +20,7 @@ function AsesorOffCanvas({ weekNumber }) {
         ></button>
       </div>
       <div className="offcanvas-body">
-        <ProfileAsesor weekNumber={weekNumber} />
+       <WeekDetail selectedWeek={selectedWeek} yearSet={yearSet} monthCalendario={monthCalendario} colombianHolidays={colombianHolidays} /> 
       </div>
     </div>
   );

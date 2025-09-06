@@ -10,7 +10,7 @@ function Login() {
     const password = e.target.password.value;
     console.log(email);
     console.log(password);
-    navigate('/Calendario', { replace: true });
+    navigate('/Home', { replace: true });
   };
 
   return (

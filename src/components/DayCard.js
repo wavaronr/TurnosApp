@@ -9,7 +9,7 @@ const ShiftSection = ({ title, people, onAdd, onRemove }) => (
       {people.map(person => (
         <span key={person.id} className="person-pill">
           {person.name}
-          <button onClick={() => onRemove(person.id)} className="remove-person-btn">×</button>
+          <button onClick={() => onRemove(person.id)} className="remove-person-btn">X</button>
         </span>
       ))}
     </div>

@@ -39,7 +39,7 @@
       "asigned": [
         {
           "id": 123456789,
-          "name": "Juan Perez",
+          "name": "Juan Perez 2025",
           "cargo": "Gestor de servicios I",
           "buttons": ["Botón 1", "Botón 2"]
         }
@@ -305,7 +305,7 @@
       "buttons": ["Conquistar", "Liderar"]
     },
     {
-      "id": 1020,
+      "id": 1013601371,
       "name": "Abraham Lincoln",
       "cargo": "Presidente de los Estados Unidos",
       "buttons": ["Liderar", "Cambiar"]

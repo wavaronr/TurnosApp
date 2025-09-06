@@ -1,0 +1,24 @@
+{
+  "people": [
+    {
+      "id": 123456789,
+      "name": "Wilmer Perez",
+      "cargo": "Gestor de servicios I"
+    },
+    {
+      "id": 987654321,
+      "name": "Ana García",
+      "cargo": "Médico"
+    },
+    {
+      "id": 112233445,
+      "name": "Luis Rodríguez",
+      "cargo": "Enfermero"
+    },
+    {
+      "id": 554433221,
+      "name": "María Fernández",
+      "cargo": "Fisioterapeuta"
+    }
+  ]
+}

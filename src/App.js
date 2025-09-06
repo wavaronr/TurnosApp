@@ -9,37 +9,45 @@ import CardProfile from './components/CardProfile.js';
 import PersonOffCanvas from './components/PersonOffCanvas.js';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { holidays } from './components/holidays.js';
+import peopleData from './data/dataPerson.json'; // Importamos los datos locales
 
 function App() {
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [yearSet, setYearSet] = useState(new Date().getFullYear());
   const [monthCalendario, setMonthCalendario] = useState(new Date().getMonth());
   const [colombianHolidays, setColombianHolidays] = useState([]);
-  const [people, setPeople] = useState([]); // Estado para almacenar las personas
+  const [people, setPeople] = useState([]); // Estado único para las personas
 
   useEffect(() => {
     const fetchData = async () => {
       const holidaysData = await holidays(yearSet);
       setColombianHolidays(holidaysData);
     };
-
     fetchData();
   }, [yearSet]);
 
   useEffect(() => {
-    // Carga los datos de las personas desde la base de datos
-    const fetchPeople = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/people');
-        const data = await response.json();
-        setPeople(data);
-      } catch (error) {
-        console.error("Error fetching people data:", error);
-      }
-    };
-
-    fetchPeople();
+    // Carga los datos de las personas desde el archivo JSON
+    setPeople(peopleData);
   }, []);
+
+  // --- Funciones del CRUD para manejar el estado 'people' ---
+
+  const handleSavePerson = (formData) => {
+    if (formData.id) { 
+      // Actualizar persona existente
+      setPeople(people.map(p => p.id === formData.id ? formData : p));
+    } else { 
+      // Crear nueva persona
+      const newId = people.length > 0 ? Math.max(...people.map(p => p.id)) + 1 : 1;
+      setPeople([...people, { ...formData, id: newId }]);
+    }
+  };
+
+  const handleDeletePerson = (personId) => {
+    // Eliminar persona
+    setPeople(people.filter(p => p.id !== personId));
+  };
 
   return (
     <div className="App">
@@ -58,7 +66,8 @@ function App() {
           <Route
             exact
             path="/Perfiles"
-            element={<CardProfile />}
+            // Pasamos los datos y las funciones a CardProfile
+            element={<CardProfile people={people} onSave={handleSavePerson} onDelete={handleDeletePerson} />}
             key="profiles"
           ></Route>
         </Routes>
@@ -67,7 +76,8 @@ function App() {
           yearSet={yearSet} 
           monthCalendario={monthCalendario} 
           colombianHolidays={colombianHolidays}
-          people={people} // Pasa las personas al componente OffCanvas
+          // Pasamos los mismos datos a PersonOffCanvas
+          people={people} 
         />
       </BrowserRouter>
     </div>

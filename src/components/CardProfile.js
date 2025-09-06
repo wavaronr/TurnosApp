@@ -1,46 +1,32 @@
-
-import { getDataPersons } from './getDataPerson';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../css/Profile.css';
 import EditProfileForm from './EditProfileForm';
 
-function CardProfile() {
-  const [persons, setPersons] = useState([]);
+// Recibe la lista de personas y las funciones para manipularla como props
+function CardProfile({ people, onSave, onDelete }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
-  
   const [editingPerson, setEditingPerson] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const personsData = await getDataPersons();
-      setPersons(personsData);
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
-
   const handleEdit = (person) => {
     setEditingPerson(person);
+    setIsCreating(false);
   };
 
   const handleOpenCreate = () => {
     setIsCreating(true);
+    setEditingPerson(null);
   };
 
+  // Llama a la función onSave que viene de App.js
   const handleSave = (formData) => {
-    if (formData.id) { 
-      setPersons(persons.map(p => p.id === formData.id ? formData : p));
-    } else { 
-      const newId = persons.length > 0 ? Math.max(...persons.map(p => p.id)) + 1 : 1;
-      setPersons([...persons, { ...formData, id: newId }]);
-    }
+    onSave(formData);
     handleClose();
   };
 
+  // Llama a la función onDelete que viene de App.js
   const handleDelete = (personId) => {
-    setPersons(persons.filter(p => p.id !== personId));
+    onDelete(personId);
   };
 
   const handleClose = () => {
@@ -48,8 +34,9 @@ function CardProfile() {
     setIsCreating(false);
   };
 
-  const filteredPersons = Array.isArray(persons)
-    ? persons.filter((person) =>
+  // Usa la prop 'people' en lugar de un estado local
+  const filteredPersons = Array.isArray(people)
+    ? people.filter((person) =>
         person.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : [];
@@ -57,10 +44,6 @@ function CardProfile() {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
-  if (loading) {
-    return <div>Cargando...</div>;
-  }
 
   return (
     <div className="profile-container">

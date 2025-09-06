@@ -12,10 +12,10 @@ function EditProfileForm({ person, onSubmit, onClose }) {
     setFormData(initialState);
   }, [person]);
 
-  const handleChange = (e) => {
+  function handleChange(e) {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,7 +35,7 @@ function EditProfileForm({ person, onSubmit, onClose }) {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Ej: Juan Pérez"
+              placeholder="Ej: Nombre Apellido"
               required
             />
           </div>
@@ -47,7 +47,7 @@ function EditProfileForm({ person, onSubmit, onClose }) {
               name="cargo"
               value={formData.cargo}
               onChange={handleChange}
-              placeholder="Ej: Desarrollador Frontend"
+              placeholder="Ej: Tecnico"
               required
             />
           </div>

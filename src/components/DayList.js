@@ -1,9 +1,8 @@
 import React from 'react';
 import DayCard from './DayCard.js';
 import { getWeekDays } from './getWeekDays.js';
-import peopleData from '../data/dataPerson.json'; // Importa los datos de las personas
 
-function DayList({ selectedWeek, yearSet, colombianHolidays }) {
+function DayList({ selectedWeek, yearSet, colombianHolidays, people }) {
   if (!selectedWeek) {
     return null;
   }
@@ -18,7 +17,7 @@ function DayList({ selectedWeek, yearSet, colombianHolidays }) {
             key={day.toISOString()} 
             day={day} 
             colombianHolidays={colombianHolidays}
-            people={peopleData} // Pasa los datos de las personas a cada DayCard
+            people={people}
           />
         ))}
       </ol>

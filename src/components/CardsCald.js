@@ -4,8 +4,12 @@ import '../css/calendario.css';
 import Calendarios from './Calendarios.js';
 import YearInput from './yearinput';
 import { getMonthsTitule } from '../utils/getMonthsTitule.js';
+import { useCalendar } from '../context/CalendarContext'; // 1. Importar el hook
 
-function CardsCald({ setSelectedWeek, yearSet, setYearSet, setMonthCalendario, colombianHolidays }) {
+// 2. La firma del componente está limpia, sin props del calendario
+function CardsCald() { 
+  // 3. Obtener solo la función necesaria del contexto
+  const { setYearSet } = useCalendar();
   const months = getMonthsTitule();
 
   const handleYearChange = (newYear) => {
@@ -24,13 +28,8 @@ function CardsCald({ setSelectedWeek, yearSet, setYearSet, setMonthCalendario, c
               <h5 className="month-title">{mes}</h5>
             </div>
             <div className="calendar-wrapper">
-              <Calendarios
-                monthCalendario={index}
-                yearSet={yearSet}
-                setSelectedWeek={setSelectedWeek}
-                setMonthCalendario={setMonthCalendario}
-                colombianHolidays={colombianHolidays}
-              />
+              {/* 4. Ya no se pasan props a Calendarios */}
+              <Calendarios monthCalendario={index} />
             </div>
           </div>
         ))}

@@ -1,7 +1,12 @@
 import WeekDetail from './WeekDetail';
 import { getMonthsTitule } from '../utils/getMonthsTitule';
+import { useCalendar } from '../context/CalendarContext'; // Importar hook
 
-function PersonOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHolidays, people }) {
+// Limpiar firma, solo necesita people
+function PersonOffCanvas({ people }) { 
+  // Obtener datos del contexto
+  const { selectedWeek, monthCalendario } = useCalendar(); 
+  
   const months = getMonthsTitule();
   const monthName = months[monthCalendario];
 
@@ -25,13 +30,8 @@ function PersonOffCanvas({ selectedWeek, yearSet, monthCalendario, colombianHoli
         ></button>
       </div>
       <div className="offcanvas-body">
-       <WeekDetail 
-        selectedWeek={selectedWeek} 
-        yearSet={yearSet} 
-        monthCalendario={monthCalendario} 
-        colombianHolidays={colombianHolidays}
-        people={people} // Pasa las personas a WeekDetail
-      /> 
+       {/* WeekDetail ahora tomará los datos del contexto */}
+       <WeekDetail people={people} /> 
       </div>
     </div>
   );

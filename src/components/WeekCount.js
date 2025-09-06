@@ -1,8 +1,12 @@
 import { getISOWeek } from 'date-fns';
-
 import { getMondayNumbers } from './getMondayNumbers';
+import { useCalendar } from '../context/CalendarContext'; // Importar hook
 
-function WeekCount({ monthCalendario, yearSet, setSelectedWeek, setMonthCalendario }) {
+// Limpiar la firma, solo necesita monthCalendario
+function WeekCount({ monthCalendario }) { 
+  // Obtener todo lo necesario del contexto
+  const { yearSet, setSelectedWeek, setMonthCalendario } = useCalendar();
+
   const day = [
     1,
     ...getMondayNumbers(monthCalendario, yearSet).filter(
@@ -17,7 +21,7 @@ function WeekCount({ monthCalendario, yearSet, setSelectedWeek, setMonthCalendar
 
   const weekNumbers = day.map((dayItem) => {
     const date = new Date(yearSet, monthCalendario, dayItem);
-    const weekNumber = getISOWeek(date); // funcion de libreria date-fns que retorna numero de semana segun date
+    const weekNumber = getISOWeek(date); 
 
     return (
       <li className="numerW" key={weekNumber + '-' + monthCalendario}>

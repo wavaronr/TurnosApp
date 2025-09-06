@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../css/WeekDetail.css';
-import AssignPersonModal from './AssignPersonModal'; // Importa el modal
+import AssignPersonModal from './AssignPersonModal';
+import { useCalendar } from '../context/CalendarContext'; // Importar hook
 
 const ShiftSection = ({ title, people, onAdd, onRemove }) => (
   <div className="shift-section">
@@ -17,7 +18,10 @@ const ShiftSection = ({ title, people, onAdd, onRemove }) => (
   </div>
 );
 
-function DayCard({ day, colombianHolidays, people }) { // Recibe la lista de personas
+// Limpiar firma
+function DayCard({ day, people }) { 
+  const { colombianHolidays } = useCalendar(); // Obtener datos del contexto
+
   const [shifts, setShifts] = useState({
     morning: [],
     afternoon: [],

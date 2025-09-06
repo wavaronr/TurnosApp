@@ -1,17 +1,15 @@
 import React from 'react';
 import DayList from './DayList';
+import { useCalendar } from '../context/CalendarContext'; // Importar hook
 
-function WeekDetail({ selectedWeek, yearSet, colombianHolidays, people }) {
+// Limpiar firma, solo necesita people
+function WeekDetail({ people }) { 
+  const { selectedWeek } = useCalendar(); // Obtener datos del contexto
+
   return (
     <div>
-      {selectedWeek && (
-        <DayList 
-          selectedWeek={selectedWeek} 
-          yearSet={yearSet} 
-          colombianHolidays={colombianHolidays}
-          people={people} // Pasa las personas a DayList
-        />
-      )}
+      {/* DayList tomará los datos del contexto */}
+      {selectedWeek && <DayList people={people} />}
     </div>
   );
 }

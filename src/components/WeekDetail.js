@@ -1,14 +1,14 @@
 import React from 'react';
-import DayList from './DayList';
-import { useCalendar } from '../context/CalendarContext'; // Importar hook
+// Corregir la importación de DayList añadiendo la extensión .js
+import DayList from './DayList.js';
+// Corregir la importación del contexto añadiendo la extensión .js
+import { useCalendar } from '../context/CalendarContext.js';
 
-// Limpiar firma, solo necesita people
-function WeekDetail({ people }) { 
-  const { selectedWeek } = useCalendar(); // Obtener datos del contexto
+function WeekDetail() { 
+  const { selectedWeek, people } = useCalendar(); 
 
   return (
     <div>
-      {/* DayList tomará los datos del contexto */}
       {selectedWeek && <DayList people={people} />}
     </div>
   );

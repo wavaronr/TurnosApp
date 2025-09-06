@@ -5,6 +5,7 @@ function NavMenu() {
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
 
+  // Se elimina "Personal" de la lista de botones
   const buttons = ['Home', 'Calendario', 'Perfiles'];
 
   const handleClick = (index) => {

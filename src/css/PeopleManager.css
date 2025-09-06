@@ -1,0 +1,107 @@
+/* PeopleManager.css */
+
+.people-manager {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 800px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.people-manager h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.add-person-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-person-form input[type="text"] {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.add-person-form button {
+  padding: 10px 20px;
+  background-color: #28a745; /* Verde */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.add-person-form button:hover {
+  background-color: #218838;
+}
+
+.people-list {
+  margin-top: 20px;
+}
+
+.person-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: box-shadow 0.2s;
+}
+
+.person-row:hover {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.person-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.person-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.person-role {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.delete-btn {
+  padding: 8px 15px;
+  background-color: #dc3545; /* Rojo */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.no-people {
+  text-align: center;
+  color: #888;
+  margin-top: 30px;
+  font-style: italic;
+}

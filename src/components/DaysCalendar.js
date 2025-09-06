@@ -1,10 +1,11 @@
 import React from "react";
 import "../css/calendario.css";
-import { useCalendar } from '../context/CalendarContext'; // Importar hook
+// Corregir la importación del contexto añadiendo la extensión .js
+import { useCalendar } from '../context/CalendarContext.js';
 
-// Limpiar la firma
+// El componente vuelve a aceptar la prop monthCalendario
 function DaysCalendar({ day, monthCalendario }) {
-  // Obtener datos del contexto
+  // Se obtiene el año y los festivos del contexto, pero se usa la prop para el mes
   const { colombianHolidays, yearSet } = useCalendar();
 
   const isFirstDay = day === 1;

@@ -3,12 +3,13 @@ import '../css/calendario.css';
 
 import DaysCalendar from './DaysCalendar.js';
 import WeekCount from './WeekCount.js';
-import { useCalendar } from '../context/CalendarContext'; // 1. Importar hook
+// Corregir la importación del contexto añadiendo la extensión .js
+import { useCalendar } from '../context/CalendarContext.js';
 
-// 2. Limpiar la firma del componente
+// El componente vuelve a aceptar la prop monthCalendario
 function Calendarios({ monthCalendario }) {
-  // 3. Obtener todo lo necesario del contexto
-  const { yearSet, setSelectedWeek, setMonthCalendario, colombianHolidays } = useCalendar();
+  // Se obtiene el año y los festivos del contexto, pero se usa la prop para el mes
+  const { yearSet, colombianHolidays } = useCalendar();
 
   const countDays = new Date(yearSet, monthCalendario + 1, 0).getDate();
   const days = Array.from({ length: countDays }, (_, index) => index + 1);
@@ -16,7 +17,7 @@ function Calendarios({ monthCalendario }) {
 
   return (
     <div className="calendar">
-      {/* 4. Pasar solo las props estrictamente necesarias a los hijos */}
+      {/* Se pasa la prop monthCalendario a WeekCount */}
       <WeekCount
         monthCalendario={monthCalendario}
       />
@@ -28,10 +29,10 @@ function Calendarios({ monthCalendario }) {
         ))}
 
         {days.map((day) => (
-          // DaysCalendar ahora obtendrá los datos del contexto también
           <DaysCalendar
             key={day}
             day={day}
+            // Se pasa la prop monthCalendario a DaysCalendar
             monthCalendario={monthCalendario}
           />
         ))}

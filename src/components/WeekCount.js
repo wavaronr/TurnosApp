@@ -1,10 +1,12 @@
 import { getISOWeek } from 'date-fns';
-import { getMondayNumbers } from './getMondayNumbers';
-import { useCalendar } from '../context/CalendarContext'; // Importar hook
+// Corregir la ruta de importación de getMondayNumbers
+import { getMondayNumbers } from '../utils/getMondayNumbers.js';
+// Corregir la importación del contexto añadiendo la extensión .js
+import { useCalendar } from '../context/CalendarContext.js';
 
-// Limpiar la firma, solo necesita monthCalendario
+// El componente vuelve a aceptar la prop monthCalendario
 function WeekCount({ monthCalendario }) { 
-  // Obtener todo lo necesario del contexto
+  // Se obtiene el año y los setters del contexto, pero se usa la prop para el mes
   const { yearSet, setSelectedWeek, setMonthCalendario } = useCalendar();
 
   const day = [
@@ -16,6 +18,7 @@ function WeekCount({ monthCalendario }) {
 
   const handleClick = (selectedWeek) => {
     setSelectedWeek(selectedWeek);
+    // Al hacer clic, se actualiza el mes en el contexto global
     setMonthCalendario(monthCalendario);
   };
 

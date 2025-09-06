@@ -1,15 +1,13 @@
-import React, { useState } from 'react'; // Importar useState
+import React, { useState } from 'react';
 import '../css/AssignPersonModal.css';
 
-function AssignPersonModal({ people, existingPeopleIds, onSelect, onClose }) {
-  // 1. Estado para el término de búsqueda
+// El modal ahora recibe una lista de personas ya validadas.
+// Se elimina la prop `existingPeopleIds`.
+function AssignPersonModal({ people, onSelect, onClose }) {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // 2. Filtrar personas disponibles (lógica que ya existía)
-  const availablePeople = people.filter(p => !existingPeopleIds.includes(p.id));
-
-  // 3. Filtrar personas por el término de búsqueda (nueva lógica)
-  const filteredPeople = availablePeople.filter(person =>
+  // La única lógica de filtrado que queda es la del buscador.
+  const filteredPeople = people.filter(person =>
     person.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -21,7 +19,6 @@ function AssignPersonModal({ people, existingPeopleIds, onSelect, onClose }) {
           <button onClick={onClose} className="close-btn">×</button>
         </div>
         <div className="modal-body">
-          {/* 4. Input para el buscador */}
           <input
             type="text"
             placeholder="Buscar persona..."
@@ -29,13 +26,17 @@ function AssignPersonModal({ people, existingPeopleIds, onSelect, onClose }) {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          {/* 5. Renderizar la lista filtrada */}
           <div className="people-list-container">
-            {filteredPeople.map(person => (
-              <div key={person.id} onClick={() => onSelect(person)} className="person-item">
-                {person.name}
-              </div>
-            ))}
+            {/* Se muestra un mensaje si no hay personas válidas o no hay resultados de búsqueda */}
+            {filteredPeople.length > 0 ? (
+              filteredPeople.map(person => (
+                <div key={person.id} onClick={() => onSelect(person)} className="person-item">
+                  {person.name}
+                </div>
+              ))
+            ) : (
+              <div className="no-results">No hay personas disponibles o que coincidan con la búsqueda.</div>
+            )}
           </div>
         </div>
       </div>

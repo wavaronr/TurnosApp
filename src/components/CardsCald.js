@@ -2,13 +2,13 @@ import React from 'react';
 import '../css/calendario.css';
 
 import Calendarios from './Calendarios.js';
-import YearInput from './yearinput';
+// Corregir la importación de YearInput añadiendo la extensión .js
+import YearInput from './yearinput.js';
 import { getMonthsTitule } from '../utils/getMonthsTitule.js';
-import { useCalendar } from '../context/CalendarContext'; // 1. Importar el hook
+// Corregir la importación del contexto añadiendo la extensión .js
+import { useCalendar } from '../context/CalendarContext.js';
 
-// 2. La firma del componente está limpia, sin props del calendario
 function CardsCald() { 
-  // 3. Obtener solo la función necesaria del contexto
   const { setYearSet } = useCalendar();
   const months = getMonthsTitule();
 
@@ -28,7 +28,6 @@ function CardsCald() {
               <h5 className="month-title">{mes}</h5>
             </div>
             <div className="calendar-wrapper">
-              {/* 4. Ya no se pasan props a Calendarios */}
               <Calendarios monthCalendario={index} />
             </div>
           </div>

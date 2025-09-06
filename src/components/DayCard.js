@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css/WeekDetail.css';
-import AssignPersonModal from './AssignPersonModal';
-import { useCalendar } from '../context/CalendarContext'; // Importar hook
+import AssignPersonModal from './AssignPersonModal.js';
+import { useCalendar } from '../context/CalendarContext.js';
 
 const ShiftSection = ({ title, people, onAdd, onRemove }) => (
   <div className="shift-section">
@@ -18,56 +18,45 @@ const ShiftSection = ({ title, people, onAdd, onRemove }) => (
   </div>
 );
 
-// Limpiar firma
-function DayCard({ day, people }) { 
-  const { colombianHolidays } = useCalendar(); // Obtener datos del contexto
-
-  const [shifts, setShifts] = useState({
-    morning: [],
-    afternoon: [],
-    night: [],
-    off: [],
-  });
+function DayCard({ day, people }) {
+  const { 
+    colombianHolidays, 
+    shifts, 
+    assignShift, 
+    removeShift, 
+    getValidPeopleForShift 
+  } = useCalendar();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState(null);
+  const [validPeople, setValidPeople] = useState([]);
+
+  const dayString = day.toISOString().split('T')[0];
+
+  const dayShifts = shifts[dayString] || { morning: [], afternoon: [], night: [], off: [] };
 
   const dayOfMonth = day.getDate();
   const month = day.getMonth() + 1;
-
-  const isHoliday = colombianHolidays.some(
-    (festivo) => festivo.dia === dayOfMonth && festivo.mes === month
-  );
-
+  const isHoliday = colombianHolidays.some(h => h.dia === dayOfMonth && h.mes === month);
   const dayName = day.toLocaleDateString('es-ES', { weekday: 'short' });
 
-  const cardStyle = {
-    ...(isHoliday && { backgroundColor: '#fdd' }),
-    listStyle: 'none'
-  };
+  const cardStyle = { ...(isHoliday && { backgroundColor: '#fdd' }), listStyle: 'none' };
+  const dayNumberStyle = { ...(isHoliday && { color: 'red', fontWeight: 'bold' }) };
 
-  const dayNumberStyle = {
-    ...(isHoliday && { color: 'red', fontWeight: 'bold' }),
-  }
-
-  const handleAddPerson = (shift) => {
-    setSelectedShift(shift);
+  const handleAddPerson = (shiftType) => {
+    const validPeopleForShift = getValidPeopleForShift(day, shiftType, people);
+    setValidPeople(validPeopleForShift);
+    setSelectedShift(shiftType);
     setIsModalOpen(true);
   };
 
-  const handleRemovePerson = (shift, personId) => {
-    setShifts(prevShifts => ({
-      ...prevShifts,
-      [shift]: prevShifts[shift].filter(p => p.id !== personId)
-    }));
+  const handleSelectPerson = (person) => {
+    assignShift(day, selectedShift, person);
+    setIsModalOpen(false);
   };
 
-  const handleSelectPerson = (person) => {
-    setShifts(prevShifts => ({
-      ...prevShifts,
-      [selectedShift]: [...prevShifts[selectedShift], person]
-    }));
-    setIsModalOpen(false);
+  const handleRemovePerson = (shiftType, personId) => {
+    removeShift(day, shiftType, personId);
   };
 
   return (
@@ -79,25 +68,25 @@ function DayCard({ day, people }) {
       <div className="shifts-container">
         <ShiftSection
           title="Mañana"
-          people={shifts.morning}
+          people={dayShifts.morning}
           onAdd={() => handleAddPerson('morning')}
           onRemove={(personId) => handleRemovePerson('morning', personId)}
         />
         <ShiftSection
           title="Tarde"
-          people={shifts.afternoon}
+          people={dayShifts.afternoon}
           onAdd={() => handleAddPerson('afternoon')}
           onRemove={(personId) => handleRemovePerson('afternoon', personId)}
         />
         <ShiftSection
           title="Noche"
-          people={shifts.night}
+          people={dayShifts.night}
           onAdd={() => handleAddPerson('night')}
           onRemove={(personId) => handleRemovePerson('night', personId)}
         />
         <ShiftSection
           title="Libre"
-          people={shifts.off}
+          people={dayShifts.off}
           onAdd={() => handleAddPerson('off')}
           onRemove={(personId) => handleRemovePerson('off', personId)}
         />
@@ -105,8 +94,7 @@ function DayCard({ day, people }) {
 
       {isModalOpen && (
         <AssignPersonModal
-          people={people}
-          existingPeopleIds={shifts[selectedShift].map(p => p.id)}
+          people={validPeople}
           onSelect={handleSelectPerson}
           onClose={() => setIsModalOpen(false)}
         />

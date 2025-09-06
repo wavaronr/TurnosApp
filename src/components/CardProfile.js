@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import '../css/Profile.css';
 import EditProfileForm from './EditProfileForm';
+import { useCalendar } from '../context/CalendarContext'; // 1. Importar el hook del contexto
 
-// Recibe la lista de personas y las funciones para manipularla como props
-function CardProfile({ people, onSave, onDelete }) {
+// 2. Se eliminan las props. El componente ahora es autónomo.
+function CardProfile() {
+  // 3. Obtener el estado y las funciones del contexto.
+  const { people, savePerson, deletePerson } = useCalendar();
+
   const [searchTerm, setSearchTerm] = useState('');
   const [editingPerson, setEditingPerson] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -18,15 +22,16 @@ function CardProfile({ people, onSave, onDelete }) {
     setEditingPerson(null);
   };
 
-  // Llama a la función onSave que viene de App.js
+  // 4. Llama a la función savePerson del contexto.
   const handleSave = (formData) => {
-    onSave(formData);
+    savePerson(formData);
     handleClose();
   };
 
-  // Llama a la función onDelete que viene de App.js
+  // 5. Llama a la función deletePerson del contexto.
   const handleDelete = (personId) => {
-    onDelete(personId);
+    // Aquí se podría añadir una confirmación antes de borrar.
+    deletePerson(personId);
   };
 
   const handleClose = () => {
@@ -34,7 +39,7 @@ function CardProfile({ people, onSave, onDelete }) {
     setIsCreating(false);
   };
 
-  // Usa la prop 'people' en lugar de un estado local
+  // El resto de la lógica permanece igual, pero ahora usa `people` del contexto.
   const filteredPersons = Array.isArray(people)
     ? people.filter((person) =>
         person.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -81,6 +86,7 @@ function CardProfile({ people, onSave, onDelete }) {
       {(editingPerson || isCreating) && (
         <EditProfileForm
           person={editingPerson}
+          // onSubmit ahora llama a handleSave, que a su vez usa el contexto.
           onSubmit={handleSave}
           onClose={handleClose}
         />

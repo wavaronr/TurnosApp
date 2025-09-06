@@ -63,3 +63,27 @@
 .person-item:last-child {
   border-bottom: none;
 }
+
+/* --- NUEVOS ESTILOS --- */
+
+.search-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+.people-list-container {
+  /* Este contenedor puede ayudar en el futuro si la lista se vuelve más compleja */
+  /* Por ahora, no necesita estilos específicos */
+}
+
+.no-results {
+  text-align: center;
+  padding: 20px;
+  color: #6c757d;
+  font-style: italic;
+}

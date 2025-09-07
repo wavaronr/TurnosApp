@@ -85,13 +85,25 @@ li.numerW-title{
 }
 
 .year-input {
-    border-radius: 15%;
-    width: 100px;
-    height: 60px;
-    font-family: "Courier New";
-    font-size: 30px;
-    text-align: center;
-  }            
+  width: 120px;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  color: #333;
+  backdrop-filter: blur(5px);
+  font-size: 2rem;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.year-input:focus {
+  outline: none;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
 
   .btn.numerW {  
     font-size: 12px;

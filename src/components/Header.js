@@ -1,11 +1,31 @@
 import React from 'react';
 import NavMenu from './NavMenu';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+  const navigate = useNavigate();
+  const userEmail = localStorage.getItem('email');
+  const userProfile = localStorage.getItem('profile');
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('profile');
+    localStorage.removeItem('email');
+    navigate('/', { replace: true });
+  };
+
   return (
     <>
       <div style={{ position: 'relative' }}>
         <NavMenu />
+        {userEmail && (
+          <div style={{ position: 'absolute', top: 10, right: 20, color: 'white', zIndex: 1050 }}>
+            <span>{userEmail} ({userProfile})</span>
+            <button onClick={handleLogout} style={{ marginLeft: '10px', background: 'transparent', border: '1px solid white', color: 'white', borderRadius: '5px', padding: '5px 10px' }}>
+              Cerrar Sesión
+            </button>
+          </div>
+        )}
         <div
           key="background"
           style={{

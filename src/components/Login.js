@@ -12,6 +12,14 @@ function Login() {
     if (email === 'wavaron@rbm.com.co' && password === 'a1s2d3') {
       const token = 'fake-jwt-token-for-dev'; // Fictitious token
       localStorage.setItem('token', token);
+      localStorage.setItem('profile', 'ADM');
+      localStorage.setItem('email', email);
+      navigate('/Home', { replace: true });
+    } else if (email === 'operador@rbm.com.co' && password === 'password') {
+      const token = 'fake-jwt-token-for-dev-opr'; // Fictitious token
+      localStorage.setItem('token', token);
+      localStorage.setItem('profile', 'OPR');
+      localStorage.setItem('email', email);
       navigate('/Home', { replace: true });
     } else {
       alert('Credenciales incorrectas');

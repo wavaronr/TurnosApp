@@ -3,18 +3,18 @@ import '../css/WeekDetail.css';
 import AssignPersonModal from './AssignPersonModal.js';
 import { useCalendar } from '../context/CalendarContext.js';
 
-const ShiftSection = ({ title, people, onAdd, onRemove }) => (
+const ShiftSection = ({ title, people, onAdd, onRemove, userProfile }) => (
   <div className="shift-section">
     <h6 className="shift-title">{title}</h6>
     <div className="people-list">
       {people.map(person => (
         <span key={person.id} className="person-pill">
           {person.name}
-          <button onClick={() => onRemove(person.id)} className="remove-person-btn">X</button>
+          {userProfile === 'ADM' && <button onClick={() => onRemove(person.id)} className="remove-person-btn">X</button>}
         </span>
       ))}
     </div>
-    <button onClick={onAdd} className="add-person-btn">+</button>
+    {userProfile === 'ADM' && <button onClick={onAdd} className="add-person-btn">+</button>}
   </div>
 );
 
@@ -30,6 +30,7 @@ function DayCard({ day, people }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState(null);
   const [validPeople, setValidPeople] = useState([]);
+  const userProfile = localStorage.getItem('profile'); // Get user profile
 
   const dayString = day.toISOString().split('T')[0];
 
@@ -71,24 +72,28 @@ function DayCard({ day, people }) {
           people={dayShifts.morning}
           onAdd={() => handleAddPerson('morning')}
           onRemove={(personId) => handleRemovePerson('morning', personId)}
+          userProfile={userProfile}
         />
         <ShiftSection
           title="Tarde"
           people={dayShifts.afternoon}
           onAdd={() => handleAddPerson('afternoon')}
           onRemove={(personId) => handleRemovePerson('afternoon', personId)}
+          userProfile={userProfile}
         />
         <ShiftSection
           title="Noche"
           people={dayShifts.night}
           onAdd={() => handleAddPerson('night')}
           onRemove={(personId) => handleRemovePerson('night', personId)}
+          userProfile={userProfile}
         />
         <ShiftSection
           title="Libre"
           people={dayShifts.off}
           onAdd={() => handleAddPerson('off')}
           onRemove={(personId) => handleRemovePerson('off', personId)}
+          userProfile={userProfile}
         />
       </div>
 

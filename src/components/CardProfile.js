@@ -11,6 +11,7 @@ function CardProfile() {
   const [searchTerm, setSearchTerm] = useState('');
   const [editingPerson, setEditingPerson] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
+  const userProfile = localStorage.getItem('profile'); // Get user profile
 
   const handleEdit = (person) => {
     setEditingPerson(person);
@@ -53,7 +54,7 @@ function CardProfile() {
   return (
     <div className="profile-container">
       <div className="profile-header">
-        <button className="btn-create" onClick={handleOpenCreate}>Crear Perfil</button>
+        {userProfile === 'ADM' && <button className="btn-create" onClick={handleOpenCreate}>Crear Perfil</button>}
         <div className="search-bar">
           <input
             type="text"
@@ -76,8 +77,12 @@ function CardProfile() {
               <p><strong>Cargo:</strong> {person.cargo}</p>
             </div>
             <div className="profile-card-footer">
-              <button className="btn-edit" onClick={() => handleEdit(person)}>Editar</button>
-              <button className="btn-delete" onClick={() => handleDelete(person.id)}>Eliminar</button>
+              {userProfile === 'ADM' && (
+                <>
+                  <button className="btn-edit" onClick={() => handleEdit(person)}>Editar</button>
+                  <button className="btn-delete" onClick={() => handleDelete(person.id)}>Eliminar</button>
+                </>
+              )}
             </div>
           </div>
         ))}

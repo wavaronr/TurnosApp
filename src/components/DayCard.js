@@ -44,6 +44,13 @@ function DayCard({ day, people }) {
   const cardStyle = { ...(isHoliday && { backgroundColor: '#fdd' }), listStyle: 'none' };
   const dayNumberStyle = { ...(isHoliday && { color: 'red', fontWeight: 'bold' }) };
 
+  const shiftTypes = [
+    { id: 'morning', title: 'Mañana' },
+    { id: 'afternoon', title: 'Tarde' },
+    { id: 'night', title: 'Noche' },
+    { id: 'off', title: 'Libre' },
+  ];
+
   const handleAddPerson = (shiftType) => {
     const validPeopleForShift = getValidPeopleForShift(day, shiftType, people);
     setValidPeople(validPeopleForShift);
@@ -67,34 +74,16 @@ function DayCard({ day, people }) {
         <div className="day-number" style={dayNumberStyle}>{dayOfMonth}</div>
       </div>
       <div className="shifts-container">
-        <ShiftSection
-          title="Mañana"
-          people={dayShifts.morning}
-          onAdd={() => handleAddPerson('morning')}
-          onRemove={(personId) => handleRemovePerson('morning', personId)}
-          userProfile={userProfile}
-        />
-        <ShiftSection
-          title="Tarde"
-          people={dayShifts.afternoon}
-          onAdd={() => handleAddPerson('afternoon')}
-          onRemove={(personId) => handleRemovePerson('afternoon', personId)}
-          userProfile={userProfile}
-        />
-        <ShiftSection
-          title="Noche"
-          people={dayShifts.night}
-          onAdd={() => handleAddPerson('night')}
-          onRemove={(personId) => handleRemovePerson('night', personId)}
-          userProfile={userProfile}
-        />
-        <ShiftSection
-          title="Libre"
-          people={dayShifts.off}
-          onAdd={() => handleAddPerson('off')}
-          onRemove={(personId) => handleRemovePerson('off', personId)}
-          userProfile={userProfile}
-        />
+        {shiftTypes.map((shift) => (
+          <ShiftSection
+            key={shift.id}
+            title={shift.title}
+            people={dayShifts[shift.id]}
+            onAdd={() => handleAddPerson(shift.id)}
+            onRemove={(personId) => handleRemovePerson(shift.id, personId)}
+            userProfile={userProfile}
+          />
+        ))}
       </div>
 
       {isModalOpen && (

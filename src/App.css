@@ -28,7 +28,7 @@
 .nav-button {
   background: none;
   border: none;
-  color: #555;
+  color: #ccc; /* Lighter color for better contrast */
   cursor: pointer;
   font-size: 1rem;
   padding: 0.5rem 0;
@@ -36,6 +36,8 @@
   transition: color 0.3s ease;
 }
 
+/* Make text white on hover or when active */
+.nav-button:hover,
 .nav-button.active {
   color: #fff;
 }
@@ -47,11 +49,14 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: #007bff;
+  background: #fff; /* White underline */
   transform: scaleX(0);
-  transition: transform 0.3s ease;
+  transform-origin: bottom left;
+  transition: transform 0.3s ease-in-out;
 }
 
+/* Show underline on hover or when active */
+.nav-button:hover::after,
 .nav-button.active::after {
   transform: scaleX(1);
 }

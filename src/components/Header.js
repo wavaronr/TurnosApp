@@ -19,10 +19,14 @@ function Header() {
       <div style={{ position: 'relative' }}>
         <NavMenu />
         {userEmail && (
-          <div style={{ position: 'absolute', top: 10, right: 20, color: 'white', zIndex: 1050 }}>
+          <div style={{ position: 'absolute', top: 10, right: 20, color: 'white', zIndex: 1050, display: 'flex', alignItems: 'center' }}>
             <span>{userEmail} ({userProfile})</span>
-            <button onClick={handleLogout} style={{ marginLeft: '10px', background: 'transparent', border: '1px solid white', color: 'white', borderRadius: '5px', padding: '5px 10px' }}>
-              Cerrar Sesión
+            <button onClick={handleLogout} style={{ marginLeft: '15px', background: 'transparent', border: 'none', cursor: 'pointer', padding: '0' }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
             </button>
           </div>
         )}

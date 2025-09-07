@@ -5,20 +5,23 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5); /* Slightly less dark */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(5px); /* Added */
 }
 
 .modal-content {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.75); /* Changed */
+  padding: 2.5rem;
+  border-radius: 15px;
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15); /* Changed */
+  border: 1px solid rgba(255, 255, 255, 0.25); /* Added */
+  backdrop-filter: blur(8px); /* Added */
 }
 
 .form-group {
@@ -29,13 +32,22 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
+  color: #333; /* Added */
 }
 
 .form-group input {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Changed */
   border-radius: 5px;
+  background: rgba(255, 255, 255, 0.9); /* Changed */
+  color: #333; /* Added */
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #0e007b; /* Added */
 }
 
 .form-actions {
@@ -50,19 +62,20 @@
   border-radius: 5px;
   color: #fff;
   cursor: pointer;
+  font-weight: bold; /* Added */
   transition: background-color 0.3s ease;
 }
 
 .btn-update {
-  background-color: #007bff; 
+  background-color: #0e007b; /* Changed */
 }
 
 .btn-update:hover {
-  background-color: #0056b3; 
+  background-color: #0022a1; /* Changed */
 }
 
 .btn-cancel {
-  background-color: #6c757d; 
+  background-color: #868e96; /* Changed */
 }
 
 .btn-cancel:hover {

@@ -8,9 +8,14 @@ function Login() {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(email);
-    console.log(password);
-    navigate('/Home', { replace: true });
+
+    if (email === 'wavaron@rbm.com.co' && password === 'a1s2d3') {
+      const token = 'fake-jwt-token-for-dev'; // Fictitious token
+      localStorage.setItem('token', token);
+      navigate('/Home', { replace: true });
+    } else {
+      alert('Credenciales incorrectas');
+    }
   };
 
   return (

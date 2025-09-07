@@ -1,8 +1,16 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import '../css/Login.css';
 
 function Login() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/Home', { replace: true });
+    }
+  }, [navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -13,6 +21,12 @@ function Login() {
       const token = 'fake-jwt-token-for-dev'; // Fictitious token
       localStorage.setItem('token', token);
       localStorage.setItem('profile', 'ADM');
+      localStorage.setItem('email', email);
+      navigate('/Home', { replace: true });
+    } else if (email === 'jperez@rbm.com.co' && password === 'a1s2d3') {
+      const token = 'fake-jwt-token-for-dev-opr-2'; // Fictitious token for Juan Perez
+      localStorage.setItem('token', token);
+      localStorage.setItem('profile', 'OPR');
       localStorage.setItem('email', email);
       navigate('/Home', { replace: true });
     } else if (email === 'operador@rbm.com.co' && password === 'password') {

@@ -17,16 +17,16 @@ export const CalendarProvider = ({ children }) => {
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [people, setPeople] = useState([]);
 
-  // --- Nuevos Estados ---
   const [programmedSchedule, setProgrammedSchedule] = useState({});
   const [temporarySchedule, setTemporarySchedule] = useState({});
-  // ---------------------
+  const [isDirty, setIsDirty] = useState(false); // <-- 1. Añadir bandera de estado
 
   useEffect(() => {
     setPeople(peopleData);
-    // Cargar la programación inicial
-    setProgrammedSchedule(initialSchedule.days);
-    setTemporarySchedule(initialSchedule.days);
+    const initialData = JSON.parse(JSON.stringify(initialSchedule.days));
+    setProgrammedSchedule(initialData);
+    setTemporarySchedule(initialData);
+    setIsDirty(false); // Asegurarse de que esté limpio al inicio
   }, []);
 
   const savePerson = (personData) => {
@@ -52,26 +52,28 @@ export const CalendarProvider = ({ children }) => {
   
   const assignShift = (day, shiftType, person) => {
     const dayString = day.toISOString().split('T')[0];
-    const newShifts = JSON.parse(JSON.stringify(temporarySchedule)); // Modificar copia
+    const newShifts = JSON.parse(JSON.stringify(temporarySchedule));
     if (!newShifts[dayString]) {
       newShifts[dayString] = { morning: [], afternoon: [], night: [], off: [] };
     }
     newShifts[dayString][shiftType].push(person);
-    setTemporarySchedule(newShifts); // Actualizar estado temporal
+    setTemporarySchedule(newShifts);
+    setIsDirty(true); // <-- 2. Marcar como "sucio" al añadir
   };
 
   const removeShift = (day, shiftType, personId) => {
     const dayString = day.toISOString().split('T')[0];
-    const newShifts = JSON.parse(JSON.stringify(temporarySchedule)); // Modificar copia
+    const newShifts = JSON.parse(JSON.stringify(temporarySchedule));
     if (newShifts[dayString] && newShifts[dayString][shiftType]) {
       newShifts[dayString][shiftType] = newShifts[dayString][shiftType].filter(p => p.id !== personId);
-      setTemporarySchedule(newShifts); // Actualizar estado temporal
+      setTemporarySchedule(newShifts);
+      setIsDirty(true); // <-- 2. Marcar como "sucio" al quitar
     }
   };
 
   const saveTemporarySchedule = () => {
-    setProgrammedSchedule(temporarySchedule); // Guardar cambios
-    // Aquí, en un futuro, se haría la petición POST/PUT al backend
+    setProgrammedSchedule(temporarySchedule);
+    setIsDirty(false); // <-- 3. Marcar como "limpio" al guardar
     console.log("Cambios guardados:", temporarySchedule);
   };
 
@@ -80,7 +82,7 @@ export const CalendarProvider = ({ children }) => {
     const weekDays = getWeekDays(selectedWeek, yearSet).map(d => d.toISOString().split('T')[0]);
 
     return people.filter(person => {
-      const shiftsToday = temporarySchedule[dayString] || {}; // Usar estado temporal
+      const shiftsToday = temporarySchedule[dayString] || {};
       for (const sType in shiftsToday) {
         if (shiftsToday[sType].some(p => p.id === person.id)) return false;
       }
@@ -88,14 +90,14 @@ export const CalendarProvider = ({ children }) => {
       const yesterday = new Date(day);
       yesterday.setDate(day.getDate() - 1);
       const yesterdayString = yesterday.toISOString().split('T')[0];
-      const shiftsYesterday = temporarySchedule[yesterdayString] || {}; // Usar estado temporal
+      const shiftsYesterday = temporarySchedule[yesterdayString] || {};
       if (shiftsYesterday.night?.some(p => p.id === person.id)) {
         if (shiftType !== 'night' && shiftType !== 'off') return false;
       }
 
       let workShiftCount = 0;
       weekDays.forEach(weekDayString => {
-        const dayShifts = temporarySchedule[weekDayString] || {}; // Usar estado temporal
+        const dayShifts = temporarySchedule[weekDayString] || {};
         ['morning', 'afternoon', 'night'].forEach(workShiftType => {
           if (dayShifts[workShiftType]?.some(p => p.id === person.id)) workShiftCount++;
         });
@@ -115,10 +117,11 @@ export const CalendarProvider = ({ children }) => {
     colombianHolidays,
     selectedWeek,
     setSelectedWeek,
-    shifts: temporarySchedule, // El calendario ahora muestra los cambios temporales
+    shifts: temporarySchedule,
     assignShift,
     removeShift,
-    saveTemporarySchedule, // Nueva función para guardar
+    saveTemporarySchedule,
+    isDirty, // <-- 4. Exponer la bandera
     getValidPeopleForShift,
     people,
     savePerson,

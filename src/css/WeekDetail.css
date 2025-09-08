@@ -1,9 +1,22 @@
-.week-detail-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 15px;
-  padding: 0;
-  margin: 0;
+/* src/css/WeekDetail.css */
+
+/* === Botón de Guardar Cambios Personalizado === */
+.btn-save-changes {
+  background-color: #0e007b; /* Color Primario de Acento */
+  color: #fff;
+  border: none;
+  border-radius: 5px; /* Bordes redondeados consistentes */
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para efecto elevado */
+  transition: all 0.3s ease; /* Transición suave para todas las propiedades */
+}
+
+.btn-save-changes:hover {
+  background-color: #0022a1; /* Variante más clara en hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+  transform: translateY(-2px); /* Efecto de elevación */
 }
 
 .day-card {

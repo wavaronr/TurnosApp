@@ -2,26 +2,23 @@ import React, { useContext } from 'react';
 import DayList from './DayList.js';
 import { useCalendar } from '../context/CalendarContext.js';
 import { ProfileContext } from '../context/ProfileContext.js';
+import '../css/WeekDetail.css'; // Asegúrate de importar el CSS
 
 function WeekDetail() { 
   const { 
     selectedWeek, 
     people,
-    programmedSchedule,
-    temporarySchedule,
+    isDirty,
     saveTemporarySchedule
   } = useCalendar(); 
   const { profile } = useContext(ProfileContext);
 
-  // Comprobar si hay cambios pendientes
-  const hasChanges = JSON.stringify(programmedSchedule) !== JSON.stringify(temporarySchedule);
-
   return (
     <div>
-      {/* Botón para guardar cambios (visible para ADM y si hay cambios) */}
-      {profile?.role === 'ADM' && hasChanges && (
-        <div className="d-grid gap-2 mb-3">
-          <button onClick={saveTemporarySchedule} className="btn btn-success">
+      {profile?.role === 'ADM' && isDirty && (
+        <div className="d-flex justify-content-end mb-3">
+          {/* Botón con la nueva clase personalizada */}
+          <button onClick={saveTemporarySchedule} className="btn-save-changes">
             Guardar Cambios
           </button>
         </div>

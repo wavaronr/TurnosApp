@@ -8,10 +8,9 @@ import Home from './components/Home.js';
 import CardProfile from './components/CardProfile.js';
 import PersonOffCanvas from './components/PersonOffCanvas.js';
 import PrivateRoute from './components/PrivateRoute.js';
-import PublicRoute from './components/PublicRoute.js'; // Import PublicRoute
-// Se elimina la importación de PeopleManager
+import PublicRoute from './components/PublicRoute.js';
+import Programming from './views/Programming.js'; // Importamos la nueva vista
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-// Corregir la importación añadiendo la extensión .js
 import { CalendarProvider } from './context/CalendarContext.js';
 
 function App() {
@@ -38,23 +37,28 @@ function App() {
             {/* Rutas Privadas */}
             <Route 
               exact 
-              path="/Home" 
-              element={<PrivateRoute><Home /></PrivateRoute>} 
-              key="Home"
+              path="/home" 
+              element={<PrivateRoute><Home /></PrivateRoute>}
+              key="home"
             />
             <Route 
               exact 
-              path="/Calendario" 
+              path="/calendario" 
               element={<PrivateRoute><CardsCald /></PrivateRoute>}
               key="cardcalendario"
             />
             <Route
               exact
-              path="/Perfiles"
+              path="/programacion"
+              element={<PrivateRoute><Programming /></PrivateRoute>}
+              key="programming"
+            />
+            <Route
+              exact
+              path="/perfiles"
               element={<PrivateRoute><CardProfile /></PrivateRoute>}
               key="profiles"
             />
-            {/* Se elimina la ruta /Personal */}
           </Routes>
           
           <PersonOffCanvas />

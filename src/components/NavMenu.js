@@ -1,23 +1,46 @@
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 function NavMenu() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
 
-  const buttons = ['Home', 'Calendario', 'Perfiles'];
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsAuthenticated(!!localStorage.getItem('token'));
+    };
 
-  // Derivar el índice activo de la ruta actual
+    window.addEventListener('storage', handleStorageChange);
+
+    const checkAuth = () => {
+        handleStorageChange();
+    };
+
+    checkAuth();
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [location]);
+
+  const buttons = ['Home', 'Calendario', 'Programacion', 'Perfiles'];
+
   const currentPath = location.pathname.substring(1);
   let activeIndex = buttons.findIndex(button => button.toLowerCase() === currentPath.toLowerCase());
 
-  // Si la ruta es '/', establecer Home como activo
   if (location.pathname === '/') {
     activeIndex = 0;
   }
 
   const handleClick = (index) => {
-    navigate(`/${buttons[index]}`);
+    const path = buttons[index].toLowerCase();
+    navigate(`/${path}`);
   };
+
+  if (!isAuthenticated || location.pathname === '/' || location.pathname.toLowerCase() === '/login') {
+    return null;
+  }
 
   return (
     <nav className="nav-menu">

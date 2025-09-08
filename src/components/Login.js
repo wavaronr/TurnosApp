@@ -1,12 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react'; // 1. Importar useContext
+import { ProfileContext } from '../context/ProfileContext'; // 2. Importar el contexto
 import '../css/Login.css';
 
 function Login() {
   const navigate = useNavigate();
+  const { login } = useContext(ProfileContext); // 3. Obtener la función login del contexto
   const [error, setError] = useState('');
 
   useEffect(() => {
+    // Esta lógica de redirección se podría mover a un componente PrivateRoute más robusto,
+    // pero por ahora está bien aquí.
     const token = localStorage.getItem('token');
     if (token) {
       navigate('/Home', { replace: true });
@@ -15,27 +19,27 @@ function Login() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setError(''); // Clear previous errors
+    setError('');
     const email = e.target.email.value;
     const password = e.target.password.value;
 
+    let userProfile = null;
+    let token = null;
+
     if (email === 'wavaron@rbm.com.co' && password === 'a1s2d3') {
-      const token = 'fake-jwt-token-for-dev';
-      localStorage.setItem('token', token);
-      localStorage.setItem('profile', 'ADM');
-      localStorage.setItem('email', email);
-      navigate('/Home', { replace: true });
+      token = 'fake-jwt-token-for-dev';
+      userProfile = { role: 'ADM', email: email };
     } else if (email === 'jperez@rbm.com.co' && password === 'a1s2d3') {
-      const token = 'fake-jwt-token-for-dev-opr-2';
-      localStorage.setItem('token', token);
-      localStorage.setItem('profile', 'OPR');
-      localStorage.setItem('email', email);
-      navigate('/Home', { replace: true });
+      token = 'fake-jwt-token-for-dev-opr-2';
+      userProfile = { role: 'OPR', email: email };
     } else if (email === 'operador@rbm.com.co' && password === 'password') {
-      const token = 'fake-jwt-token-for-dev-opr';
-      localStorage.setItem('token', token);
-      localStorage.setItem('profile', 'OPR');
-      localStorage.setItem('email', email);
+      token = 'fake-jwt-token-for-dev-opr';
+      userProfile = { role: 'OPR', email: email };
+    }
+
+    if (userProfile && token) {
+      // 4. Usar la función login del contexto
+      login(userProfile, token);
       navigate('/Home', { replace: true });
     } else {
       setError('Credenciales incorrectas');

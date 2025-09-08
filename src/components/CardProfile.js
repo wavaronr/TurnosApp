@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react'; // 1. Importar useContext
 import '../css/Profile.css';
 import EditProfileForm from './EditProfileForm';
 import { useCalendar } from '../context/CalendarContext';
+import { ProfileContext } from '../context/ProfileContext'; // 2. Importar ProfileContext
 
 function CardProfile() {
   const { people, savePerson, deletePerson } = useCalendar();
+  const { profile } = useContext(ProfileContext); // 3. Obtener profile del contexto
   const [searchTerm, setSearchTerm] = useState('');
   const [editingPerson, setEditingPerson] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
-  const userProfile = localStorage.getItem('profile');
+  // const userProfile = localStorage.getItem('profile'); // Ya no es necesario
 
   const handleEdit = (person) => {
     setEditingPerson(person);
@@ -49,7 +51,8 @@ function CardProfile() {
   return (
     <div className="profile-container">
       <div className="profile-header">
-        {userProfile === 'ADM' && <button className="btn-create" onClick={handleOpenCreate}>Crear Perfil</button>}
+        {/* 4. Usar el rol del perfil del contexto */}
+        {profile?.role === 'ADM' && <button className="btn-create" onClick={handleOpenCreate}>Crear Perfil</button>}
         <div className="search-bar">
           <input
             type="text"
@@ -77,7 +80,8 @@ function CardProfile() {
             <div className="profile-card-body">
               <p><strong>Identificación:</strong> {person.id}</p>
             </div>
-            {userProfile === 'ADM' && (
+            {/* 4. Usar el rol del perfil del contexto */}
+            {profile?.role === 'ADM' && (
               <div className="profile-card-footer">
                 <button className="btn-icon btn-edit" onClick={() => handleEdit(person)}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

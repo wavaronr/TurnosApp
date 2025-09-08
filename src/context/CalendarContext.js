@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { holidays as getColombianHolidays } from '../utils/holidays.js';
 import { getWeekDays } from '../utils/getWeekDays.js';
 import peopleData from '../data/dataPerson.json' with { type: 'json' };
-import initialSchedule from '../data/september2025.json' with { type: 'json' };
+import initialSchedule from '../data/september-2025-schedule.json' with { type: 'json' };
 
 export const CalendarContext = createContext();
 

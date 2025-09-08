@@ -1,0 +1,19 @@
+
+{
+  "year": 2025,
+  "month": "Septiembre",
+  "days": {
+    "2025-09-01": {
+      "morning": [{ "id": 123456789, "name": "Juan Perez" }, { "id": 1234567891, "name": "Pedro Gonzalez" }],
+      "afternoon": [{ "id": 1234567892, "name": "Luis Rodriguez" }, { "id": 1234567893, "name": "Jose 2025 Rodriguez" }],
+      "night": [{ "id": 12345678902, "name": "Juan Perez segundo" }, { "id": 12345678912, "name": "Pedro Gonzalez segundo" }],
+      "off": [{ "id": 12345678922, "name": "Luis Rodriguez segundo" }, { "id": 12345678932, "name": "Jose Rodriguez segundo" }]
+    },
+    "2025-09-02": {
+      "morning": [{ "id": 12345678922, "name": "Luis Rodriguez segundo" }, { "id": 12345678932, "name": "Jose Rodriguez segundo" }],
+      "afternoon": [{ "id": 123456789, "name": "Juan Perez" }, { "id": 1234567891, "name": "Pedro Gonzalez" }],
+      "night": [{ "id": 1234567892, "name": "Luis Rodriguez" }, { "id": 1234567893, "name": "Jose 2025 Rodriguez" }],
+      "off": [{ "id": 12345678902, "name": "Juan Perez segundo" }, { "id": 12345678912, "name": "Pedro Gonzalez segundo" }]
+    }
+  }
+}

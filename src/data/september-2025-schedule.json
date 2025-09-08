@@ -15,33 +15,151 @@
       "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
       "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
     },
-    "2025-09-03": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-04": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-05": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-06": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-07": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-08": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-09": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-10": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-11": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-12": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-13": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-14": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-15": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-16": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-17": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-18": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-19": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-20": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-21": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-22": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-23": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-24": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-25": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-26": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-27": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-28": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-29": { "morning": [], "afternoon": [], "night": [], "off": [] },
-    "2025-09-30": { "morning": [], "afternoon": [], "night": [], "off": [] }
+    "2025-09-03": { 
+      "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+
+    },
+    "2025-09-04": { 
+      "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+    },
+    "2025-09-05": { 
+      "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+    },
+    "2025-09-06": { 
+            "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+
+  },
+    "2025-09-07": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-08": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-09": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-10": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-11": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-12": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-13": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-14": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-15": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-16": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-17": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-18": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-19": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-20": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-21": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-22": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-23": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-24": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-25": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-26": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-27": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-28": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-29": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ },
+    "2025-09-30": {       "morning": [{"id": 1234567892, "name": "Luis Rodriguez"}, {"id": 1234567893, "name": "Jose 2025 Rodriguez"}],
+      "afternoon": [{"id": 12345678902, "name": "Juan Perez segundo"}, {"id": 12345678912, "name": "Pedro Gonzalez segundo"}],
+      "night": [{"id": 12345678922, "name": "Luis Rodriguez segundo"}, {"id": 12345678932, "name": "Jose Rodriguez segundo"}],
+      "off": [{"id": 123456789, "name": "Juan Perez"}, {"id": 1234567891, "name": "Pedro Gonzalez"}, {"id": 12345678903, "name": "Juan Perez tercero"}, {"id": 12345678913, "name": "Pedro Gonzalez tercero"}, {"id": 12345678923, "name": "Luis Rodriguez tercero"}, {"id": 12345678933, "name": "Jose Rodriguez tercero"}, {"id": 987654321, "name": "Wilmer Varon"}]
+ }
   }
 }

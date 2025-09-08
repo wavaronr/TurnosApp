@@ -3,41 +3,46 @@ import '../css/WeekDetail.css';
 import AssignPersonModal from './AssignPersonModal.js';
 import { useCalendar } from '../context/CalendarContext.js';
 import { ProfileContext } from '../context/ProfileContext.js';
-// Se elimina la importación de formatNames ya que la lógica se manejará localmente.
 
 const ShiftSection = ({ title, people, onAdd, onRemove, profile }) => {
-  // Lógica para generar nombres cortos únicos
-  const getBaseShortName = (fullName) => {
-    if (!fullName || typeof fullName !== 'string') return '';
-    const parts = fullName.trim().toLowerCase().split(' ');
-    if (parts.length < 2) return parts[0] || '';
-    return `${parts[0].charAt(0)}${parts[1]}`;
-  };
 
-  const processedNames = people.reduce((acc, person) => {
-    acc[person.id] = { base: getBaseShortName(person.name), fullName: person.name };
-    return acc;
-  }, {});
-
-  const counts = people.reduce((acc, person) => {
-    const baseName = processedNames[person.id].base;
-    acc[baseName] = (acc[baseName] || 0) + 1;
-    return acc;
-  }, {});
-
+  // Refactorizada la lógica de nombres cortos para mayor eficiencia y legibilidad.
   const finalShortNames = people.reduce((acc, person) => {
-    const { base, fullName } = processedNames[person.id];
-    if (counts[base] > 1) {
-      const parts = fullName.trim().toLowerCase().split(' ');
-      if (parts.length > 2) {
-        // Si hay colisión y existe una tercera palabra, se añade su inicial.
-        acc[person.id] = `${base}${parts[2].charAt(0)}`;
-      } else {
-        acc[person.id] = base; // No se puede resolver, se mantiene el base
-      }
-    } else {
-      acc[person.id] = base;
+    if (!person.name) {
+      acc[person.id] = '';
+      return acc;
     }
+
+    const nameParts = person.name.toLowerCase().split(' ').filter(Boolean);
+    if (nameParts.length === 0) {
+      acc[person.id] = '';
+      return acc;
+    }
+
+    const firstName = nameParts[0];
+    const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
+
+    let shortName = `${firstName.charAt(0)}${lastName ? '.' + lastName : ''}`;
+    let prefixLength = 1;
+
+    // Manejo de colisiones: si el nombre corto ya existe, se alarga el prefijo del nombre.
+    while (Object.values(acc).includes(shortName) && firstName.length > prefixLength) {
+      prefixLength++;
+      shortName = `${firstName.substring(0, prefixLength)}${lastName ? '.' + lastName : ''}`;
+    }
+
+    // Como último recurso si sigue la colisión (ej. "Ana" y "Ana"), añade un número.
+    if (Object.values(acc).includes(shortName)) {
+        let count = 2;
+        let newShortName = `${shortName}${count}`;
+        while(Object.values(acc).includes(newShortName)){
+            count++;
+            newShortName = `${shortName}${count}`;
+        }
+        shortName = newShortName;
+    }
+
+    acc[person.id] = shortName;
     return acc;
   }, {});
 

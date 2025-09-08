@@ -66,3 +66,39 @@
 .btn-login:hover {
   background: #0022a1;
 }
+
+.error-message {
+  color: #D8000C;
+  background-color: #FFD2D2;
+  border: 1px solid #D8000C;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.error-icon {
+  margin-right: 10px;
+  display: inline-block;
+  animation: shake 0.5s;
+}
+
+.error-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: #D8000C;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-3px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(3px);
+  }
+}

@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import '../css/AssignPersonModal.css';
 
-// El modal ahora recibe una lista de personas ya validadas.
-// Se elimina la prop `existingPeopleIds`.
 function AssignPersonModal({ people, onSelect, onClose }) {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // La única lógica de filtrado que queda es la del buscador.
   const filteredPeople = people.filter(person =>
     person.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -27,7 +24,6 @@ function AssignPersonModal({ people, onSelect, onClose }) {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <div className="people-list-container">
-            {/* Se muestra un mensaje si no hay personas válidas o no hay resultados de búsqueda */}
             {filteredPeople.length > 0 ? (
               filteredPeople.map(person => (
                 <div key={person.id} onClick={() => onSelect(person)} className="person-item">
@@ -35,7 +31,17 @@ function AssignPersonModal({ people, onSelect, onClose }) {
                 </div>
               ))
             ) : (
-              <div className="no-results">No hay personas disponibles o que coincidan con la búsqueda.</div>
+              <div className="no-results">
+                <div className="no-results-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <line x1="11" y1="8" x2="11" y2="14"></line>
+                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                  </svg>
+                </div>
+                <p>No se encontraron personas</p>
+              </div>
             )}
           </div>
         </div>

@@ -1,28 +1,44 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import '../css/Login.css';
 
 function Login() {
   const navigate = useNavigate();
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/Home', { replace: true });
+    }
+  }, [navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
+    setError(''); // Clear previous errors
     const email = e.target.email.value;
     const password = e.target.password.value;
 
     if (email === 'wavaron@rbm.com.co' && password === 'a1s2d3') {
-      const token = 'fake-jwt-token-for-dev'; // Fictitious token
+      const token = 'fake-jwt-token-for-dev';
       localStorage.setItem('token', token);
       localStorage.setItem('profile', 'ADM');
       localStorage.setItem('email', email);
       navigate('/Home', { replace: true });
+    } else if (email === 'jperez@rbm.com.co' && password === 'a1s2d3') {
+      const token = 'fake-jwt-token-for-dev-opr-2';
+      localStorage.setItem('token', token);
+      localStorage.setItem('profile', 'OPR');
+      localStorage.setItem('email', email);
+      navigate('/Home', { replace: true });
     } else if (email === 'operador@rbm.com.co' && password === 'password') {
-      const token = 'fake-jwt-token-for-dev-opr'; // Fictitious token
+      const token = 'fake-jwt-token-for-dev-opr';
       localStorage.setItem('token', token);
       localStorage.setItem('profile', 'OPR');
       localStorage.setItem('email', email);
       navigate('/Home', { replace: true });
     } else {
-      alert('Credenciales incorrectas');
+      setError('Credenciales incorrectas');
     }
   };
 
@@ -31,6 +47,16 @@ function Login() {
       <div className="login-card">
         <h2 className="login-title">Iniciar Sesión</h2>
         <form onSubmit={submitHandler}>
+          {error && (
+            <div className="error-message">
+                <div className="error-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                </div>
+              {error}
+            </div>
+          )}
           <div className="form-group">
             <label htmlFor="email">Usuario</label>
             <input

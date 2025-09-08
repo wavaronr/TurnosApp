@@ -79,6 +79,10 @@
   pointer-events: none;
 }
 
+.day-cell-pro.holiday {
+  background-color: #fde8e8; /* Fondo rosado claro para festivos */
+}
+
 .day-number-pro {
   font-size: 1.1em;
   font-weight: bold;

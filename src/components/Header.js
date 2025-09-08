@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react'; // 1. Importar useContext
 import NavMenu from './NavMenu';
 import { useNavigate } from 'react-router-dom';
+import { ProfileContext } from '../context/ProfileContext'; // 2. Importar el contexto
 
 function Header() {
   const navigate = useNavigate();
-  const userEmail = localStorage.getItem('email');
-  const userProfile = localStorage.getItem('profile');
+  // 3. Obtener el perfil y la función de logout del contexto
+  const { profile, logout } = useContext(ProfileContext);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('profile');
-    localStorage.removeItem('email');
+    logout(); // 4. Usar la función logout del contexto
     navigate('/', { replace: true });
   };
 
@@ -18,9 +17,11 @@ function Header() {
     <>
       <div style={{ position: 'relative' }}>
         <NavMenu />
-        {userEmail && (
+        {/* 5. Renderizar basado en si el objeto 'profile' existe */}
+        {profile && (
           <div style={{ position: 'absolute', top: 10, right: 20, color: 'white', zIndex: 1050, display: 'flex', alignItems: 'center' }}>
-            <span>{userEmail} ({userProfile})</span>
+            {/* 6. Usar los datos del objeto profile */}
+            <span>{profile.email} ({profile.role})</span>
             <button onClick={handleLogout} style={{ marginLeft: '15px', background: 'transparent', border: 'none', cursor: 'pointer', padding: '0' }}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>

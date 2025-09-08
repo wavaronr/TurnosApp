@@ -1,39 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react'; // 1. Importar useContext
 import '../css/WeekDetail.css';
 import AssignPersonModal from './AssignPersonModal.js';
 import { useCalendar } from '../context/CalendarContext.js';
+import { ProfileContext } from '../context/ProfileContext.js'; // 2. Importar ProfileContext
 
-const ShiftSection = ({ title, people, onAdd, onRemove, userProfile }) => (
+// 5. Actualizar la lógica para usar el objeto profile
+const ShiftSection = ({ title, people, onAdd, onRemove, profile }) => (
   <div className="shift-section">
     <h6 className="shift-title">{title}</h6>
     <div className="people-list">
       {people.map(person => (
         <span key={person.id} className="person-pill">
           {person.name}
-          {userProfile === 'ADM' && <button onClick={() => onRemove(person.id)} className="remove-person-btn">X</button>}
+          {profile?.role === 'ADM' && <button onClick={() => onRemove(person.id)} className="remove-person-btn">X</button>}
         </span>
       ))}
     </div>
-    {userProfile === 'ADM' && <button onClick={onAdd} className="add-person-btn">+</button>}
+    {profile?.role === 'ADM' && <button onClick={onAdd} className="add-person-btn">+</button>}
   </div>
 );
 
 function DayCard({ day, people }) {
-  const { 
-    colombianHolidays, 
-    shifts, 
-    assignShift, 
-    removeShift, 
-    getValidPeopleForShift 
+  const {
+    colombianHolidays,
+    shifts,
+    assignShift,
+    removeShift,
+    getValidPeopleForShift
   } = useCalendar();
+  const { profile } = useContext(ProfileContext); // 3. Obtener profile del contexto
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState(null);
   const [validPeople, setValidPeople] = useState([]);
-  const userProfile = localStorage.getItem('profile'); // Get user profile
+  // const userProfile = localStorage.getItem('profile'); // 3. Eliminar lectura de localStorage
 
   const dayString = day.toISOString().split('T')[0];
-
   const dayShifts = shifts[dayString] || { morning: [], afternoon: [], night: [], off: [] };
 
   const dayOfMonth = day.getDate();
@@ -81,7 +83,7 @@ function DayCard({ day, people }) {
             people={dayShifts[shift.id]}
             onAdd={() => handleAddPerson(shift.id)}
             onRemove={(personId) => handleRemovePerson(shift.id, personId)}
-            userProfile={userProfile}
+            profile={profile} // 4. Pasar el objeto profile
           />
         ))}
       </div>

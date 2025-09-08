@@ -3,7 +3,7 @@ import { useCalendar } from '../context/CalendarContext.js';
 
 function ProgrammingCalendar({ date }) {
   const { people, holidays, assignedDays } = useCalendar();
-
+//console.log(holidays)
   const year = date.getFullYear();
   const month = date.getMonth();
 

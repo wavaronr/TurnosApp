@@ -13,12 +13,10 @@ function NavMenu() {
 
     window.addEventListener('storage', handleStorageChange);
 
-    // For login/logout which don't trigger 'storage' event in the same tab
     const checkAuth = () => {
         handleStorageChange();
     };
 
-    // Check on every navigation change as well
     checkAuth();
 
     return () => {
@@ -26,7 +24,7 @@ function NavMenu() {
     };
   }, [location]);
 
-  const buttons = ['Home', 'Calendario', 'Perfiles'];
+  const buttons = ['Home', 'Calendario', 'Programacion', 'Perfiles'];
 
   const currentPath = location.pathname.substring(1);
   let activeIndex = buttons.findIndex(button => button.toLowerCase() === currentPath.toLowerCase());
@@ -36,10 +34,10 @@ function NavMenu() {
   }
 
   const handleClick = (index) => {
-    navigate(`/${buttons[index]}`);
+    const path = buttons[index].toLowerCase();
+    navigate(`/${path}`);
   };
 
-  // Do not render the menu if the user is not authenticated or is on the login page
   if (!isAuthenticated || location.pathname === '/' || location.pathname.toLowerCase() === '/login') {
     return null;
   }

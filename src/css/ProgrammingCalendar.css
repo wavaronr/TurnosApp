@@ -1,13 +1,12 @@
 
 .calendar-pro-wrapper {
-  /* Removed fixed height to allow the calendar to size naturally */
   padding: 15px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 15px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
-  overflow: hidden;
+  overflow: hidden; /* Keep this to contain the blur effect */
   display: flex;
   flex-direction: column;
 }
@@ -15,11 +14,11 @@
 .shift-legend {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap; /* Allow legend to wrap on smaller screens */
+  flex-wrap: wrap;
   gap: 15px;
   margin-bottom: 15px;
   padding: 10px;
-  background: rgba(0, 0, 0, 0.25); /* Darker background for more contrast */
+  background: rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   color: #fff;
 }
@@ -29,8 +28,8 @@
   align-items: center;
   gap: 8px;
   font-size: 0.9em;
-  font-weight: 500; /* Slightly bolder text */
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /* Text shadow for contrast */
+  font-weight: 500;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .legend-color {
@@ -43,8 +42,7 @@
 .calendar-pro {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  /* Let rows size automatically based on content */
-  gap: 8px; /* Slightly increased gap for better separation */
+  gap: 8px;
   width: 100%;
   flex-grow: 1;
 }
@@ -63,6 +61,8 @@
 }
 
 .day-cell-pro {
+  position: relative; /* Add position context for z-index */
+  z-index: 1; /* Default stacking order */
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 10px;
@@ -70,21 +70,22 @@
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
-  overflow: hidden;
-  aspect-ratio: 1 / 1; /* Key change to make it a square */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Added soft shadow for depth */
+  overflow: hidden; /* Hide overflow by default */
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .day-cell-pro:hover {
+  overflow: visible; /* Show overflow on hover */
+  z-index: 100; /* Bring the cell to the front */
   background: rgba(255, 255, 255, 0.35);
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* Enhanced shadow on hover */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .day-cell-pro.empty {
   background: transparent;
   border: none;
-  aspect-ratio: unset; /* No square for empty cells */
   box-shadow: none;
 }
 
@@ -93,52 +94,100 @@
   margin-bottom: 4px;
   color: #333;
   align-self: flex-start;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
 .people-list-pro {
-  /* Key change for content layout */
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 3px;
   align-content: flex-start;
   flex-grow: 1;
-  overflow-y: auto;
 }
 
 .person-item {
-  /* Style as small tags */
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 4px; /* Reduced horizontal padding */
-  border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.4);
-  font-size: 0.8em; /* Slightly smaller font for the abbreviation */
-  color: #333;
-  font-weight: 600; /* Bolder for readability */
-  letter-spacing: 0.5px; /* Spacing for clarity */
+  gap: 3px;
+  padding: 1px 3px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.45);
+  font-size: 0.6em;
+  color: #2c2c2c;
+  font-weight: 600;
+  letter-spacing: 0.2px;
 }
 
 .shift-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-/* Scrollbar Styles */
-.people-list-pro::-webkit-scrollbar {
-  width: 4px;
-}
-
-.people-list-pro::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3);
+.more-indicator {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 3px;
   border-radius: 4px;
+  background-color: #FF8C00;
+  color: white;
+  font-size: 0.7em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.people-list-pro::-webkit-scrollbar-track {
-  background-color: transparent;
+.more-indicator:hover {
+  background-color: #E07B00;
+}
+
+.more-popover {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 10px;
+  min-width: 150px;
+  background: rgba(40, 40, 40, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  z-index: 110; /* Ensure popover is above the hovered cell */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.more-indicator:hover .more-popover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.more-popover::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(40, 40, 40, 0.6) transparent transparent transparent;
+}
+
+.popover-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 0.9em;
+  font-weight: 500;
 }
 
 .day-cell-pro.holiday .day-number-pro {

@@ -1,86 +1,75 @@
+/* ProgrammingCalendar.css - The Subtle Harmony Edition */
 
 .calendar-pro-wrapper {
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
-  overflow: hidden; /* Keep this to contain the blur effect */
-  display: flex;
-  flex-direction: column;
+  position: relative;
 }
 
 .shift-legend {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 15px;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  color: #fff;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  padding: 1rem 1.5rem;
+
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 20px rgba(100, 100, 120, 0.08);
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.9em;
+  font-size: 0.9rem;
+  color: #555;
   font-weight: 500;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .legend-color {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  margin-right: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .calendar-pro {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-  width: 100%;
-  flex-grow: 1;
+  gap: 1.5rem;
 }
 
 .header-pro {
+  font-weight: 600;
   text-align: center;
-  font-weight: bold;
-  padding: 8px;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9em;
+  padding-bottom: 0.8rem;
+  color: #0e007b;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .day-cell-pro {
-  position: relative; /* Add position context for z-index */
-  z-index: 1; /* Default stacking order */
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 10px;
-  padding: 6px;
+  min-height: 150px;
   display: flex;
   flex-direction: column;
+  padding: 1rem;
   transition: all 0.3s ease;
-  overflow: hidden; /* Hide overflow by default */
-  aspect-ratio: 1 / 1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 25px rgba(100, 100, 120, 0.08);
 }
 
 .day-cell-pro:hover {
-  overflow: visible; /* Show overflow on hover */
-  z-index: 100; /* Bring the cell to the front */
-  background: rgba(255, 255, 255, 0.35);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(14, 0, 123, 0.2);
+  box-shadow: 0 10px 40px rgba(100, 100, 120, 0.12);
 }
 
 .day-cell-pro.empty {
@@ -90,107 +79,62 @@
 }
 
 .day-number-pro {
-  font-weight: bold;
-  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 1.1rem;
   color: #333;
-  align-self: flex-start;
-  font-size: 0.8em;
+  margin-bottom: 0.75rem;
+}
+
+/* The holiday color is a subtle, non-interactive orange. Correct use. */
+.day-cell-pro.holiday .day-number-pro {
+  color: #c97000;
+  font-weight: 700;
 }
 
 .people-list-pro {
   display: flex;
-  flex-wrap: wrap;
-  gap: 3px;
-  align-content: flex-start;
-  flex-grow: 1;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
 }
 
 .person-item {
   display: flex;
   align-items: center;
-  gap: 3px;
-  padding: 1px 3px;
-  border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.45);
-  font-size: 0.6em;
-  color: #2c2c2c;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-}
-
-.shift-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
+  background-color: rgba(14, 0, 123, 0.04);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  color: #444;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid transparent;
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
 .more-indicator {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1px 3px;
-  border-radius: 4px;
-  background-color: #FF8C00;
-  color: white;
-  font-size: 0.7em;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.more-indicator:hover {
-  background-color: #E07B00;
-}
-
-.more-popover {
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  bottom: 120%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 8px 10px;
-  min-width: 150px;
-  background: rgba(40, 40, 40, 0.6);
-  backdrop-filter: blur(10px);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  z-index: 110; /* Ensure popover is above the hovered cell */
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
-}
-
-.more-indicator:hover .more-popover {
-  visibility: visible;
-  opacity: 1;
-}
-
-.more-popover::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 5px;
-  border-style: solid;
-  border-color: rgba(40, 40, 40, 0.6) transparent transparent transparent;
-}
-
-.popover-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  background: #0e007b; /* Base state is primary blue */
   color: #fff;
-  font-size: 0.9em;
-  font-weight: 500;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  margin-top: auto;
+  transition: all 0.3s ease;
 }
 
-.day-cell-pro.holiday .day-number-pro {
-  color: #d9534f;
-  font-weight: 700;
+/* Here, the orange is a reward for interaction. This is its purpose. */
+.more-indicator:hover {
+  background: #FF8C00;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
 }
+
+/* Scrollbar is blue, maintaining consistency with the modal */
+.people-list-pro::-webkit-scrollbar { width: 6px; }
+.people-list-pro::-webkit-scrollbar-thumb { background-color: #0e007b; border-radius: 3px; }
+.people-list-pro::-webkit-scrollbar-track { background-color: rgba(0, 0, 0, 0.05); }

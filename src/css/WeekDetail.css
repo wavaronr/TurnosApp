@@ -1,10 +1,36 @@
-.week-detail-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 15px;
-  padding: 0;
-  margin: 0;
+/* src/css/WeekDetail.css */
+
+/* === Botón de Guardar Cambios Personalizado === */
+.btn-save-changes {
+  /* Layout para alinear icono y texto */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem; /* Espacio entre icono y texto */
+
+  /* Estilo con Gradiente inspirado en Perfiles */
+  background-image: linear-gradient(to right, #0e007b 0%, #0022a1 50%, #0e007b 100%);
+  background-size: 200% auto; /* Para animación en hover */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease; /* Transición más suave */
 }
+
+.btn-save-changes:hover {
+  background-position: right center; /* Mueve el gradiente en hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); 
+  transform: translateY(-2px);
+}
+
+.btn-save-changes svg {
+  width: 18px;
+  height: 18px;
+}
+
 
 .day-card {
   background-color: #fff;

@@ -1,32 +1,32 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { holidays as getColombianHolidays } from '../utils/holidays.js';
 import { getWeekDays } from '../utils/getWeekDays.js';
-// Corregir la importación de JSON usando la palabra clave 'with' en lugar de 'assert'
-import peopleData from '../data/dataPerson.json' with { type: 'json' }; 
+import peopleData from '../data/dataPerson.json' with { type: 'json' };
+import initialSchedule from '../data/september-2025-schedule.json' with { type: 'json' };
 
-// El resto del archivo permanece exactamente igual
-
-// Crear el Contexto
 export const CalendarContext = createContext();
 
-// Hook personalizado
 export const useCalendar = () => {
   return useContext(CalendarContext);
 };
 
-// Proveedor del Contexto
 export const CalendarProvider = ({ children }) => {
   const [yearSet, setYearSet] = useState(new Date().getFullYear());
-  // Añadir el estado monthCalendario
   const [monthCalendario, setMonthCalendario] = useState(new Date().getMonth());
   const [colombianHolidays, setColombianHolidays] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
-  const [shifts, setShifts] = useState({});
   const [people, setPeople] = useState([]);
 
+  const [programmedSchedule, setProgrammedSchedule] = useState({});
+  const [temporarySchedule, setTemporarySchedule] = useState({});
+  const [isDirty, setIsDirty] = useState(false); // <-- 1. Añadir bandera de estado
+
   useEffect(() => {
-    // 'peopleData' se cargará correctamente con la nueva sintaxis
     setPeople(peopleData);
+    const initialData = JSON.parse(JSON.stringify(initialSchedule.days));
+    setProgrammedSchedule(initialData);
+    setTemporarySchedule(initialData);
+    setIsDirty(false); // Asegurarse de que esté limpio al inicio
   }, []);
 
   const savePerson = (personData) => {
@@ -52,21 +52,29 @@ export const CalendarProvider = ({ children }) => {
   
   const assignShift = (day, shiftType, person) => {
     const dayString = day.toISOString().split('T')[0];
-    const newShifts = JSON.parse(JSON.stringify(shifts));
+    const newShifts = JSON.parse(JSON.stringify(temporarySchedule));
     if (!newShifts[dayString]) {
       newShifts[dayString] = { morning: [], afternoon: [], night: [], off: [] };
     }
     newShifts[dayString][shiftType].push(person);
-    setShifts(newShifts);
+    setTemporarySchedule(newShifts);
+    setIsDirty(true); // <-- 2. Marcar como "sucio" al añadir
   };
 
   const removeShift = (day, shiftType, personId) => {
     const dayString = day.toISOString().split('T')[0];
-    const newShifts = JSON.parse(JSON.stringify(shifts));
+    const newShifts = JSON.parse(JSON.stringify(temporarySchedule));
     if (newShifts[dayString] && newShifts[dayString][shiftType]) {
       newShifts[dayString][shiftType] = newShifts[dayString][shiftType].filter(p => p.id !== personId);
-      setShifts(newShifts);
+      setTemporarySchedule(newShifts);
+      setIsDirty(true); // <-- 2. Marcar como "sucio" al quitar
     }
+  };
+
+  const saveTemporarySchedule = () => {
+    setProgrammedSchedule(temporarySchedule);
+    setIsDirty(false); // <-- 3. Marcar como "limpio" al guardar
+    console.log("Cambios guardados:", temporarySchedule);
   };
 
   const getValidPeopleForShift = (day, shiftType) => {
@@ -74,7 +82,7 @@ export const CalendarProvider = ({ children }) => {
     const weekDays = getWeekDays(selectedWeek, yearSet).map(d => d.toISOString().split('T')[0]);
 
     return people.filter(person => {
-      const shiftsToday = shifts[dayString] || {};
+      const shiftsToday = temporarySchedule[dayString] || {};
       for (const sType in shiftsToday) {
         if (shiftsToday[sType].some(p => p.id === person.id)) return false;
       }
@@ -82,14 +90,14 @@ export const CalendarProvider = ({ children }) => {
       const yesterday = new Date(day);
       yesterday.setDate(day.getDate() - 1);
       const yesterdayString = yesterday.toISOString().split('T')[0];
-      const shiftsYesterday = shifts[yesterdayString] || {};
+      const shiftsYesterday = temporarySchedule[yesterdayString] || {};
       if (shiftsYesterday.night?.some(p => p.id === person.id)) {
         if (shiftType !== 'night' && shiftType !== 'off') return false;
       }
 
       let workShiftCount = 0;
       weekDays.forEach(weekDayString => {
-        const dayShifts = shifts[weekDayString] || {};
+        const dayShifts = temporarySchedule[weekDayString] || {};
         ['morning', 'afternoon', 'night'].forEach(workShiftType => {
           if (dayShifts[workShiftType]?.some(p => p.id === person.id)) workShiftCount++;
         });
@@ -104,15 +112,16 @@ export const CalendarProvider = ({ children }) => {
   const value = {
     yearSet,
     setYearSet,
-    // Exponer el estado monthCalendario
     monthCalendario,
     setMonthCalendario,
     colombianHolidays,
     selectedWeek,
     setSelectedWeek,
-    shifts,
+    shifts: temporarySchedule,
     assignShift,
     removeShift,
+    saveTemporarySchedule,
+    isDirty, // <-- 4. Exponer la bandera
     getValidPeopleForShift,
     people,
     savePerson,

@@ -1,24 +1,66 @@
-import React, { useState, useContext } from 'react'; // 1. Importar useContext
+import React, { useState, useContext } from 'react';
 import '../css/WeekDetail.css';
 import AssignPersonModal from './AssignPersonModal.js';
 import { useCalendar } from '../context/CalendarContext.js';
-import { ProfileContext } from '../context/ProfileContext.js'; // 2. Importar ProfileContext
+import { ProfileContext } from '../context/ProfileContext.js';
 
-// 5. Actualizar la lógica para usar el objeto profile
-const ShiftSection = ({ title, people, onAdd, onRemove, profile }) => (
-  <div className="shift-section">
-    <h6 className="shift-title">{title}</h6>
-    <div className="people-list">
-      {people.map(person => (
-        <span key={person.id} className="person-pill">
-          {person.name}
-          {profile?.role === 'ADM' && <button onClick={() => onRemove(person.id)} className="remove-person-btn">X</button>}
-        </span>
-      ))}
+const ShiftSection = ({ title, people, onAdd, onRemove, profile }) => {
+
+  // Refactorizada la lógica de nombres cortos para mayor eficiencia y legibilidad.
+  const finalShortNames = people.reduce((acc, person) => {
+    if (!person.name) {
+      acc[person.id] = '';
+      return acc;
+    }
+
+    const nameParts = person.name.toLowerCase().split(' ').filter(Boolean);
+    if (nameParts.length === 0) {
+      acc[person.id] = '';
+      return acc;
+    }
+
+    const firstName = nameParts[0];
+    const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
+
+    let shortName = `${firstName.charAt(0)}${lastName ? '.' + lastName : ''}`;
+    let prefixLength = 1;
+
+    // Manejo de colisiones: si el nombre corto ya existe, se alarga el prefijo del nombre.
+    while (Object.values(acc).includes(shortName) && firstName.length > prefixLength) {
+      prefixLength++;
+      shortName = `${firstName.substring(0, prefixLength)}${lastName ? '.' + lastName : ''}`;
+    }
+
+    // Como último recurso si sigue la colisión (ej. "Ana" y "Ana"), añade un número.
+    if (Object.values(acc).includes(shortName)) {
+        let count = 2;
+        let newShortName = `${shortName}${count}`;
+        while(Object.values(acc).includes(newShortName)){
+            count++;
+            newShortName = `${shortName}${count}`;
+        }
+        shortName = newShortName;
+    }
+
+    acc[person.id] = shortName;
+    return acc;
+  }, {});
+
+  return (
+    <div className="shift-section">
+      <h6 className="shift-title">{title}</h6>
+      <div className="people-list">
+        {people.map(person => (
+          <span key={person.id} className="person-pill" title={person.name}>
+            {finalShortNames[person.id]}
+            {profile?.role === 'ADM' && <button onClick={() => onRemove(person.id)} className="remove-person-btn">X</button>}
+          </span>
+        ))}
+      </div>
+      {profile?.role === 'ADM' && <button onClick={onAdd} className="add-person-btn">+</button>}
     </div>
-    {profile?.role === 'ADM' && <button onClick={onAdd} className="add-person-btn">+</button>}
-  </div>
-);
+  );
+};
 
 function DayCard({ day, people }) {
   const {
@@ -28,12 +70,11 @@ function DayCard({ day, people }) {
     removeShift,
     getValidPeopleForShift
   } = useCalendar();
-  const { profile } = useContext(ProfileContext); // 3. Obtener profile del contexto
+  const { profile } = useContext(ProfileContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState(null);
   const [validPeople, setValidPeople] = useState([]);
-  // const userProfile = localStorage.getItem('profile'); // 3. Eliminar lectura de localStorage
 
   const dayString = day.toISOString().split('T')[0];
   const dayShifts = shifts[dayString] || { morning: [], afternoon: [], night: [], off: [] };
@@ -83,7 +124,7 @@ function DayCard({ day, people }) {
             people={dayShifts[shift.id]}
             onAdd={() => handleAddPerson(shift.id)}
             onRemove={(personId) => handleRemovePerson(shift.id, personId)}
-            profile={profile} // 4. Pasar el objeto profile
+            profile={profile}
           />
         ))}
       </div>

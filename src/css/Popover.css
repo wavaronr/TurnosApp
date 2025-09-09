@@ -1,0 +1,63 @@
+/* Popover.css - The Subtle Harmony Edition */
+
+.popover-container {
+  position: fixed;
+  z-index: 1100;
+  opacity: 0;
+  transform: scale(0.95) translateY(-10px);
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.popover-container.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.popover-content {
+  pointer-events: auto;
+  padding: 0.5rem;
+  min-width: 250px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 10px; /* Slightly smaller radius for a tighter component */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.popover-item {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s;
+  color: #333;
+}
+
+/* The hover is now a subtle, on-brand blue. */
+.popover-item:hover {
+  background-color: rgba(14, 0, 123, 0.08);
+  color: #0e007b;
+}
+
+.popover-item .shift-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 12px;
+  flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Enhanced popover item content for clarity */
+.popover-item-name {
+  font-weight: 500;
+}
+
+.popover-item-shift {
+  color: #555;
+  font-size: 0.85em;
+  margin-left: 0.5em;
+}

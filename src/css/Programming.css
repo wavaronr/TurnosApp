@@ -1,11 +1,11 @@
-/* Programming.css - The Subtle Harmony Edition */
+/* Programming.css - Phoenix Edition */
 
 .programming-container {
   padding: 2.5rem;
-  background-color: #f4f7fc;
+  background-color: #f8f9fa; /* A clean, almost white background */
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  color: #333;
+  color: #212529;
 }
 
 .programming-header {
@@ -13,47 +13,49 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2.5rem;
-  padding: 1.25rem 2.5rem;
-
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(100, 100, 120, 0.1);
+  padding: 1rem 1.5rem;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .programming-header h2 {
   margin: 0;
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 700;
   text-transform: capitalize;
-  color: #0e007b;
+  color: #0e007b; /* Your favorite deep blue */
+}
+
+.programming-header .nav-buttons {
+  display: flex;
+  gap: 0.75rem;
 }
 
 .programming-header button {
-  background: #fff;
-  border: 1px solid #ddd;
-  color: #555;
+  background: #ffffff;
+  border: 1px solid #ced4da;
+  color: #495057;
   font-weight: 600;
-  width: 50px;
-  height: 50px;
-  border-radius: 15px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease-in-out;
 }
 
-/* The hover is now the primary blue. Orange is reserved for high-frequency actions only. */
+/* The orange hover you commanded */
 .programming-header button:hover {
-  background: #0e007b;
-  border-color: #0e007b;
-  color: #fff;
+  background-color: #FF8C00;
+  border-color: #FF8C00;
+  color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(14, 0, 123, 0.2);
+  box-shadow: 0 6px 16px rgba(255, 140, 0, 0.3);
 }
 
 .programming-header button:active {

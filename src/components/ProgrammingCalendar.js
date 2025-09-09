@@ -1,16 +1,44 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useCalendar } from '../context/CalendarContext.js';
 import { shiftColors } from '../utils/shiftColors.js';
-import Popover from './Popover';
 import '../css/ProgrammingCalendar.css';
 
 // --- Helper Functions ---
+
 const formatShiftTitle = (shift) => {
   const titles = { morning: 'Mañana', afternoon: 'Tarde', night: 'Noche', off: 'Libre' };
   return titles[shift] || shift;
 };
 
+// The new, more robust initials function, as you commanded.
+const getInitials = (name) => {
+  if (!name) return '';
+  const names = name.trim().split(' ');
+  const firstName = names[0] || '';
+
+  // Case 1: Single word name (e.g., "Admin")
+  if (names.length === 1) {
+    return firstName.substring(0, 2).toUpperCase();
+  }
+
+  // Case 2: Multi-word name (e.g., "Juan Pérez")
+  const lastName = names[names.length - 1] || '';
+  const firstInitial = firstName[0] || '';
+  const lastInitial = lastName[0] || '';
+
+  // Add a middle initial from the *third* letter of the first name.
+  // This resolves conflicts like "Juan" (JAP) vs "Julio" (JLP).
+  let middleInitial = '';
+  if (firstName.length > 2) {
+    middleInitial = firstName[2];
+  } 
+
+  return (firstInitial + middleInitial + lastInitial).toUpperCase();
+};
+
+
 // --- Components ---
+
 const ShiftLegend = () => (
   <div className="shift-legend">
     {Object.entries(shiftColors).map(([shift, color]) => (
@@ -22,40 +50,32 @@ const ShiftLegend = () => (
   </div>
 );
 
-const DayCell = React.memo(({ day, shiftsForDay, isHoliday, onShowMore }) => {
-  const displayLimit = 4;
-
+// DayCell is now a canvas for the bubbles.
+const DayCell = React.memo(({ day, shiftsForDay, isHoliday }) => {
   const shiftItems = useMemo(() => {
     if (!shiftsForDay) return [];
+    // Flatten the structure to a simple list of people and their shifts.
     return Object.entries(shiftsForDay).flatMap(([shift, people]) => 
       people.map(person => ({ person, shift }))
     );
   }, [shiftsForDay]);
 
-  const visibleItems = shiftItems.slice(0, displayLimit);
-  const hiddenItems = shiftItems.slice(displayLimit);
-
-  const handleShowMore = (e) => {
-    if (hiddenItems.length > 0) {
-      onShowMore(e, hiddenItems);
-    }
-  };
-
   return (
-    <div className={`day-cell-pro ${isHoliday ? 'holiday' : ''}`}>
+    <div className={`day-cell-pro ${isHoliday ? 'holiday' : ''} ${shiftItems.length === 0 ? 'empty-day' : ''}`}>
       <div className="day-number-pro">{day}</div>
+      {/* This list will now contain and wrap the bubbles. */}
       <div className="people-list-pro">
-        {visibleItems.map(({ person, shift }) => (
-          <div key={`${person.id}-${shift}`} className="person-item" title={person.name}>
-            <span className="shift-dot" style={{ backgroundColor: shiftColors[shift] }}></span>
-            {person.name}
+        {shiftItems.map(({ person, shift }) => (
+          <div 
+            key={`${person.id}-${shift}`}
+            className="person-bubble"
+            title={`${person.name} (${formatShiftTitle(shift)})`}
+            // The bubble's color is its language.
+            style={{ backgroundColor: shiftColors[shift] }}
+          >
+            {getInitials(person.name)}
           </div>
         ))}
-        {hiddenItems.length > 0 && (
-          <div className="more-indicator" onClick={handleShowMore}>
-            +{hiddenItems.length} más
-          </div>
-        )}
       </div>
     </div>
   );
@@ -63,27 +83,9 @@ const DayCell = React.memo(({ day, shiftsForDay, isHoliday, onShowMore }) => {
 
 function ProgrammingCalendar({ date }) {
   const { shifts, colombianHolidays } = useCalendar();
-  const [popover, setPopover] = useState({ visible: false, content: null, position: { x: 0, y: 0 } });
-
+  
   const year = date.getFullYear();
   const month = date.getMonth();
-
-  // --- Click-away logic for the Popover ---
-  useEffect(() => {
-    if (!popover.visible) return;
-
-    const handleClickOutside = (event) => {
-      // If click is not inside the popover content, close it
-      if (!event.target.closest('.popover-content') && !event.target.closest('.more-indicator')) {
-        setPopover(p => ({ ...p, visible: false }));
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [popover.visible]);
 
   const firstDayOfMonth = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -96,45 +98,13 @@ function ProgrammingCalendar({ date }) {
     shifts?.[`${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`] || null
   , [shifts, year, month]);
 
-  const showMorePopover = useCallback((e, items) => {
-    e.stopPropagation();
-    const rect = e.currentTarget.getBoundingClientRect();
-
-    // --- The DIVINE, ENHANCED Popover Content ---
-    const content = (
-      <>
-        {items.map(({ person, shift }) => (
-          <div key={`${person.id}-${shift}`} className="popover-item">
-            <span className="shift-dot" style={{ backgroundColor: shiftColors[shift] }}></span>
-            <span>
-              {person.name} <span style={{ color: '#555', fontSize: '0.85em' }}>({formatShiftTitle(shift)})</span>
-            </span>
-          </div>
-        ))}
-      </>
-    );
-
-    setPopover({
-      visible: true,
-      content,
-      // Position it beautifully above the indicator
-      position: { x: rect.left + rect.width / 2, y: rect.top },
-    });
-  }, []);
-
   const calendarGrid = useMemo(() => {
     const allCells = [...Array(firstDayOfMonth).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
-    while (allCells.length % 7 !== 0) allCells.push(null);
     return allCells;
   }, [firstDayOfMonth, daysInMonth]);
 
   return (
     <div className="calendar-pro-wrapper">
-      {popover.visible && (
-        <Popover position={popover.position} visible={popover.visible}>
-          {popover.content}
-        </Popover>
-      )}
       <ShiftLegend />
       <div className="calendar-pro">
         <div className="header-pro">Dom</div>
@@ -154,7 +124,6 @@ function ProgrammingCalendar({ date }) {
               day={day} 
               shiftsForDay={getShiftsForDay(day)} 
               isHoliday={isHoliday(day)}
-              onShowMore={showMorePopover}
             />
           );
         })}

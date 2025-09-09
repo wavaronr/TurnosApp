@@ -1,4 +1,4 @@
-/* ProgrammingCalendar.css - The Subtle Harmony Edition */
+/* ProgrammingCalendar.css - The Final Polish Edition */
 
 .calendar-pro-wrapper {
   position: relative;
@@ -9,28 +9,24 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 1.5rem;
-  margin-bottom: 2.5rem;
-  padding: 1rem 1.5rem;
-
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 4px 20px rgba(100, 100, 120, 0.08);
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #dee2e6;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
   font-size: 0.9rem;
-  color: #555;
+  color: #495057;
   font-weight: 500;
 }
 
 .legend-color {
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   margin-right: 10px;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -39,7 +35,7 @@
 .calendar-pro {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 1.5rem;
+  gap: 0.75rem; /* Tighter gap for a more unified grid */
 }
 
 .header-pro {
@@ -47,94 +43,67 @@
   text-align: center;
   padding-bottom: 0.8rem;
   color: #0e007b;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .day-cell-pro {
-  min-height: 150px;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  transition: all 0.3s ease;
-
-  background: rgba(255, 255, 255, 0.75);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 6px 25px rgba(100, 100, 120, 0.08);
-}
-
-.day-cell-pro:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(14, 0, 123, 0.2);
-  box-shadow: 0 10px 40px rgba(100, 100, 120, 0.12);
+  border: 1px solid #e9ecef;
+  background: #ffffff;
+  border-radius: 8px;
+  aspect-ratio: 1 / 1; /* Perfect squares */
+  padding: 0.5rem;
 }
 
 .day-cell-pro.empty {
   background: transparent;
-  border: none;
-  box-shadow: none;
+  border-color: transparent;
 }
 
 .day-number-pro {
   font-weight: 600;
-  font-size: 1.1rem;
-  color: #333;
-  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+  text-align: right;
 }
 
-/* The holiday color is a subtle, non-interactive orange. Correct use. */
 .day-cell-pro.holiday .day-number-pro {
-  color: #c97000;
+  color: #FF8C00;
   font-weight: 700;
 }
 
 .people-list-pro {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  overflow-y: auto;
+  flex-wrap: wrap; /* Allows bubbles to wrap to the next line */
+  gap: 6px; /* Spacing between the bubbles */
+  flex-grow: 1;
+  align-content: flex-start;
 }
 
-.person-item {
+/* --- The Bubble, perfected for three letters --- */
+.person-bubble {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  background-color: rgba(14, 0, 123, 0.04);
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 0.85rem;
-  color: #444;
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  border: 1px solid transparent;
-  transition: background-color 0.2s, border-color 0.2s;
-}
-
-.more-indicator {
-  background: #0e007b; /* Base state is primary blue */
-  color: #fff;
-  border-radius: 8px;
-  padding: 5px 10px;
-  font-size: 0.8rem;
+  justify-content: center;
+  color: #ffffff;
+  /* Font size slightly reduced to perfectly fit 3 letters */
+  font-size: 0.7rem; 
   font-weight: 600;
-  text-align: center;
-  cursor: pointer;
-  margin-top: auto;
-  transition: all 0.3s ease;
+  line-height: 1;
+  text-transform: uppercase;
+  /* A subtle inner shadow gives the text a bit of pop */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
 }
 
-/* Here, the orange is a reward for interaction. This is its purpose. */
-.more-indicator:hover {
-  background: #FF8C00;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+.person-bubble:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
-
-/* Scrollbar is blue, maintaining consistency with the modal */
-.people-list-pro::-webkit-scrollbar { width: 6px; }
-.people-list-pro::-webkit-scrollbar-thumb { background-color: #0e007b; border-radius: 3px; }
-.people-list-pro::-webkit-scrollbar-track { background-color: rgba(0, 0, 0, 0.05); }

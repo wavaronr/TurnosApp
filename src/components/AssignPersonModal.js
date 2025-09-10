@@ -26,7 +26,7 @@ function AssignPersonModal({ people, onSelect, onClose }) {
           <div className="people-list-container">
             {filteredPeople.length > 0 ? (
               filteredPeople.map(person => (
-                <div key={person.id} onClick={() => onSelect(person)} className="person-item">
+                <div key={person.id} onClick={() => onSelect(person)} className="person-item-modal"> {/* CORRECTED CLASS NAME */}
                   {person.name}
                 </div>
               ))

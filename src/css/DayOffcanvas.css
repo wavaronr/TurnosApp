@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 1000;
   display: flex;
   justify-content: flex-end;
@@ -13,16 +13,17 @@
 }
 
 .offcanvas-content {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(10px);
-  border-left: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px 0 0 15px;
   width: 90%;
   max-width: 450px;
   height: 100%;
-  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  animation: slide-in 0.3s ease-out;
+  animation: slide-in 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 @keyframes slide-in {
@@ -39,29 +40,30 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  background-color: #0e007b; /* Changed */
-  color: white;
-  border-bottom: 1px solid #00004d; /* Added */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Adjusted */
+  background-color: transparent; /* Changed */
+  color: #00004d; /* Changed */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* Changed */
 }
 
 .offcanvas-header h2 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .close-btn {
   background: none;
   border: none;
-  color: white;
-  font-size: 2rem;
+  color: #555; /* Changed */
+  font-size: 2.5rem;
   cursor: pointer;
   line-height: 1;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .close-btn:hover {
-  color: #d0d0d0;
+  color: #000; /* Changed */
+  transform: scale(1.1);
 }
 
 .offcanvas-body {
@@ -71,63 +73,83 @@
 }
 
 .shift-card {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.shift-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .shift-title {
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem; /* Increased margin */
   color: #0e007b;
+  font-size: 1.3rem; /* Increased font size */
+  font-weight: 600;
 }
 
 .people-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem; /* Increased margin */
 }
 
 .person-pill {
   display: inline-flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  color: #333;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #00004d;
   border-radius: 15px;
-  padding: 0.3rem 0.8rem;
+  padding: 0.5rem 1rem; /* Adjusted padding */
   font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.person-pill:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.5);
 }
 
 .remove-person-btn {
   background: none;
   border: none;
-  color: #888;
+  color: rgba(14, 0, 123, 0.7); /* Changed */
   margin-left: 0.5rem;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1.2rem; /* Increased size */
   line-height: 1;
   transition: color 0.2s ease;
 }
 
 .remove-person-btn:hover {
-  color: #333;
+  color: #d90429; /* A more intuitive color for removal */
 }
 
 .add-person-btn {
-  background: #0e007b;
+  width: 100%;
+  background-color: rgba(14, 0, 123, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 0.6rem 1rem;
+  border-radius: 10px; /* Adjusted border-radius */
+  padding: 0.8rem 1rem; /* Adjusted padding */
   cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
 .add-person-btn:hover {
-  background: #0022a1;
+  background-color: rgba(14, 0, 123, 1);
+  box-shadow: 0 5px 15px rgba(14, 0, 123, 0.4);
+  transform: translateY(-2px);
 }

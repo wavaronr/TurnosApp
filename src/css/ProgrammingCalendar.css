@@ -1,15 +1,17 @@
-/* ProgrammingCalendar.css - The Final Polish Edition */
+/* ProgrammingCalendar.css - Responsive & Scalable */
 
+/* --- General Layout & Legend --- */
 .calendar-pro-wrapper {
   position: relative;
+  padding: clamp(0.5rem, 2vw, 1rem); /* Espaciado adaptable */
 }
 
 .shift-legend {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: clamp(1rem, 2vw, 1.5rem); /* Gap adaptable */
+  margin-bottom: clamp(1rem, 3vw, 2rem);
   padding: 1rem;
   background: #ffffff;
   border-radius: 12px;
@@ -19,7 +21,7 @@
 .legend-item {
   display: flex;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem); /* Fuente adaptable */
   color: #495057;
   font-weight: 500;
 }
@@ -32,10 +34,11 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+/* --- Main Calendar Grid --- */
 .calendar-pro {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0.75rem; /* Tighter gap for a more unified grid */
+  gap: clamp(4px, 1vw, 0.75rem); /* Gap adaptable entre días */
 }
 
 .header-pro {
@@ -43,18 +46,20 @@
   text-align: center;
   padding-bottom: 0.8rem;
   color: #0e007b;
-  font-size: 0.85rem;
+  font-size: clamp(0.7rem, 1.8vw, 0.85rem); /* Fuente adaptable */
   text-transform: uppercase;
 }
 
+/* --- Day Cell --- */
 .day-cell-pro {
   display: flex;
   flex-direction: column;
   border: 1px solid #e9ecef;
   background: #ffffff;
   border-radius: 8px;
-  aspect-ratio: 1 / 1; /* Perfect squares */
-  padding: 0.5rem;
+  aspect-ratio: 1 / 1; /* Mantenemos las celdas cuadradas */
+  min-height: 100px; /* Evita que las celdas se colapsen demasiado */
+  padding: clamp(0.3rem, 1vw, 0.5rem);
 }
 
 .day-cell-pro.empty {
@@ -64,7 +69,7 @@
 
 .day-number-pro {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: clamp(0.75rem, 1.6vw, 0.9rem);
   color: #343a40;
   margin-bottom: 0.5rem;
   text-align: right;
@@ -77,30 +82,30 @@
 
 .people-list-pro {
   display: flex;
-  flex-wrap: wrap; /* Allows bubbles to wrap to the next line */
-  gap: 6px; /* Spacing between the bubbles */
+  flex-wrap: wrap;
+  gap: clamp(3px, 0.5vw, 5px); /* Gap adaptable y reducido para burbujas */
   flex-grow: 1;
   align-content: flex-start;
 }
 
-/* --- The Bubble, perfected for three letters --- */
+/* --- The Bubble: Fluid, Scalable, and Proportional --- */
 .person-bubble {
-  width: 32px;
-  height: 32px;
+  /* Tamaño de la burbuja que escala, con un máximo más contenido */
+  width: clamp(24px, 3vw, 32px);
+  height: clamp(24px, 3vw, 32px);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  /* Font size slightly reduced to perfectly fit 3 letters */
-  font-size: 0.7rem; 
+  /* La fuente escala en proporción, con un máximo ajustado */
+  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
   font-weight: 600;
   line-height: 1;
   text-transform: uppercase;
-  /* A subtle inner shadow gives the text a bit of pop */
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s;
 }
 
 .person-bubble:hover {

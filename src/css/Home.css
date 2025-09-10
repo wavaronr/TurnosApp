@@ -15,7 +15,7 @@
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
-  max-width: 800px;
+  max-width: 900px; /* Aumentado para acomodar las tarjetas */
 }
 
 .home-title {
@@ -33,7 +33,7 @@
 .home-cards-container {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.5rem; /* Gap reducido */
   flex-wrap: wrap;
 }
 
@@ -43,10 +43,10 @@
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 2rem;
+  padding: 1.5rem; /* Padding reducido */
   text-decoration: none;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 300px;
+  width: 250px; /* Ancho reducido */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,17 +58,17 @@
 }
 
 .home-card-icon {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* Margen reducido */
   color: #0e007b;
 }
 
 .home-card-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 1.3rem; /* Fuente reducida */
+  margin-bottom: 0.8rem; /* Margen reducido */
   color: #333;
 }
 
 .home-card-description {
-  font-size: 1rem;
+  font-size: 0.9rem; /* Fuente reducida */
   color: #555;
 }

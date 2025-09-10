@@ -19,14 +19,14 @@ export const CalendarProvider = ({ children }) => {
 
   const [programmedSchedule, setProgrammedSchedule] = useState({});
   const [temporarySchedule, setTemporarySchedule] = useState({});
-  const [isDirty, setIsDirty] = useState(false); // <-- 1. Añadir bandera de estado
+  const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
     setPeople(peopleData);
     const initialData = JSON.parse(JSON.stringify(initialSchedule.days));
     setProgrammedSchedule(initialData);
     setTemporarySchedule(initialData);
-    setIsDirty(false); // Asegurarse de que esté limpio al inicio
+    setIsDirty(false);
   }, []);
 
   const savePerson = (personData) => {
@@ -49,64 +49,82 @@ export const CalendarProvider = ({ children }) => {
     };
     fetchHolidays();
   }, [yearSet]);
-  
+
+  const assignShifts = (person, days, shiftType) => {
+    setTemporarySchedule(currentSchedule => {
+      const newShifts = JSON.parse(JSON.stringify(currentSchedule));
+      days.forEach(day => {
+        // La validación se hace aquí, contra la copia que se va modificando
+        if (isPersonValidForShift(person, day, shiftType, newShifts)) {
+          const dayString = day.toISOString().split('T')[0];
+          if (!newShifts[dayString]) {
+            newShifts[dayString] = { morning: [], afternoon: [], night: [], off: [] };
+          }
+          const personExists = newShifts[dayString][shiftType].some(p => p.id === person.id);
+          if (!personExists) {
+            newShifts[dayString][shiftType].push(person);
+          }
+        }
+      });
+      return newShifts;
+    });
+    setIsDirty(true);
+  };
+
   const assignShift = (day, shiftType, person) => {
-    const dayString = day.toISOString().split('T')[0];
-    const newShifts = JSON.parse(JSON.stringify(temporarySchedule));
-    if (!newShifts[dayString]) {
-      newShifts[dayString] = { morning: [], afternoon: [], night: [], off: [] };
-    }
-    newShifts[dayString][shiftType].push(person);
-    setTemporarySchedule(newShifts);
-    setIsDirty(true); // <-- 2. Marcar como "sucio" al añadir
+    assignShifts(person, [day], shiftType);
   };
 
   const removeShift = (day, shiftType, personId) => {
-    const dayString = day.toISOString().split('T')[0];
-    const newShifts = JSON.parse(JSON.stringify(temporarySchedule));
-    if (newShifts[dayString] && newShifts[dayString][shiftType]) {
-      newShifts[dayString][shiftType] = newShifts[dayString][shiftType].filter(p => p.id !== personId);
-      setTemporarySchedule(newShifts);
-      setIsDirty(true); // <-- 2. Marcar como "sucio" al quitar
-    }
+    setTemporarySchedule(currentSchedule => {
+      const newShifts = JSON.parse(JSON.stringify(currentSchedule));
+      const dayString = day.toISOString().split('T')[0];
+      if (newShifts[dayString] && newShifts[dayString][shiftType]) {
+        newShifts[dayString][shiftType] = newShifts[dayString][shiftType].filter(p => p.id !== personId);
+      }
+      return newShifts;
+    });
+    setIsDirty(true);
   };
 
   const saveTemporarySchedule = () => {
     setProgrammedSchedule(temporarySchedule);
-    setIsDirty(false); // <-- 3. Marcar como "limpio" al guardar
+    setIsDirty(false);
     console.log("Cambios guardados:", temporarySchedule);
   };
 
-  const getValidPeopleForShift = (day, shiftType) => {
+  const isPersonValidForShift = (person, day, shiftType, schedule = temporarySchedule) => {
     const dayString = day.toISOString().split('T')[0];
     const weekDays = getWeekDays(selectedWeek, yearSet).map(d => d.toISOString().split('T')[0]);
 
-    return people.filter(person => {
-      const shiftsToday = temporarySchedule[dayString] || {};
-      for (const sType in shiftsToday) {
-        if (shiftsToday[sType].some(p => p.id === person.id)) return false;
-      }
-      
-      const yesterday = new Date(day);
-      yesterday.setDate(day.getDate() - 1);
-      const yesterdayString = yesterday.toISOString().split('T')[0];
-      const shiftsYesterday = temporarySchedule[yesterdayString] || {};
-      if (shiftsYesterday.night?.some(p => p.id === person.id)) {
-        if (shiftType !== 'night' && shiftType !== 'off') return false;
-      }
+    const shiftsToday = schedule[dayString] || {};
+    for (const sType in shiftsToday) {
+      if (shiftsToday[sType].some(p => p.id === person.id)) return false;
+    }
+    
+    const yesterday = new Date(day);
+    yesterday.setDate(day.getDate() - 1);
+    const yesterdayString = yesterday.toISOString().split('T')[0];
+    const shiftsYesterday = schedule[yesterdayString] || {};
+    if (shiftsYesterday.night?.some(p => p.id === person.id)) {
+      if (shiftType !== 'night' && shiftType !== 'off') return false;
+    }
 
-      let workShiftCount = 0;
-      weekDays.forEach(weekDayString => {
-        const dayShifts = temporarySchedule[weekDayString] || {};
-        ['morning', 'afternoon', 'night'].forEach(workShiftType => {
-          if (dayShifts[workShiftType]?.some(p => p.id === person.id)) workShiftCount++;
-        });
+    let workShiftCount = 0;
+    weekDays.forEach(weekDayString => {
+      const dayShifts = schedule[weekDayString] || {};
+      ['morning', 'afternoon', 'night'].forEach(workShiftType => {
+        if (dayShifts[workShiftType]?.some(p => p.id === person.id)) workShiftCount++;
       });
-
-      if (workShiftCount >= 6 && shiftType !== 'off') return false;
-
-      return true;
     });
+
+    if (workShiftCount >= 6 && shiftType !== 'off') return false;
+
+    return true;
+  };
+
+  const getValidPeopleForShift = (day, shiftType) => {
+    return people.filter(person => isPersonValidForShift(person, day, shiftType));
   };
 
   const value = {
@@ -118,11 +136,13 @@ export const CalendarProvider = ({ children }) => {
     selectedWeek,
     setSelectedWeek,
     shifts: temporarySchedule,
-    assignShift,
+    assignShift, // Se mantiene por si se necesita en otro lado
+    assignShifts, // La nueva función robusta
     removeShift,
     saveTemporarySchedule,
-    isDirty, // <-- 4. Exponer la bandera
+    isDirty,
     getValidPeopleForShift,
+    isPersonValidForShift,
     people,
     savePerson,
     deletePerson

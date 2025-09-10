@@ -95,15 +95,15 @@
 /* --- The Bubble: Fluid, Scalable, and Proportional --- */
 .person-bubble {
   /* Tamaño de la burbuja que escala, con un máximo más contenido */
-  width: clamp(24px, 3vw, 32px);
-  height: clamp(24px, 3vw, 32px);
+  width: clamp(22px, 2.8vw, 30px);
+  height: clamp(22px, 2.8vw, 30px);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
   /* La fuente escala en proporción, con un máximo ajustado */
-  font-size: clamp(0.6rem, 1.2vw, 0.7rem);
+  font-size: clamp(0.55rem, 1.1vw, 0.65rem);
   font-weight: 600;
   line-height: 1;
   text-transform: uppercase;

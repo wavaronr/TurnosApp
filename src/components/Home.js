@@ -35,6 +35,16 @@ function Home() {
             <h3 className="home-card-title">Administrar Perfiles</h3>
             <p className="home-card-description">Consulta y gestiona la información de los miembros de tu equipo.</p>
           </Link>
+          <Link to="/programacion" className="home-card">
+            <div className="home-card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+            </div>
+            <h3 className="home-card-title">Ver Programación</h3>
+            <p className="home-card-description">Visualiza la programación de turnos en un formato de calendario optimizado.</p>
+          </Link>
         </div>
       </div>
     </div>

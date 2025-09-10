@@ -1,4 +1,4 @@
-/* AssignPersonModal.css - Glassmorphism Edition v2 */
+/* AssignPersonModal.css - Glassmorphism Edition v3 (Fixed Repetition Controls) */
 
 .modal-overlay {
   position: fixed;
@@ -21,7 +21,7 @@
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  width: 480px; /* Ancho ampliado para los checkboxes */
+  width: 480px;
   display: flex;
   flex-direction: column;
   max-height: 90vh;
@@ -58,10 +58,13 @@
   transform: rotate(90deg);
 }
 
+/* --- LAYOUT FIX: Body is now a flex container, not a scroll container --- */
 .modal-body {
-  overflow-y: auto;
   flex-grow: 1;
   padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevents edge cases with flex children */
 }
 
 .search-input {
@@ -85,10 +88,12 @@
   box-shadow: 0 3px 15px rgba(14, 0, 123, 0.2);
 }
 
+/* --- LAYOUT FIX: People list now grows and scrolls independently --- */
 .people-list-container {
-  max-height: 200px; /* Altura máxima para la lista de personas */
-  overflow-y: auto;
+  flex-grow: 1; /* Allows the list to take up all available vertical space */
+  overflow-y: auto; /* The scrollbar is now ONLY on this container */
   padding: 0 0.5rem;
+  min-height: 100px; /* Ensures it doesn't become too small */
 }
 
 .person-item-modal {
@@ -119,7 +124,7 @@
   transform: translateY(-2px) scale(1.01);
 }
 
-/* === DAY SELECTION STYLES START === */
+/* === DAY SELECTION STYLES (Now always visible) === */
 .day-selection-container {
   padding: 1rem;
   margin-top: 1rem;
@@ -169,7 +174,7 @@
   border-radius: 50%;
   display: grid;
   place-content: center;
-  margin-bottom: 0.5rem; /* Espacio entre el check y el texto */
+  margin-bottom: 0.5rem;
   transition: background-color 0.2s, border-color 0.2s;
 }
 
@@ -201,8 +206,6 @@
   font-size: 0.9rem;
   text-transform: capitalize;
 }
-/* === DAY SELECTION STYLES END === */
-
 
 .modal-footer {
   padding: 1rem 1.5rem;
@@ -232,10 +235,10 @@
   cursor: not-allowed;
 }
 
-/* Scrollbar styles */
-.modal-body::-webkit-scrollbar { width: 8px; }
-.modal-body::-webkit-scrollbar-thumb { background-color: #FF8C00; border-radius: 4px; }
-.modal-body::-webkit-scrollbar-track { background-color: #e9ecef; }
+/* Scrollbar styles now target the people list container specifically */
+.people-list-container::-webkit-scrollbar { width: 8px; }
+.people-list-container::-webkit-scrollbar-thumb { background-color: #FF8C00; border-radius: 4px; }
+.people-list-container::-webkit-scrollbar-track { background-color: #e9ecef; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.98); }

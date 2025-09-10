@@ -5,33 +5,24 @@ import { useCalendar } from '../context/CalendarContext.js';
 import { ProfileContext } from '../context/ProfileContext.js';
 
 const ShiftSection = ({ title, people, onAdd, onRemove, profile }) => {
-
-  // Refactorizada la lógica de nombres cortos para mayor eficiencia y legibilidad.
   const finalShortNames = people.reduce((acc, person) => {
     if (!person.name) {
       acc[person.id] = '';
       return acc;
     }
-
     const nameParts = person.name.toLowerCase().split(' ').filter(Boolean);
     if (nameParts.length === 0) {
       acc[person.id] = '';
       return acc;
     }
-
     const firstName = nameParts[0];
     const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
-
     let shortName = `${firstName.charAt(0)}${lastName ? '.' + lastName : ''}`;
     let prefixLength = 1;
-
-    // Manejo de colisiones: si el nombre corto ya existe, se alarga el prefijo del nombre.
     while (Object.values(acc).includes(shortName) && firstName.length > prefixLength) {
       prefixLength++;
       shortName = `${firstName.substring(0, prefixLength)}${lastName ? '.' + lastName : ''}`;
     }
-
-    // Como último recurso si sigue la colisión (ej. "Ana" y "Ana"), añade un número.
     if (Object.values(acc).includes(shortName)) {
         let count = 2;
         let newShortName = `${shortName}${count}`;
@@ -41,7 +32,6 @@ const ShiftSection = ({ title, people, onAdd, onRemove, profile }) => {
         }
         shortName = newShortName;
     }
-
     acc[person.id] = shortName;
     return acc;
   }, {});
@@ -62,13 +52,13 @@ const ShiftSection = ({ title, people, onAdd, onRemove, profile }) => {
   );
 };
 
-function DayCard({ day, people }) {
+function DayCard({ day, people, weekDays }) {
   const {
     colombianHolidays,
     shifts,
-    assignShift,
+    assignShifts, // <-- Usamos la nueva función del contexto
     removeShift,
-    getValidPeopleForShift
+    getValidPeopleForShift,
   } = useCalendar();
   const { profile } = useContext(ProfileContext);
 
@@ -95,19 +85,24 @@ function DayCard({ day, people }) {
   ];
 
   const handleAddPerson = (shiftType) => {
-    const validPeopleForShift = getValidPeopleForShift(day, shiftType, people);
+    const validPeopleForShift = getValidPeopleForShift(day, shiftType);
     setValidPeople(validPeopleForShift);
     setSelectedShift(shiftType);
     setIsModalOpen(true);
   };
 
-  const handleSelectPerson = (person) => {
-    assignShift(day, selectedShift, person);
+  // El manejador ahora es mucho más simple y directo
+  const handleAssignToDays = (person, selectedDays) => {
+    assignShifts(person, selectedDays, selectedShift);
     setIsModalOpen(false);
   };
-
+  
   const handleRemovePerson = (shiftType, personId) => {
     removeShift(day, shiftType, personId);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -132,8 +127,11 @@ function DayCard({ day, people }) {
       {isModalOpen && (
         <AssignPersonModal
           people={validPeople}
-          onSelect={handleSelectPerson}
-          onClose={() => setIsModalOpen(false)}
+          onAssign={handleAssignToDays} 
+          onClose={handleCloseModal}
+          initialDay={day}
+          weekDays={weekDays}
+          shiftType={selectedShift}
         />
       )}
     </div>

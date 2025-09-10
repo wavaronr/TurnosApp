@@ -1,15 +1,15 @@
 import React from 'react';
 import DayCard from './DayCard.js';
-// Corregir la ruta de importación de getWeekDays
 import { getWeekDays } from '../utils/getWeekDays.js';
 import { useCalendar } from '../context/CalendarContext.js';
 
 function DayList({ people }) {
-  const { selectedWeek, yearSet, colombianHolidays } = useCalendar();
+  const { selectedWeek, yearSet } = useCalendar();
 
   if (!selectedWeek) {
     return null;
   }
+  
   const weekDays = getWeekDays(selectedWeek, yearSet);
 
   return (
@@ -21,6 +21,7 @@ function DayList({ people }) {
             key={day.toISOString()} 
             day={day} 
             people={people}
+            weekDays={weekDays} // Propagamos la semana completa a cada tarjeta de día
           />
         ))}
       </ol>

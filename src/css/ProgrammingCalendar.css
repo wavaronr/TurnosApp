@@ -75,6 +75,10 @@
   text-align: right;
 }
 
+.day-cell-pro.holiday {
+  background-color: #fff7e6; /* Tono naranja muy claro para festivos */
+}
+
 .day-cell-pro.holiday .day-number-pro {
   color: #FF8C00;
   font-weight: 700;

@@ -1,20 +1,20 @@
 [
   {
     "id": 123456789,
-    "name": "Juan Perez",
-    "cargo": "Gestor de servicios I",
-    "perfil": "OPR"
+    "name": "Wilmer Alexander Varon Rodriguez",
+    "cargo": "Tecnico de produccion ll",
+    "perfil": "ADM"
   },
   {
     "id": 1234567891,
-    "name": "Pedro Gonzalez",
-    "cargo": "Gestor de servicios II",
+    "name": "Henry Favian Alvarez Muñoz",
+    "cargo": "Tecnico de produccion ll",
     "perfil": "OPR"
   },
   {
     "id": 1234567892,
-    "name": "Luis Rodriguez",
-    "cargo": "Gestor de servicios III",
+    "name": "John Edinson Gamboa Guesaquillo",
+    "cargo": "Tecnico de produccion ll",
     "perfil": "OPR"
   },
   {

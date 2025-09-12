@@ -45,6 +45,16 @@ function Home() {
             <h3 className="home-card-title">Ver Programación</h3>
             <p className="home-card-description">Visualiza la programación de turnos en un formato de calendario optimizado.</p>
           </Link>
+          <Link to="/rutas" className="home-card">
+            <div className="home-card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <h3 className="home-card-title">Gestionar Rutas</h3>
+            <p className="home-card-description">Planifica y visualiza las rutas de transporte del personal.</p>
+          </Link>
         </div>
       </div>
     </div>

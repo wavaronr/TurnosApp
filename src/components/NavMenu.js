@@ -24,7 +24,7 @@ function NavMenu() {
     };
   }, [location]);
 
-  const buttons = ['Home', 'Calendario', 'Programacion', 'Perfiles'];
+  const buttons = ['Home', 'Calendario', 'Programacion', 'Perfiles', 'Rutas'];
 
   const currentPath = location.pathname.substring(1);
   let activeIndex = buttons.findIndex(button => button.toLowerCase() === currentPath.toLowerCase());

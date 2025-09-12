@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import * as XLSX from 'xlsx';
 import '../css/Rutas.css';
 
 // Helper to get the first and last day of a month
@@ -13,7 +14,6 @@ const getMonthDateRange = (year, month) => {
 
 const Rutas = () => {
   const [rutas, setRutas] = useState([]);
-  // State is now driven by startDate and endDate
   const [startDate, setStartDate] = useState(getMonthDateRange(2025, 8).start);
   const [endDate, setEndDate] = useState(getMonthDateRange(2025, 8).end);
   const [displayMonth, setDisplayMonth] = useState(new Date(2025, 8));
@@ -21,9 +21,7 @@ const Rutas = () => {
   useEffect(() => {
     const processScheduleData = (data, start, end) => {
       const rutasData = [];
-      if (!data || !data.days) {
-        return [];
-      }
+      if (!data || !data.days) return [];
 
       const startDateObj = start ? new Date(start + 'T00:00:00Z') : null;
       const endDateObj = end ? new Date(end + 'T23:59:59Z') : null;
@@ -31,11 +29,7 @@ const Rutas = () => {
       Object.keys(data.days).forEach(dateKey => {
         const scheduleDate = new Date(dateKey + 'T00:00:00Z');
         
-        // Primary filtering logic based on the date range
-        if (startDateObj && scheduleDate < startDateObj) {
-          return;
-        }
-        if (endDateObj && scheduleDate > endDateObj) {
+        if ((startDateObj && scheduleDate < startDateObj) || (endDateObj && scheduleDate > endDateObj)) {
           return;
         }
 
@@ -56,7 +50,6 @@ const Rutas = () => {
         if (daySchedule.night) {
           daySchedule.night.forEach(person => {
             rutasData.push({ CEDULA: person.id, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: 'CASA', DESTINO: 'REDEBAN', HORA: '22:00:00' });
-            
             const nextDay = new Date(scheduleDate.getTime() + 24 * 60 * 60 * 1000);
             const nextDayFormatted = nextDay.toLocaleDateString('es-ES', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
             rutasData.push({ CEDULA: person.id, NOMBRE: person.name, FECHA: nextDayFormatted, ORIGEN: 'REDEBAN', DESTINO: 'CASA', HORA: '06:00:00' });
@@ -74,7 +67,7 @@ const Rutas = () => {
       console.error("Error processing schedule data:", error);
       setRutas([]);
     }
-  }, [startDate, endDate]); // Effect is driven by date range
+  }, [startDate, endDate]);
 
   const handleMonthChange = (increment) => {
     setDisplayMonth(prevDate => {
@@ -84,6 +77,13 @@ const Rutas = () => {
         setEndDate(end);
         return newDate;
     });
+  };
+
+  const handleExport = () => {
+    const worksheet = XLSX.utils.json_to_sheet(rutas);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Rutas");
+    XLSX.writeFile(workbook, "rutas.xlsx");
   };
 
   return (
@@ -98,6 +98,13 @@ const Rutas = () => {
         <div className="date-filters">
           <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
           <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+          <button onClick={handleExport} className="export-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+              <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+            </svg>
+            Exportar
+          </button>
         </div>
       </div>
       <div className="table-responsive">

@@ -3,8 +3,9 @@ import '../css/Rutas.css';
 
 const Rutas = () => {
   const [rutas, setRutas] = useState([]);
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  // Initialize state to September 2025 to match the data file
+  const [currentMonth, setCurrentMonth] = useState(8); // September (0-indexed)
+  const [currentYear, setCurrentYear] = useState(2025);
 
   useEffect(() => {
     const processScheduleData = (data, month, year) => {

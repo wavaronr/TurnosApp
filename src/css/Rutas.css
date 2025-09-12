@@ -1,37 +1,86 @@
+/* src/css/Rutas.css */
+
 .rutas-container {
-    padding: 20px;
-    background-color: #f4f4f4;
-  }
-  
-  .month-navigator {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .month-navigator button {
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  .table-responsive {
-    overflow-x: auto;
-  }
-  
-  .rutas-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .rutas-table th,
-  .rutas-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .rutas-table th {
-    background-color: #f2f2f2;
-  }
-  
+  padding: 20px;
+  margin: 20px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #333; /* Texto principal oscuro para legibilidad */
+}
+
+.rutas-container h2 {
+  color: #fdfdfd; /* Color primario para el título */
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Sombra sutil para mejorar el contraste */
+}
+
+.month-navigator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.month-navigator span {
+  color: #0e007b;
+  font-weight: 500;
+  font-size: 1.2em;
+}
+
+.month-navigator button {
+  padding: 8px 15px;
+  cursor: pointer;
+  background-color: #0e007b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
+}
+
+.month-navigator button:hover {
+  background-color: #0022a1; /* Variante más clara para hover */
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.rutas-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff; /* Fondo blanco para la tabla */
+  border-radius: 8px;
+  overflow: hidden; /* Para que el borde redondeado afecte a las celdas */
+}
+
+.rutas-table th,
+.rutas-table td {
+  border: 1px solid #e9ecef; /* Borde gris claro */
+  padding: 12px 15px;
+  text-align: left;
+  color: #555; /* Color de texto secundario */
+}
+
+.rutas-table th {
+  background-color: #f9f9f9; /* Fondo gris muy claro para cabeceras */
+  color: #333; /* Texto principal oscuro */
+  font-weight: 600;
+}
+
+.rutas-table tbody tr:nth-of-type(even) {
+  background-color: #f9f9f9; /* Fondo alterno para filas */
+}
+
+.rutas-table tbody tr:hover {
+  background-color: #e9ecef; /* Efecto hover en filas */
+}

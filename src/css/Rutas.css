@@ -1,0 +1,37 @@
+.rutas-container {
+    padding: 20px;
+    background-color: #f4f4f4;
+  }
+  
+  .month-navigator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .month-navigator button {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  .rutas-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .rutas-table th,
+  .rutas-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .rutas-table th {
+    background-color: #f2f2f2;
+  }
+  

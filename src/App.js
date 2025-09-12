@@ -10,6 +10,7 @@ import PersonOffCanvas from './components/PersonOffCanvas.js';
 import PrivateRoute from './components/PrivateRoute.js';
 import PublicRoute from './components/PublicRoute.js';
 import Programming from './views/Programming.js';
+import Rutas from './views/Rutas.js';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { CalendarProvider } from './context/CalendarContext.js';
 import { ProfileProvider } from './context/ProfileContext.js'; // Importamos el nuevo proveedor
@@ -60,6 +61,12 @@ function App() {
                 path="/perfiles"
                 element={<PrivateRoute><CardProfile /></PrivateRoute>}
                 key="profiles"
+              />
+              <Route
+                exact
+                path="/rutas"
+                element={<PrivateRoute><Rutas /></PrivateRoute>}
+                key="rutas"
               />
             </Routes>
             

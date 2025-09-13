@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -11,15 +10,17 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Conexión a MongoDB (aún por configurar)
-/*
+// Conexión a MongoDB
 const uri = process.env.MONGO_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("Conexión con MongoDB establecida exitosamente");
 });
-*/
+connection.on('error', (err) => {
+    console.log("Error de conexión con MongoDB:", err);
+    process.exit();
+});
 
 // Rutas
 const personasRouter = require('./routes/personas.routes.js');

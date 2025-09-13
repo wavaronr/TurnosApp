@@ -1,0 +1,80 @@
+[
+  {
+    "id": 123456789,
+    "name": "Wilmer Alexander Varon Rodriguez",
+    "cargo": "Tecnico de produccion ll",
+    "perfil": "ADM"
+  },
+  {
+    "id": 1234567891,
+    "name": "Henry Favian Alvarez Muñoz",
+    "cargo": "Tecnico de produccion ll",
+    "perfil": "OPR"
+  },
+  {
+    "id": 1234567892,
+    "name": "John Edinson Gamboa Guesaquillo",
+    "cargo": "Tecnico de produccion ll",
+    "perfil": "OPR"
+  },
+  {
+    "id": 1234567893,
+    "name": "Jose 2025 Rodriguez",
+    "cargo": "Gestor de servicios I",
+    "perfil": "OPR"
+  },
+  {
+    "id": 12345678902,
+    "name": "Juan Perez segundo",
+    "cargo": "Gestor de servicios I",
+    "perfil": "OPR"
+  },
+  {
+    "id": 12345678912,
+    "name": "Pedro Gonzalez segundo",
+    "cargo": "Gestor de servicios II",
+    "perfil": "OPR"
+  },
+  {
+    "id": 12345678922,
+    "name": "Luis Rodriguez segundo",
+    "cargo": "Gestor de servicios III",
+    "perfil": "OPR"
+  },
+  {
+    "id": 12345678932,
+    "name": "Jose Rodriguez segundo",
+    "cargo": "Gestor de servicios I",
+    "perfil": "OPR"
+  },
+  {
+    "id": 12345678903,
+    "name": "Juan Perez tercero",
+    "cargo": "Gestor de servicios I",
+    "perfil": "OPR"
+  },
+  {
+    "id": 12345678913,
+    "name": "Pedro Gonzalez tercero",
+    "cargo": "Gestor de servicios II",
+    "perfil": "OPR"
+  },
+  {
+    "id": 12345678923,
+    "name": "Luis Rodriguez tercero",
+    "cargo": "Gestor de servicios III",
+    "perfil": "OPR"
+  },
+  {
+    "id": 12345678933,
+    "name": "Jose Rodriguez tercero",
+    "cargo": "Gestor de servicios I",
+    "perfil": "OPR"
+  },
+  {
+    "id": 987654321,
+    "name": "Wilmer Varon",
+    "cargo": "Tecnico de produccion ll",
+    "perfil": "ADM"
+  }
+]

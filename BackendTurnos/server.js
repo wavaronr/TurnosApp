@@ -21,6 +21,11 @@ connection.once('open', () => {
 });
 */
 
+// Rutas
+const personasRouter = require('./routes/personas.routes.js');
+app.use('/api/personas', personasRouter);
+
+
 // Ruta de prueba
 app.get('/', (req, res) => {
     res.send('¡API de BackendTurnos funcionando!');

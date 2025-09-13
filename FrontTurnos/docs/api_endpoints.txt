@@ -1,0 +1,45 @@
+🔌 API Endpoints
+│
+├── 🔑 Autenticación (Auth)
+│   │
+│   ├── ➡️ POST /api/auth/login
+│   │   ├── Componente: Login.js
+│   │   └── Función: Autenticar al usuario. Envía { email, password } y recibe { token, user: { role, name } }.
+│   │
+│   └── ➡️ POST /api/auth/logout
+│       ├── Componente: Home.js
+│       └── Función: Invalidar el token de sesión del usuario.
+│
+├── 🧑‍💼 Gestión de Personas (Personas)
+│   │
+│   ├── ➡️ GET /api/personas
+│   │   ├── Componentes: Personas.js, Programming.js
+│   │   └── Función: Obtener la lista completa de todo el personal.
+│   │
+│   ├── ➡️ POST /api/personas
+│   │   ├── Componente: Personas.js
+│   │   └── Función: Crear un nuevo perfil de persona.
+│   │
+│   ├── ➡️ PUT /api/personas/:id
+│   │   ├── Componente: Personas.js
+│   │   └── Función: Actualizar los datos de una persona existente.
+│   │
+│   └── ➡️ DELETE /api/personas/:id
+│       ├── Componente: Personas.js
+│       └── Función: Eliminar el perfil de una persona.
+│
+├── 🗓️ Programación de Turnos (Programming/Calendar)
+│   │
+│   ├── ➡️ GET /api/schedule
+│   │   ├── Componente: Programming.js
+│   │   └── Función: Cargar la programación guardada (ej: ?year=2025&month=9).
+│   │
+│   └── ➡️ POST /api/schedule
+│       ├── Componente: Programming.js (handleSave)
+│       └── Función: Guardar o actualizar la programación de una semana completa.
+│
+└── 📍 Datos de Rutas (Rutas)
+    │
+    └── ➡️ GET /api/rutas
+        ├── Componente: Rutas.js
+        └── Función: Obtener los datos de las rutas, con filtrado por fechas (ej: ?startDate=...&endDate=...).

@@ -1,4 +1,4 @@
-const URL_API = 'http://localhost:5000/people';
+const URL_API = 'http://localhost:5000/api/personas';
 
 const getDataPersons = async () => {
   try {

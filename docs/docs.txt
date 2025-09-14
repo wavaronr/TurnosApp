@@ -40,6 +40,11 @@ La aplicación utiliza React Context para la gestión del estado global a travé
 
 **Acción Requerida:** Reemplazar la URL `http://localhost:5000/people` en `getDataPersons.js` y en cualquier otro servicio similar por la URL del endpoint correspondiente del backend. Es crucial crear un archivo de configuración de entorno (por ejemplo, `.env`) para almacenar la URL base de la API del backend en lugar de mantenerla hardcodeada en los archivos de servicio.
 
+## 5. Backend Information
+
+- **URL Base:** `http://localhost:5000`
+- **Endpoint de Personas:** `/api/personas`
+
 ## Conclusión
 
 La integración con el backend requerirá enfocarse en los siguientes puntos:

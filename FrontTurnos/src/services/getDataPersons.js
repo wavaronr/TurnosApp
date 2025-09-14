@@ -1,4 +1,4 @@
-const URL_API = 'http://localhost:5000/api/personas';
+const URL_API = `${process.env.REACT_APP_BACKEND_URL}/api/personas`;
 
 const getDataPersons = async () => {
   try {

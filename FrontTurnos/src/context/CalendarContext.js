@@ -1,8 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { holidays as getColombianHolidays } from '../utils/holidays.js';
 import { getWeekDays } from '../utils/getWeekDays.js';
-import peopleData from '../data/dataPerson.json' with { type: 'json' };
-import initialSchedule from '../data/september-2025-schedule.json' with { type: 'json' };
 
 export const CalendarContext = createContext();
 
@@ -22,23 +20,62 @@ export const CalendarProvider = ({ children }) => {
   const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
-    setPeople(peopleData);
-    const initialData = JSON.parse(JSON.stringify(initialSchedule.days));
-    setProgrammedSchedule(initialData);
-    setTemporarySchedule(initialData);
+    fetch('/api/personas')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error al obtener los datos de las personas');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const adaptedData = data.map(person => ({ ...person, id: person._id }));
+        setPeople(adaptedData);
+      })
+      .catch(error => {
+        console.error('Error fetching people data:', error);
+        setPeople([]);
+      });
+
+    setProgrammedSchedule({});
+    setTemporarySchedule({});
     setIsDirty(false);
   }, []);
 
-  const savePerson = (personData) => {
+  const savePerson = async (personData) => {
     if (personData.id) {
+      // TODO: Implementar la lógica para ACTUALIZAR una persona en el backend (PUT request)
       setPeople(people.map(p => p.id === personData.id ? personData : p));
     } else {
-      const newId = people.length > 0 ? Math.max(...people.map(p => p.id)) + 1 : 1;
-      setPeople([...people, { ...personData, id: newId }]);
+      try {
+        const response = await fetch('/api/personas', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(personData),
+        });
+
+        if (!response.ok) {
+          // Lanzamos un error para que lo capture el bloque catch
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Error al crear la persona');
+        }
+
+        const savedPerson = await response.json();
+        const adaptedPerson = { ...savedPerson.persona, id: savedPerson.persona._id };
+
+        setPeople(prevPeople => [...prevPeople, adaptedPerson]);
+        alert('¡Persona creada exitosamente!'); // <-- NOTIFICACIÓN DE ÉXITO
+
+      } catch (error) {
+        console.error('Error saving person:', error);
+        alert(`Error al crear la persona: ${error.message}`); // <-- NOTIFICACIÓN DE ERROR
+      }
     }
   };
 
   const deletePerson = (personId) => {
+    // TODO: Añadir lógica de eliminación en el backend
     setPeople(people.filter(p => p.id !== personId));
   };
 
@@ -54,7 +91,6 @@ export const CalendarProvider = ({ children }) => {
     setTemporarySchedule(currentSchedule => {
       const newShifts = JSON.parse(JSON.stringify(currentSchedule));
       days.forEach(day => {
-        // La validación se hace aquí, contra la copia que se va modificando
         if (isPersonValidForShift(person, day, shiftType, newShifts)) {
           const dayString = day.toISOString().split('T')[0];
           if (!newShifts[dayString]) {
@@ -95,6 +131,11 @@ export const CalendarProvider = ({ children }) => {
 
   const isPersonValidForShift = (person, day, shiftType, schedule = temporarySchedule) => {
     const dayString = day.toISOString().split('T')[0];
+    
+    if (!selectedWeek) {
+      return true;
+    }
+
     const weekDays = getWeekDays(selectedWeek, yearSet).map(d => d.toISOString().split('T')[0]);
 
     const shiftsToday = schedule[dayString] || {};
@@ -136,8 +177,8 @@ export const CalendarProvider = ({ children }) => {
     selectedWeek,
     setSelectedWeek,
     shifts: temporarySchedule,
-    assignShift, // Se mantiene por si se necesita en otro lado
-    assignShifts, // La nueva función robusta
+    assignShift,
+    assignShifts,
     removeShift,
     saveTemporarySchedule,
     isDirty,

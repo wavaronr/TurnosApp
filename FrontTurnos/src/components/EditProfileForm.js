@@ -4,13 +4,33 @@ import '../css/EditProfileForm.css';
 
 function EditProfileForm({ person, onSubmit, onClose }) {
   const isEditMode = Boolean(person);
-  const initialState = isEditMode ? { ...person } : { name: '', cargo: '' };
+  
+  // Estado inicial que coincide con el modelo del backend
+  const getInitialState = () => {
+    if (isEditMode) {
+      return {
+        nombre: person.nombre || '',
+        apellido: person.apellido || '',
+        email: person.email || '',
+        telefono: person.telefono || '',
+        cargo: person.cargo || ''
+      };
+    }
+    return {
+      nombre: '',
+      apellido: '',
+      email: '',
+      telefono: '',
+      cargo: ''
+    };
+  };
 
-  const [formData, setFormData] = useState(initialState);
+  const [formData, setFormData] = useState(getInitialState);
 
   useEffect(() => {
-    setFormData(initialState);
-  }, [person]);
+    // Sincroniza el formulario si la 'person' a editar cambia
+    setFormData(getInitialState());
+  }, [person, isEditMode]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -27,18 +47,63 @@ function EditProfileForm({ person, onSubmit, onClose }) {
       <div className="modal-content">
         <h2>{isEditMode ? 'Editar Perfil' : 'Crear Perfil'}</h2>
         <form onSubmit={handleSubmit}>
+          {/* Campo Nombre */}
           <div className="form-group">
-            <label htmlFor="name">Nombre</label>
+            <label htmlFor="nombre">Nombre</label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+              id="nombre"
+              name="nombre"
+              value={formData.nombre}
               onChange={handleChange}
-              placeholder="Ej: Nombre Apellido"
+              placeholder="Ej: Juan"
               required
             />
           </div>
+
+          {/* Campo Apellido */}
+          <div className="form-group">
+            <label htmlFor="apellido">Apellido</label>
+            <input
+              type="text"
+              id="apellido"
+              name="apellido"
+              value={formData.apellido}
+              onChange={handleChange}
+              placeholder="Ej: Pérez"
+              required
+            />
+          </div>
+
+          {/* Campo Email */}
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Ej: juan.perez@example.com"
+              required
+            />
+          </div>
+
+          {/* Campo Teléfono */}
+          <div className="form-group">
+            <label htmlFor="telefono">Teléfono</label>
+            <input
+              type="tel"
+              id="telefono"
+              name="telefono"
+              value={formData.telefono}
+              onChange={handleChange}
+              placeholder="Ej: 1122334455"
+              required
+            />
+          </div>
+
+          {/* Campo Cargo (opcional) */}
           <div className="form-group">
             <label htmlFor="cargo">Cargo</label>
             <input
@@ -47,10 +112,10 @@ function EditProfileForm({ person, onSubmit, onClose }) {
               name="cargo"
               value={formData.cargo}
               onChange={handleChange}
-              placeholder="Ej: Tecnico"
-              required
+              placeholder="Ej: Técnico de Soporte"
             />
           </div>
+
           <div className="form-actions">
             <button type="submit" className="btn-update">
               {isEditMode ? 'Actualizar' : 'Crear'}

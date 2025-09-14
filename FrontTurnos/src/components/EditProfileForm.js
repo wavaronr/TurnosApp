@@ -8,7 +8,9 @@ function EditProfileForm({ person, onSubmit, onClose }) {
   // Estado inicial que coincide con el modelo del backend
   const getInitialState = () => {
     if (isEditMode) {
+      // En modo edición, no permitimos cambiar la identificación
       return {
+        id: person.id || '', 
         nombre: person.nombre || '',
         apellido: person.apellido || '',
         email: person.email || '',
@@ -17,6 +19,7 @@ function EditProfileForm({ person, onSubmit, onClose }) {
       };
     }
     return {
+      id: '', // Campo añadido para la creación
       nombre: '',
       apellido: '',
       email: '',
@@ -39,6 +42,7 @@ function EditProfileForm({ person, onSubmit, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+   // console.log(e)
     onSubmit(formData);
   };
 
@@ -47,6 +51,23 @@ function EditProfileForm({ person, onSubmit, onClose }) {
       <div className="modal-content">
         <h2>{isEditMode ? 'Editar Perfil' : 'Crear Perfil'}</h2>
         <form onSubmit={handleSubmit}>
+
+          {/* Campo Identificación (solo en modo creación) */}
+          {!isEditMode && (
+            <div className="form-group">
+              <label htmlFor="id">Identificación</label>
+              <input
+                type="text"
+                id="id"
+                name="id"
+                value={formData.id}
+                onChange={handleChange}
+                placeholder="Ej: 123456789"
+                required
+              />
+            </div>
+          )}
+          
           {/* Campo Nombre */}
           <div className="form-group">
             <label htmlFor="nombre">Nombre</label>
@@ -99,7 +120,6 @@ function EditProfileForm({ person, onSubmit, onClose }) {
               value={formData.telefono}
               onChange={handleChange}
               placeholder="Ej: 1122334455"
-              required
             />
           </div>
 

@@ -1,0 +1,54 @@
+# Documentación: Creación de Perfiles
+
+Este documento explica el flujo de datos y la lógica de la aplicación para crear un nuevo perfil de usuario.
+
+## Flujo de Creación de Perfil
+
+El proceso es una interacción entre el frontend (React) y el backend (Node.js/Express).
+
+### 1. Interfaz de Usuario (Frontend)
+
+1.  **Inicio:** El administrador hace clic en el botón "Crear Perfil" en la vista `/perfiles`.
+2.  **Formulario:** Se renderiza el componente `EditProfileForm.js`, que presenta un formulario para ingresar los datos del nuevo usuario.
+3.  **Campos del Formulario:**
+    *   `Identificación` (id)
+    *   `Nombre` (nombre)
+    *   `Apellido` (apellido)
+    *   `Email` (email)
+    *   `Teléfono` (telefono)
+    *   `Cargo` (cargo)
+
+### 2. Lógica del Frontend (Contexto de React)
+
+1.  **Envío:** Al enviar el formulario, se invoca la función `savePerson` ubicada en `FrontTurnos/src/context/CalendarContext.js`.
+2.  **Transformación de Datos:** Antes de enviar la solicitud al backend, la función `savePerson` realiza una transformación clave:
+    *   Combina los campos `nombre` y `apellido` en un único campo `name`.
+    *   Construye un objeto `payload` con la estructura que el backend espera.
+
+    **Ejemplo del Payload enviado al backend:**
+    ```json
+    {
+      "name": "Juan Pérez",
+      "id": "123456789",
+      "email": "juan.perez@example.com",
+      "cargo": "Técnico de Soporte",
+      "telefono": "1122334455"
+    }
+    ```
+3.  **Solicitud HTTP:** Se realiza una solicitud `POST` a la ruta `/api/personas` del backend, enviando el `payload` en formato JSON.
+
+### 3. Lógica del Backend
+
+1.  **Recepción:** El endpoint `POST /api/personas` en el backend recibe la solicitud.
+2.  **Controlador:** El controlador `BackendTurnos/controllers/personas.controller.js` procesa los datos.
+3.  **Procesamiento de Datos:** El controlador realiza la operación inversa a la del frontend:
+    *   Divide el campo `name` en `nombre` y `apellido`.
+    *   Utiliza el campo `id` como `identificacion` para el modelo de la base de datos.
+4.  **Creación en Base de Datos:** Se crea un nuevo documento en la colección de `personas` utilizando el modelo `Persona`.
+5.  **Respuesta:** El servidor responde con un estado `201 Created` y el objeto de la persona recién creada.
+
+### 4. Actualización Final
+
+1.  **Respuesta en Frontend:** El `CalendarContext` recibe la respuesta del backend.
+2.  **Actualización de Estado:** El nuevo perfil se añade al estado `people` del contexto.
+3.  **Renderizado:** La interfaz de usuario se actualiza automáticamente para mostrar el nuevo perfil en la lista.

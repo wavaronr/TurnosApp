@@ -42,37 +42,59 @@ export const CalendarProvider = ({ children }) => {
   }, []);
 
   const savePerson = async (personData) => {
-    if (personData.id) {
+    if (personData.id && people.some(p => p.id === personData.id)) {
+      // Lógica para ACTUALIZAR (PUT)
       // TODO: Implementar la lógica para ACTUALIZAR una persona en el backend (PUT request)
-      setPeople(people.map(p => p.id === personData.id ? personData : p));
+      console.log("Actualizando persona (simulado):", personData);
+      // Simulación de actualización en el frontend
+      setPeople(people.map(p => (p.id === personData.id ? { ...p, ...personData } : p)));
+      alert('Perfil actualizado exitosamente (simulado)');
+
     } else {
+      // Lógica para CREAR (POST)
       try {
+        // 1. Transformar los datos del formulario al formato del backend
+        const payload = {
+          name: `${personData.nombre} ${personData.apellido}`.trim(),
+          id: personData.id,
+          email: personData.email,
+          cargo: personData.cargo,
+          telefono: personData.telefono,
+        };
+
         const response = await fetch('/api/personas', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(personData),
+          body: JSON.stringify(payload), // 2. Enviar el payload transformado
         });
 
         if (!response.ok) {
-          // Lanzamos un error para que lo capture el bloque catch
           const errorData = await response.json();
           throw new Error(errorData.message || 'Error al crear la persona');
         }
 
-        const savedPerson = await response.json();
-        const adaptedPerson = { ...savedPerson.persona, id: savedPerson.persona._id };
+        const savedPersonResponse = await response.json();
+        const savedPerson = savedPersonResponse.persona; // Acceder al objeto anidado
+
+        // Adaptar la respuesta del backend al formato del estado del frontend
+        const adaptedPerson = {
+          ...savedPerson,
+          id: savedPerson._id,
+          name: `${savedPerson.nombre} ${savedPerson.apellido}`.trim(),
+        };
 
         setPeople(prevPeople => [...prevPeople, adaptedPerson]);
-        alert('¡Persona creada exitosamente!'); // <-- NOTIFICACIÓN DE ÉXITO
+        alert('¡Persona creada exitosamente!');
 
       } catch (error) {
         console.error('Error saving person:', error);
-        alert(`Error al crear la persona: ${error.message}`); // <-- NOTIFICACIÓN DE ERROR
+        alert(`Error al crear la persona: ${error.message}`);
       }
     }
   };
+
 
   const deletePerson = (personId) => {
     // TODO: Añadir lógica de eliminación en el backend

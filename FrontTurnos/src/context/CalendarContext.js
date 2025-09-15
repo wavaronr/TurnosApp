@@ -82,7 +82,7 @@ export const CalendarProvider = ({ children }) => {
       // Lógica para CREAR (POST)
       try {
         const payload = {
-          identificacion: personData.id,
+          identificacion: personData.identificacion, // Corregido: usar personData.identificacion
           nombre: personData.nombre,
           apellido: personData.apellido,
           email: personData.email,

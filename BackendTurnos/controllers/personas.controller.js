@@ -15,7 +15,7 @@ exports.createPersona = async (req, res) => {
   const { identificacion, nombre, apellido, email, cargo, telefono } = req.body;
 
   if (!nombre || !identificacion || !email) {
-    return res.status(400).json({ message: 'Los campos nombre, identificación y email son obligatorios.' });
+    return res.status(400).json({ message: 'Los campos nombre, identificación y email son obligatorios. BKNEDN'+nombre+identificacion+email });
   }
 
   try {

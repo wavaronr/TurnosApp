@@ -1,16 +1,22 @@
-
 import React, { useState, useEffect } from 'react';
 import '../css/EditProfileForm.css';
 
+// Función para capitalizar la primera letra de cada palabra
+const capitalize = (str) => {
+  if (!str) return '';
+  return str
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 function EditProfileForm({ person, onSubmit, onClose }) {
   const isEditMode = Boolean(person);
-  
-  // Estado inicial que coincide con el modelo del backend
+
   const getInitialState = () => {
     if (isEditMode) {
-      // En modo edición, no permitimos cambiar la identificación
       return {
-        identificacion: person.identificacion || '', 
+        identificacion: person.identificacion || '',
         nombre: person.nombre || '',
         apellido: person.apellido || '',
         email: person.email || '',
@@ -19,7 +25,7 @@ function EditProfileForm({ person, onSubmit, onClose }) {
       };
     }
     return {
-      identificacion: '', // Campo añadido para la creación
+      identificacion: '',
       nombre: '',
       apellido: '',
       email: '',
@@ -31,21 +37,25 @@ function EditProfileForm({ person, onSubmit, onClose }) {
   const [formData, setFormData] = useState(getInitialState);
 
   useEffect(() => {
-    // Sincroniza el formulario si la 'person' a editar cambia
     setFormData(getInitialState());
   }, [person, isEditMode]);
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+    // Aplica la capitalización a los campos deseados
+    let finalValue = value;
+    if (name === 'nombre' || name === 'apellido' || name === 'cargo') {
+      finalValue = capitalize(value);
+    }
+
+    setFormData(prev => ({ ...prev, [name]: finalValue }));
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   // console.log(e)
     onSubmit(formData);
   };
-  //console.log(formData)
 
   return (
     <div className="modal-overlay">
@@ -53,7 +63,6 @@ function EditProfileForm({ person, onSubmit, onClose }) {
         <h2>{isEditMode ? 'Editar Perfil' : 'Crear Perfil'}</h2>
         <form onSubmit={handleSubmit}>
 
-          {/* Campo Identificación (solo en modo creación) */}
           {!isEditMode && (
             <div className="form-group">
               <label htmlFor="identificacion">Identificación</label>
@@ -69,7 +78,6 @@ function EditProfileForm({ person, onSubmit, onClose }) {
             </div>
           )}
           
-          {/* Campo Nombre */}
           <div className="form-group">
             <label htmlFor="nombre">Nombre</label>
             <input
@@ -83,7 +91,6 @@ function EditProfileForm({ person, onSubmit, onClose }) {
             />
           </div>
 
-          {/* Campo Apellido */}
           <div className="form-group">
             <label htmlFor="apellido">Apellido</label>
             <input
@@ -97,7 +104,6 @@ function EditProfileForm({ person, onSubmit, onClose }) {
             />
           </div>
 
-          {/* Campo Email */}
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -111,7 +117,6 @@ function EditProfileForm({ person, onSubmit, onClose }) {
             />
           </div>
 
-          {/* Campo Teléfono */}
           <div className="form-group">
             <label htmlFor="telefono">Teléfono</label>
             <input
@@ -124,7 +129,6 @@ function EditProfileForm({ person, onSubmit, onClose }) {
             />
           </div>
 
-          {/* Campo Cargo (opcional) */}
           <div className="form-group">
             <label htmlFor="cargo">Cargo</label>
             <input

@@ -45,8 +45,8 @@ function CardProfile() {
   ? people.filter(
       (person) =>
         person && // Ensure person object exists
-        person.name && // Ensure name property exists
-        person.name.toLowerCase().includes(searchTerm.toLowerCase())
+        person.nombre && // Ensure nombre property exists
+        person.nombre.toLowerCase().includes(searchTerm.toLowerCase())
     )
   : [];
   console.log(people)
@@ -73,16 +73,16 @@ function CardProfile() {
       
       <div className="profile-grid">
         {filteredPersons.map((person) => (
-          <div className="profile-card" key={person.id}>
+          <div className="profile-card" key={person.identificacion}>
             <div className="profile-card-header">
               <div className="profile-avatar">
                 <AvatarIcon />
               </div>
-              <h5 className="profile-name">{person.name}</h5>
+              <h5 className="profile-name">{person.nombre}</h5>
               <p className="profile-cargo">{person.cargo}</p>
             </div>
             <div className="profile-card-body">
-              <p><strong>Identificación:</strong> {person.id}</p>
+              <p><strong>Identificación:</strong> {person.identificacion}</p>
             </div>
             {/* 4. Usar el rol del perfil del contexto */}
             {profile?.role === 'ADM' && (
@@ -90,7 +90,7 @@ function CardProfile() {
                 <button className="btn-icon btn-edit" onClick={() => handleEdit(person)}>
                   <EditIcon />
                 </button>
-                <button className="btn-icon btn-delete" onClick={() => handleDelete(person.id)}>
+                <button className="btn-icon btn-delete" onClick={() => handleDelete(person._id)}>
                   <DeleteIcon />
                 </button>
               </div>

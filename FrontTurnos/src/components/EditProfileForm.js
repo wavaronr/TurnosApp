@@ -10,7 +10,7 @@ function EditProfileForm({ person, onSubmit, onClose }) {
     if (isEditMode) {
       // En modo edición, no permitimos cambiar la identificación
       return {
-        id: person.id || '', 
+        identificacion: person.identificacion || '', 
         nombre: person.nombre || '',
         apellido: person.apellido || '',
         email: person.email || '',
@@ -19,7 +19,7 @@ function EditProfileForm({ person, onSubmit, onClose }) {
       };
     }
     return {
-      id: '', // Campo añadido para la creación
+      identificacion: '', // Campo añadido para la creación
       nombre: '',
       apellido: '',
       email: '',
@@ -45,6 +45,7 @@ function EditProfileForm({ person, onSubmit, onClose }) {
    // console.log(e)
     onSubmit(formData);
   };
+  //console.log(formData)
 
   return (
     <div className="modal-overlay">
@@ -55,12 +56,12 @@ function EditProfileForm({ person, onSubmit, onClose }) {
           {/* Campo Identificación (solo en modo creación) */}
           {!isEditMode && (
             <div className="form-group">
-              <label htmlFor="id">Identificación</label>
+              <label htmlFor="identificacion">Identificación</label>
               <input
                 type="text"
-                id="id"
-                name="id"
-                value={formData.id}
+                id="identificacion"
+                name="identificacion"
+                value={formData.identificacion}
                 onChange={handleChange}
                 placeholder="Ej: 123456789"
                 required

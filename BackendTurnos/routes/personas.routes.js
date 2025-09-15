@@ -8,4 +8,8 @@ router.get('/', personasController.getPersonas);
 // Crear una nueva persona
 router.post('/', personasController.createPersona);
 
+// Actualizar una persona por ID
+router.put('/:id', personasController.updatePersona);
+
+
 module.exports = router;

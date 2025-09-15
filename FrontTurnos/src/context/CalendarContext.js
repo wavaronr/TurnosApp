@@ -41,22 +41,50 @@ export const CalendarProvider = ({ children }) => {
     setIsDirty(false);
   }, []);
 
-  const savePerson = async (personData) => {
-    if (personData.id && people.some(p => p.id === personData.id)) {
+  const savePerson = async (personData, personIdForUpdate) => {
+    if (personIdForUpdate) {
       // Lógica para ACTUALIZAR (PUT)
-      // TODO: Implementar la lógica para ACTUALIZAR una persona en el backend (PUT request)
-      console.log("Actualizando persona (simulado):", personData);
-      // Simulación de actualización en el frontend
-      setPeople(people.map(p => (p.id === personData.id ? { ...p, ...personData } : p)));
-      alert('Perfil actualizado exitosamente (simulado)');
+      try {
+        const response = await fetch(`/api/personas/${personIdForUpdate}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            nombre: personData.nombre,
+            apellido: personData.apellido,
+            email: personData.email,
+            telefono: personData.telefono,
+            cargo: personData.cargo,
+          }),
+        });
 
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Error al actualizar la persona');
+        }
+
+        const updatedPerson = await response.json();
+
+        const adaptedPerson = {
+          ...updatedPerson,
+          id: updatedPerson._id, 
+        };
+
+        setPeople(people.map(p => (p.id === adaptedPerson.id ? adaptedPerson : p)));
+        alert('Perfil actualizado exitosamente');
+
+      } catch (error) {
+        console.error('Error updating person:', error);
+        alert(`Error al actualizar la persona: ${error.message}`);
+      }
     } else {
       // Lógica para CREAR (POST)
       try {
-        // 1. Transformar los datos del formulario al formato del backend
         const payload = {
-          name: `${personData.nombre} ${personData.apellido}`.trim(),
-          id: personData.id,
+          identificacion: personData.id,
+          nombre: personData.nombre,
+          apellido: personData.apellido,
           email: personData.email,
           cargo: personData.cargo,
           telefono: personData.telefono,
@@ -67,7 +95,7 @@ export const CalendarProvider = ({ children }) => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(payload), // 2. Enviar el payload transformado
+          body: JSON.stringify(payload),
         });
 
         if (!response.ok) {
@@ -76,13 +104,11 @@ export const CalendarProvider = ({ children }) => {
         }
 
         const savedPersonResponse = await response.json();
-        const savedPerson = savedPersonResponse.persona; // Acceder al objeto anidado
+        const savedPerson = savedPersonResponse.persona;
 
-        // Adaptar la respuesta del backend al formato del estado del frontend
         const adaptedPerson = {
           ...savedPerson,
-          id: savedPerson._id,
-          name: `${savedPerson.nombre} ${savedPerson.apellido}`.trim(),
+          id: savedPerson._id, 
         };
 
         setPeople(prevPeople => [...prevPeople, adaptedPerson]);

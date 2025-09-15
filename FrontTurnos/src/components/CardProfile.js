@@ -39,10 +39,13 @@ function CardProfile() {
   };
 
   const filteredPersons = Array.isArray(people)
-    ? people.filter((person) =>
+  ? people.filter(
+      (person) =>
+        person && // Ensure person object exists
+        person.name && // Ensure name property exists
         person.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : [];
+    )
+  : [];
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);

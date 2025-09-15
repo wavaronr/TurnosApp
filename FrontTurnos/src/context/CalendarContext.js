@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { holidays as getColombianHolidays } from '../utils/holidays.js';
 import { getWeekDays } from '../utils/getWeekDays.js';
+import { capitalize } from '../utils/textUtils.js';
 
 export const CalendarContext = createContext();
 
@@ -82,7 +83,7 @@ export const CalendarProvider = ({ children }) => {
       // Lógica para CREAR (POST)
       try {
         const payload = {
-          identificacion: personData.identificacion, // Corregido: usar personData.identificacion
+          identificacion: personData.identificacion,
           nombre: personData.nombre,
           apellido: personData.apellido,
           email: personData.email,
@@ -121,10 +122,25 @@ export const CalendarProvider = ({ children }) => {
     }
   };
 
+  const deletePerson = async (personId) => {
+    try {
+      const response = await fetch(`/api/personas/${personId}`, {
+        method: 'DELETE',
+      });
 
-  const deletePerson = (personId) => {
-    // TODO: Añadir lógica de eliminación en el backend
-    setPeople(people.filter(p => p.id !== personId));
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al eliminar el perfil');
+      }
+
+      // Si la eliminación en el backend fue exitosa, actualiza el estado local
+      setPeople(people.filter(p => p.id !== personId));
+      alert('Perfil eliminado exitosamente');
+
+    } catch (error) {
+      console.error('Error deleting person:', error);
+      alert(`Error al eliminar el perfil: ${error.message}`);
+    }
   };
 
   useEffect(() => {

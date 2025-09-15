@@ -14,6 +14,7 @@ function CardProfile() {
   const [editingPerson, setEditingPerson] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
 
+  //console.log(people)
   const handleEdit = (person) => {
     setEditingPerson(person);
     setIsCreating(false);

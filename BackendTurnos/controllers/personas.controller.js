@@ -72,3 +72,23 @@ exports.updatePersona = async (req, res) => {
     res.status(500).json({ message: 'Ocurrió un error inesperado en el servidor.' });
   }
 };
+
+// Eliminar una persona por ID
+exports.deletePersona = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const personaEliminada = await Persona.findByIdAndDelete(id);
+
+    if (!personaEliminada) {
+      return res.status(404).json({ message: 'Persona no encontrada' });
+    }
+
+    // En lugar de devolver un HTML, devuelve un JSON
+    res.json({ message: 'Persona eliminada exitosamente' });
+
+  } catch (error) {
+    console.error("Error al eliminar persona:", error);
+    res.status(500).json({ message: 'Ocurrió un error inesperado en el servidor.' });
+  }
+};

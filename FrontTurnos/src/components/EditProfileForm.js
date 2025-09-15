@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/EditProfileForm.css';
-
-// Función para capitalizar la primera letra de cada palabra
-const capitalize = (str) => {
-  if (!str) return '';
-  return str
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
-};
+import { capitalize } from '../utils/textUtils.js'; // Importar desde el archivo de utilidades
 
 function EditProfileForm({ person, onSubmit, onClose }) {
   const isEditMode = Boolean(person);

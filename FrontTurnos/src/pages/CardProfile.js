@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'; // 1. Importar useContext
 import '../css/Profile.css';
-import EditProfileForm from './EditProfileForm';
+import EditProfileForm from '../components/EditProfileForm';
 import { useCalendar } from '../context/CalendarContext';
 import { ProfileContext } from '../context/ProfileContext'; // 2. Importar ProfileContext
 

@@ -10,9 +10,11 @@ function AssignPersonModal({ people, onAssign, onClose, initialDay, weekDays, sh
   const { isPersonValidForShift } = useCalendar();
 
   const filteredPeople = useMemo(() => 
-    people.filter(person => 
-      person.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ), 
+    Array.isArray(people) 
+      ? people.filter(person => 
+          person && person.name && person.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      : [], 
     [people, searchTerm]
   );
 

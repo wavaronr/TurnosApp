@@ -1,5 +1,5 @@
 export const getDataPersons = async () => {
-  const url = `/db.json`;
+  const url = `/api/personas`;
   
   try {
     const response = await fetch(url);
@@ -19,7 +19,7 @@ export const getDataPersons = async () => {
 
 
 export const getAllDataPersons = async () => {
-  const url = `/db.json`;
+  const url = `/api/personas`;
   try {
     const response = await fetch(url);
     if (response.ok) {

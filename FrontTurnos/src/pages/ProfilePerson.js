@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllDataPersons } from './getDataPerson';
+import { getAllDataPersons } from '../services/getDataPerson';
 
 function ProfilePerson({ weekNumber }) {
   const [profiles, setProfiles] = useState([]);

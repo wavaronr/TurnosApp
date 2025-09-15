@@ -1,9 +1,9 @@
 import React from 'react';
 import '../css/calendario.css';
 
-import Calendarios from './Calendarios.js';
+import Calendarios from '../components/Calendarios.js';
 // Corregir la importación de YearInput añadiendo la extensión .js
-import YearInput from './yearinput.js';
+import YearInput from '../components/yearinput.js';
 import { getMonthsTitule } from '../utils/getMonthsTitule.js';
 // Corregir la importación del contexto añadiendo la extensión .js
 import { useCalendar } from '../context/CalendarContext.js';

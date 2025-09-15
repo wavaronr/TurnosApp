@@ -1,0 +1,101 @@
+/* Notificaciones con Estilo Glassmorphism */
+.notification-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.notification {
+  /* Aplicando Glassmorphism */
+  background: rgba(255, 255, 255, 0.7); /* Vidrio semi-transparente */
+  backdrop-filter: blur(10px); /* Desenfoque del fondo */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+  color: #333;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 350px;
+  
+  /* Animación de entrada y salida */
+  opacity: 0;
+  transform: translateX(20%);
+  animation: slideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards, 
+             fadeOut 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 4.5s forwards;
+
+  /* Borde izquierdo para indicar el tipo */
+  border-left: 5px solid transparent;
+}
+
+.notification.success {
+  border-left-color: #28a745; /* Verde éxito */
+}
+
+.notification.error {
+  border-left-color: #dc3545; /* Rojo error */
+}
+
+.notification-icon {
+  font-size: 1.5rem;
+}
+
+/* Usamos los mismos colores del borde para los íconos */
+.notification.success .notification-icon {
+  color: #28a745;
+}
+
+.notification.error .notification-icon {
+  color: #dc3545;
+}
+
+.notification-message {
+  /* Tipografía alineada con la guía de estilo */
+  font-size: 0.95rem;
+  line-height: 1.4;
+  font-weight: 500; /* Semi-bold para legibilidad */
+}
+
+/* Animaciones refinadas */
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20%);
+    height: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+}
+
+/* Responsividad para notificaciones */
+@media (max-width: 480px) {
+  .notification-container {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    align-items: center;
+  }
+  .notification {
+    max-width: 100%;
+    width: 100%;
+  }
+}

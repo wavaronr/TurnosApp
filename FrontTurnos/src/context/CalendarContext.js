@@ -9,7 +9,8 @@ export const useCalendar = () => {
   return useContext(CalendarContext);
 };
 
-export const CalendarProvider = ({ children }) => {
+// El provider ahora acepta addNotification como una prop
+export const CalendarProvider = ({ children, addNotification }) => {
   const [yearSet, setYearSet] = useState(new Date().getFullYear());
   const [monthCalendario, setMonthCalendario] = useState(new Date().getMonth());
   const [colombianHolidays, setColombianHolidays] = useState([]);
@@ -34,6 +35,7 @@ export const CalendarProvider = ({ children }) => {
       })
       .catch(error => {
         console.error('Error fetching people data:', error);
+        // Aquí podríamos usar una notificación si tuviéramos acceso a ella
         setPeople([]);
       });
 
@@ -44,20 +46,11 @@ export const CalendarProvider = ({ children }) => {
 
   const savePerson = async (personData, personIdForUpdate) => {
     if (personIdForUpdate) {
-      // Lógica para ACTUALIZAR (PUT)
       try {
         const response = await fetch(`/api/personas/${personIdForUpdate}`, {
           method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            nombre: personData.nombre,
-            apellido: personData.apellido,
-            email: personData.email,
-            telefono: personData.telefono,
-            cargo: personData.cargo,
-          }),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(personData),
         });
 
         if (!response.ok) {
@@ -66,37 +59,21 @@ export const CalendarProvider = ({ children }) => {
         }
 
         const updatedPerson = await response.json();
-
-        const adaptedPerson = {
-          ...updatedPerson,
-          id: updatedPerson._id, 
-        };
+        const adaptedPerson = { ...updatedPerson, id: updatedPerson._id };
 
         setPeople(people.map(p => (p.id === adaptedPerson.id ? adaptedPerson : p)));
-        alert('Perfil actualizado exitosamente');
+        addNotification('Perfil actualizado exitosamente', 'success');
 
       } catch (error) {
         console.error('Error updating person:', error);
-        alert(`Error al actualizar la persona: ${error.message}`);
+        addNotification(`Error: ${error.message}`, 'error');
       }
     } else {
-      // Lógica para CREAR (POST)
       try {
-        const payload = {
-          identificacion: personData.identificacion,
-          nombre: personData.nombre,
-          apellido: personData.apellido,
-          email: personData.email,
-          cargo: personData.cargo,
-          telefono: personData.telefono,
-        };
-
         const response = await fetch('/api/personas', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(personData),
         });
 
         if (!response.ok) {
@@ -106,18 +83,14 @@ export const CalendarProvider = ({ children }) => {
 
         const savedPersonResponse = await response.json();
         const savedPerson = savedPersonResponse.persona;
-
-        const adaptedPerson = {
-          ...savedPerson,
-          id: savedPerson._id, 
-        };
+        const adaptedPerson = { ...savedPerson, id: savedPerson._id };
 
         setPeople(prevPeople => [...prevPeople, adaptedPerson]);
-        alert('¡Persona creada exitosamente!');
+        addNotification('¡Persona creada exitosamente!', 'success');
 
       } catch (error) {
         console.error('Error saving person:', error);
-        alert(`Error al crear la persona: ${error.message}`);
+        addNotification(`Error: ${error.message}`, 'error');
       }
     }
   };
@@ -133,15 +106,16 @@ export const CalendarProvider = ({ children }) => {
         throw new Error(errorData.message || 'Error al eliminar el perfil');
       }
 
-      // Si la eliminación en el backend fue exitosa, actualiza el estado local
       setPeople(people.filter(p => p.id !== personId));
-      alert('Perfil eliminado exitosamente');
+      addNotification('Perfil eliminado exitosamente', 'success');
 
     } catch (error) {
       console.error('Error deleting person:', error);
-      alert(`Error al eliminar el perfil: ${error.message}`);
+      addNotification(`Error: ${error.message}`, 'error');
     }
   };
+
+  // ... (resto de las funciones que no usan alert)
 
   useEffect(() => {
     const fetchHolidays = async () => {
@@ -190,6 +164,7 @@ export const CalendarProvider = ({ children }) => {
   const saveTemporarySchedule = () => {
     setProgrammedSchedule(temporarySchedule);
     setIsDirty(false);
+    addNotification('Cambios de turno guardados localmente', 'success');
     console.log("Cambios guardados:", temporarySchedule);
   };
 
@@ -232,6 +207,7 @@ export const CalendarProvider = ({ children }) => {
     return people.filter(person => isPersonValidForShift(person, day, shiftType));
   };
 
+
   const value = {
     yearSet,
     setYearSet,
@@ -250,7 +226,7 @@ export const CalendarProvider = ({ children }) => {
     isPersonValidForShift,
     people,
     savePerson,
-    deletePerson
+    deletePerson,
   };
 
   return (

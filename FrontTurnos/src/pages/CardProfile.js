@@ -49,6 +49,7 @@ function CardProfile() {
         person.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
   : [];
+  console.log(people)
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);

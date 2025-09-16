@@ -69,11 +69,11 @@ const DayCell = React.memo(({ day, shiftsForDay, isHoliday }) => {
           <div 
             key={`${person.id}-${shift}`}
             className="person-bubble"
-            title={`${person.name} (${formatShiftTitle(shift)})`}
+            title={`${person.nombre} (${formatShiftTitle(shift)})`}
             // The bubble's color is its language.
             style={{ backgroundColor: shiftColors[shift] }}
           >
-            {getInitials(person.name)}
+            {getInitials(person.nombre)}
           </div>
         ))}
       </div>

@@ -6,7 +6,7 @@ function PersonList({ persons }) {
       <h5>Personas Asignadas:</h5>
       <ul>
         {persons.map((person) => (
-          <li key={person.id}>{person.name}</li>
+          <li key={person.id}>{person.nombre}</li>
         ))}
       </ul>
     </div>

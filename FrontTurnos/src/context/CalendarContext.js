@@ -25,7 +25,12 @@ export const CalendarProvider = ({ children, addNotification }) => {
     const fetchPeople = async () => {
       try {
         const data = await getPeople();
-        const adaptedData = data.map(person => ({ ...person, id: person._id }));
+        // SOLUCIÓN: Crear un campo 'name' unificado al cargar los datos
+        const adaptedData = data.map(person => ({
+          ...person,
+          id: person._id,
+          name: `${person.nombre || ''} ${person.apellido || ''}`.trim()
+        }));
         setPeople(adaptedData);
       } catch (error) {
         console.error('Error fetching people data:', error);
@@ -43,7 +48,14 @@ export const CalendarProvider = ({ children, addNotification }) => {
   const savePerson = async (personData, personIdForUpdate) => {
     try {
       const savedOrUpdatedPerson = await savePersonService(personData, personIdForUpdate);
-      const adaptedPerson = { ...savedOrUpdatedPerson.persona, id: savedOrUpdatedPerson.persona._id };
+      const rawPerson = savedOrUpdatedPerson.persona;
+
+      // SOLUCIÓN: Asegurar que el campo 'name' también se cree al guardar/actualizar
+      const adaptedPerson = {
+        ...rawPerson,
+        id: rawPerson._id,
+        name: `${rawPerson.nombre || ''} ${rawPerson.apellido || ''}`.trim()
+      };
 
       if (personIdForUpdate) {
         setPeople(people.map(p => (p.id === adaptedPerson.id ? adaptedPerson : p)));

@@ -9,7 +9,7 @@ const ShiftCard = ({ title, people, onAdd, onRemove, day, shiftType }) => (
     <div className="people-list">
       {people.map(person => (
         <span key={person.id} className="person-pill">
-          {person.name}
+          {person.nombre}
           <button onClick={() => onRemove(day, shiftType, person.id)} className="remove-person-btn">×</button>
         </span>
       ))}
@@ -45,7 +45,7 @@ function DayOffcanvas({ day, month, year, onClose }) {
       <div className="offcanvas-content" onClick={(e) => e.stopPropagation()}>
         <div className="offcanvas-header">
           <h2>{`Horarios para el ${day}/${month + 1}/${year}`}</h2>
-          <button onClick={onClose} className="close-btn">×</button>
+          <button onClick={onClose} className="close-btn">x</button>
         </div>
         <div className="offcanvas-body">
           <ShiftCard 

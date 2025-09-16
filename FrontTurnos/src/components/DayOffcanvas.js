@@ -1,17 +1,16 @@
-
 import React, { useState } from 'react';
 import '../css/DayOffcanvas.css';
 import AssignPersonModal from './AssignPersonModal';
-import { advisors as persons } from './personsData'; // Corregido
+import { useCalendar } from '../context/CalendarContext';
 
-const ShiftCard = ({ title, people, onAdd, onRemove }) => (
+const ShiftCard = ({ title, people, onAdd, onRemove, day, shiftType }) => (
   <div className="shift-card">
     <h4 className="shift-title">{title}</h4>
     <div className="people-list">
       {people.map(person => (
         <span key={person.id} className="person-pill">
-          {person.name}
-          <button onClick={() => onRemove(person.id)} className="remove-person-btn">×</button>
+          {person.nombre}
+          <button onClick={() => onRemove(day, shiftType, person.id)} className="remove-person-btn">×</button>
         </span>
       ))}
     </div>
@@ -19,25 +18,24 @@ const ShiftCard = ({ title, people, onAdd, onRemove }) => (
   </div>
 );
 
-function DayOffcanvas({ day, month, year, onClose, shifts, onUpdateShifts }) {
+function DayOffcanvas({ day, month, year, onClose }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentShift, setCurrentShift] = useState(null);
+  const { shifts, removeShift, assignShifts, getWeekDays, selectedWeek } = useCalendar();
+
+  const dayObject = new Date(year, month, day);
+  const dayString = dayObject.toISOString().split('T')[0];
+  const dayShifts = shifts[dayString] || { morning: [], afternoon: [], night: [], off: [] };
+
+  const weekDays = selectedWeek ? getWeekDays(selectedWeek, year) : [dayObject];
 
   const handleAdd = (shift) => {
     setCurrentShift(shift);
     setIsModalOpen(true);
   };
 
-  const handleRemove = (personId, shift) => {
-    const updatedShift = shifts[shift].filter(p => p.id !== personId);
-    onUpdateShifts({ ...shifts, [shift]: updatedShift });
-  };
-
-  const handleSelectPerson = (person) => {
-    if (currentShift) {
-      const updatedShift = [...shifts[currentShift], person];
-      onUpdateShifts({ ...shifts, [currentShift]: updatedShift });
-    }
+  const handleAssign = (person, days) => {
+    assignShifts(person, days, currentShift);
     setIsModalOpen(false);
     setCurrentShift(null);
   };
@@ -47,41 +45,50 @@ function DayOffcanvas({ day, month, year, onClose, shifts, onUpdateShifts }) {
       <div className="offcanvas-content" onClick={(e) => e.stopPropagation()}>
         <div className="offcanvas-header">
           <h2>{`Horarios para el ${day}/${month + 1}/${year}`}</h2>
-          <button onClick={onClose} className="close-btn">×</button>
+          <button onClick={onClose} className="close-btn">x</button>
         </div>
         <div className="offcanvas-body">
           <ShiftCard 
             title="Mañana" 
-            people={shifts.morning}
+            people={dayShifts.morning}
             onAdd={() => handleAdd('morning')}
-            onRemove={(personId) => handleRemove(personId, 'morning')}
+            onRemove={removeShift}
+            day={dayObject}
+            shiftType="morning"
           />
           <ShiftCard 
             title="Tarde" 
-            people={shifts.afternoon}
+            people={dayShifts.afternoon}
             onAdd={() => handleAdd('afternoon')}
-            onRemove={(personId) => handleRemove(personId, 'afternoon')}
+            onRemove={removeShift}
+            day={dayObject}
+            shiftType="afternoon"
           />
           <ShiftCard 
             title="Noche" 
-            people={shifts.night}
+            people={dayShifts.night}
             onAdd={() => handleAdd('night')}
-            onRemove={(personId) => handleRemove(personId, 'night')}
+            onRemove={removeShift}
+            day={dayObject}
+            shiftType="night"
           />
           <ShiftCard 
             title="Descanso" 
-            people={shifts.off}
+            people={dayShifts.off}
             onAdd={() => handleAdd('off')}
-            onRemove={(personId) => handleRemove(personId, 'off')}
+            onRemove={removeShift}
+            day={dayObject}
+            shiftType="off"
           />
         </div>
 
         {isModalOpen && (
           <AssignPersonModal
-            people={persons}
-            existingPeopleIds={currentShift ? shifts[currentShift].map(p => p.id) : []}
-            onSelect={handleSelectPerson}
             onClose={() => setIsModalOpen(false)}
+            onAssign={handleAssign}
+            initialDay={dayObject}
+            weekDays={weekDays}
+            shiftType={currentShift}
           />
         )}
       </div>

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
-function AssignPerson({ persons, selectedWeek, onAssign }) {
+function AssignPerson({ people, selectedWeek, onAssign }) {
   const [selectedPerson, setSelectedPerson] = useState('');
+
+//console.log(people)
 
   const handleAssign = () => {
     if (selectedPerson) {
@@ -18,9 +20,9 @@ function AssignPerson({ persons, selectedWeek, onAssign }) {
         onChange={(e) => setSelectedPerson(e.target.value)}
       >
         <option value="">Selecciona una persona</option>
-        {persons.map((person) => (
+        {people.map((person) => (
           <option key={person.id} value={person.id}>
-            {person.name}
+            {person.nombre}
           </option>
         ))}
       </select>

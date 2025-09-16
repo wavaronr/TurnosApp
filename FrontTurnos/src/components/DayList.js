@@ -3,8 +3,8 @@ import DayCard from './DayCard.js';
 import { getWeekDays } from '../utils/getWeekDays.js';
 import { useCalendar } from '../context/CalendarContext.js';
 
-function DayList({ people }) {
-  const { selectedWeek, yearSet } = useCalendar();
+function DayList() { // Remove people from props
+  const { selectedWeek, yearSet, people } = useCalendar(); // Get people from context
 
   if (!selectedWeek) {
     return null;
@@ -20,8 +20,8 @@ function DayList({ people }) {
           <DayCard 
             key={day.toISOString()} 
             day={day} 
-            people={people}
-            weekDays={weekDays} // Propagamos la semana completa a cada tarjeta de día
+            // No longer pass people as a prop
+            weekDays={weekDays}
           />
         ))}
       </ol>

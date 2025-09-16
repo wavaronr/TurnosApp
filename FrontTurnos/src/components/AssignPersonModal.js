@@ -1,20 +1,59 @@
-import React, { useState, useMemo, useContext } from 'react';
+
+import React, { useState, useMemo } from 'react';
 import '../css/AssignPersonModal.css';
 import { useCalendar } from '../context/CalendarContext.js';
 
-function AssignPersonModal({ people, onAssign, onClose, initialDay, weekDays, shiftType }) {
+// --- Funciones Helper --- (Lógica extraída para mayor claridad)
+
+/**
+ * Filtra una lista de personas basándose en un término de búsqueda (nombre, apellido o identificación).
+ * @param {Array} people - La lista de personas a filtrar.
+ * @param {string} searchTerm - El término a buscar.
+ * @returns {Array} - La lista de personas filtrada.
+ */
+const filterPeople = (people, searchTerm) => {
+  if (!Array.isArray(people)) return [];
+  const trimmedSearchTerm = searchTerm.trim().toLowerCase();
+
+  // Si el término de búsqueda está vacío, mostrar todas las personas válidas.
+  if (trimmedSearchTerm === '') {
+    return people;
+  }
+
+  return people.filter(person => {
+    // Combina nombre y apellido para una búsqueda más completa
+    const fullName = `${person?.name || ''} ${person?.apellido || ''}`.trim().toLowerCase();
+    const idMatch = person?.identificacion?.toString().trim().toLowerCase().includes(trimmedSearchTerm);
+
+    return fullName.includes(trimmedSearchTerm) || idMatch;
+  });
+};
+
+// --- Componente Principal ---
+
+function AssignPersonModal({ onAssign, onClose, initialDay, weekDays, shiftType }) {
+  // --- Hooks de Estado y Contexto ---
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [selectedDays, setSelectedDays] = useState({ [initialDay.toISOString().split('T')[0]]: true });
 
-  const { isPersonValidForShift } = useCalendar();
+  const { isPersonValidForShift, getValidPeopleForShift } = useCalendar();
 
-  const filteredPeople = useMemo(() => 
-    people.filter(person => 
-      person.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ), 
-    [people, searchTerm]
+  // --- Memorización de Datos ---
+
+  // Obtiene y memoriza la lista de personas válidas para este turno específico
+  const validPeopleForShift = useMemo(() =>
+    getValidPeopleForShift(initialDay, shiftType),
+    [initialDay, shiftType, getValidPeopleForShift]
   );
+
+  // Usa la función helper para filtrar las personas y memoriza el resultado
+  const filteredPeople = useMemo(() =>
+    filterPeople(validPeopleForShift, searchTerm),
+    [validPeopleForShift, searchTerm]
+  );
+
+  // --- Manejadores de Eventos ---
 
   const handleDayChange = (date) => {
     const dateString = date.toISOString().split('T')[0];
@@ -29,7 +68,9 @@ function AssignPersonModal({ people, onAssign, onClose, initialDay, weekDays, sh
       onAssign(selectedPerson, daysToAssign);
     }
   };
-  
+
+  // --- Renderizado ---
+
   const initialDayString = initialDay.toISOString().split('T')[0];
 
   return (
@@ -42,22 +83,27 @@ function AssignPersonModal({ people, onAssign, onClose, initialDay, weekDays, sh
         <div className="modal-body">
           <input
             type="text"
-            placeholder="Buscar persona..."
+            placeholder="Buscar por nombre, apellido o ID..."
             className="search-input"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
 
           <div className="people-list-container">
-            {filteredPeople.map(person => (
-              <div 
-                key={person.id} 
-                className={`person-item-modal ${selectedPerson?.id === person.id ? 'selected' : ''}`}
-                onClick={() => setSelectedPerson(person)}
-              >
-                {person.name}
-              </div>
-            ))}
+            {filteredPeople.length > 0 ? (
+                filteredPeople.map(person => (
+                    <div
+                        key={person.id}
+                        className={`person-item-modal ${selectedPerson?.id === person.id ? 'selected' : ''}`}
+                        onClick={() => setSelectedPerson(person)}
+                    >
+                        {/* Muestra nombre y apellido */}
+                        {`${person.nombre || ''} ${person.apellido || ''}`.trim()}
+                    </div>
+                ))
+            ) : (
+                <div className="no-people-found">No se encontraron coincidencias.</div>
+            )}
           </div>
 
           {selectedPerson && (

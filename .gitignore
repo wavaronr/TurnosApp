@@ -1,30 +1,15 @@
-
-# Dependencies
+# Dependencias y librerías
 /node_modules
-/BackendTurnos/node_modules
-/FrontTurnos/node_modules
 
-# Cache
+# Archivos de caché y compilación
 .cache
-/FrontTurnos/node_modules/.cache
+npm-debug.log
+yarn-error.log
 
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-/FrontTurnos/client.log
-/FrontTurnos/npm_start.log
-/FrontTurnos/server.log
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
 
-
-# Build output
-/build
-/dist
-
-# Other
+# Variables de entorno
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local

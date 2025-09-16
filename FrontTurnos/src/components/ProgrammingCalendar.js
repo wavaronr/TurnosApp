@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 import { useCalendar } from '../context/CalendarContext.js';
 import { shiftColors } from '../utils/shiftColors.js';
+import { createShortName } from '../utils/textUtils.js'; // 1. Importar la función central
 import '../css/ProgrammingCalendar.css';
 
 // --- Helper Functions ---
@@ -10,32 +11,7 @@ const formatShiftTitle = (shift) => {
   return titles[shift] || shift;
 };
 
-// The new, more robust initials function, as you commanded.
-const getInitials = (name) => {
-  if (!name) return '';
-  const names = name.trim().split(' ');
-  const firstName = names[0] || '';
-
-  // Case 1: Single word name (e.g., "Admin")
-  if (names.length === 1) {
-    return firstName.substring(0, 2).toUpperCase();
-  }
-
-  // Case 2: Multi-word name (e.g., "Juan Pérez")
-  const lastName = names[names.length - 1] || '';
-  const firstInitial = firstName[0] || '';
-  const lastInitial = lastName[0] || '';
-
-  // Add a middle initial from the *third* letter of the first name.
-  // This resolves conflicts like "Juan" (JAP) vs "Julio" (JLP).
-  let middleInitial = '';
-  if (firstName.length > 2) {
-    middleInitial = firstName[2];
-  } 
-
-  return (firstInitial + middleInitial + lastInitial).toUpperCase();
-};
-
+// La función local getInitials ha sido eliminada.
 
 // --- Components ---
 
@@ -50,36 +26,48 @@ const ShiftLegend = () => (
   </div>
 );
 
-// DayCell is now a canvas for the bubbles.
 const DayCell = React.memo(({ day, shiftsForDay, isHoliday }) => {
+  // Aplanamos los turnos para tener una lista simple de personas
   const shiftItems = useMemo(() => {
     if (!shiftsForDay) return [];
-    // Flatten the structure to a simple list of people and their shifts.
-    return Object.entries(shiftsForDay).flatMap(([shift, people]) => 
+    return Object.entries(shiftsForDay).flatMap(([shift, people]) =>
       people.map(person => ({ person, shift }))
     );
   }, [shiftsForDay]);
 
+  // 2. Generar un mapa de siglas para todas las personas en esta celda
+  const shortNamesMap = useMemo(() => {
+    const allPeopleInCell = shiftItems.map(item => item.person);
+    return allPeopleInCell.reduce((acc, person) => {
+      if (!acc[person.id]) { // Evita procesar la misma persona dos veces
+        const existingShorts = Object.values(acc);
+        // Usamos la función centralizada y pasamos las siglas existentes en esta celda
+        acc[person.id] = createShortName(person.name, existingShorts);
+      }
+      return acc;
+    }, {});
+  }, [shiftItems]);
+
   return (
     <div className={`day-cell-pro ${isHoliday ? 'holiday' : ''} ${shiftItems.length === 0 ? 'empty-day' : ''}`}>
       <div className="day-number-pro">{day}</div>
-      {/* This list will now contain and wrap the bubbles. */}
       <div className="people-list-pro">
         {shiftItems.map(({ person, shift }) => (
-          <div 
+          <div
             key={`${person.id}-${shift}`}
             className="person-bubble"
-            title={`${person.name} (${formatShiftTitle(shift)})`}
-            // The bubble's color is its language.
+            title={`${person.name} (${formatShiftTitle(shift)})`} // Se usa person.name
             style={{ backgroundColor: shiftColors[shift] }}
           >
-            {getInitials(person.name)}
+            {/* 3. Usar el mapa para mostrar la sigla correcta */}
+            {shortNamesMap[person.id]}
           </div>
         ))}
       </div>
     </div>
   );
 });
+
 
 function ProgrammingCalendar({ date }) {
   const { shifts, colombianHolidays } = useCalendar();

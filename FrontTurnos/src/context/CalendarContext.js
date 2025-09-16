@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { holidays as getColombianHolidays } from '../utils/holidays.js';
 import { getWeekDays } from '../utils/getWeekDays.js';
 import { capitalize } from '../utils/textUtils.js';
+import { getPeople, savePerson as savePersonService, deletePerson as deletePersonService } from '../services/peopleService.js';
 
 export const CalendarContext = createContext();
 
@@ -9,7 +10,6 @@ export const useCalendar = () => {
   return useContext(CalendarContext);
 };
 
-// El provider ahora acepta addNotification como una prop
 export const CalendarProvider = ({ children, addNotification }) => {
   const [yearSet, setYearSet] = useState(new Date().getFullYear());
   const [monthCalendario, setMonthCalendario] = useState(new Date().getMonth());
@@ -22,100 +22,50 @@ export const CalendarProvider = ({ children, addNotification }) => {
   const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
-    fetch('/api/personas')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error al obtener los datos de las personas');
-        }
-        return response.json();
-      })
-      .then(data => {
+    const fetchPeople = async () => {
+      try {
+        const data = await getPeople();
         const adaptedData = data.map(person => ({ ...person, id: person._id }));
         setPeople(adaptedData);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error fetching people data:', error);
-        // Aquí podríamos usar una notificación si tuviéramos acceso a ella
+        addNotification('Error al obtener los datos de las personas', 'error');
         setPeople([]);
-      });
+      }
+    };
 
+    fetchPeople();
     setProgrammedSchedule({});
     setTemporarySchedule({});
     setIsDirty(false);
   }, []);
 
   const savePerson = async (personData, personIdForUpdate) => {
-    if (personIdForUpdate) {
-      try {
-        const response = await fetch(`/api/personas/${personIdForUpdate}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(personData),
-        });
+    try {
+      const savedOrUpdatedPerson = await savePersonService(personData, personIdForUpdate);
+      const adaptedPerson = { ...savedOrUpdatedPerson.persona, id: savedOrUpdatedPerson.persona._id };
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Error al actualizar la persona');
-        }
-
-        const updatedPerson = await response.json();
-        const adaptedPerson = { ...updatedPerson, id: updatedPerson._id };
-
+      if (personIdForUpdate) {
         setPeople(people.map(p => (p.id === adaptedPerson.id ? adaptedPerson : p)));
         addNotification('Perfil actualizado exitosamente', 'success');
-
-      } catch (error) {
-        console.error('Error updating person:', error);
-        addNotification(`Error: ${error.message}`, 'error');
-      }
-    } else {
-      try {
-        const response = await fetch('/api/personas', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(personData),
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Error al crear la persona');
-        }
-
-        const savedPersonResponse = await response.json();
-        const savedPerson = savedPersonResponse.persona;
-        const adaptedPerson = { ...savedPerson, id: savedPerson._id };
-
+      } else {
         setPeople(prevPeople => [...prevPeople, adaptedPerson]);
         addNotification('¡Persona creada exitosamente!', 'success');
-
-      } catch (error) {
-        console.error('Error saving person:', error);
-        addNotification(`Error: ${error.message}`, 'error');
       }
+    } catch (error) {
+      addNotification(`Error: ${error.message}`, 'error');
     }
   };
 
   const deletePerson = async (personId) => {
     try {
-      const response = await fetch(`/api/personas/${personId}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al eliminar el perfil');
-      }
-
+      await deletePersonService(personId);
       setPeople(people.filter(p => p.id !== personId));
       addNotification('Perfil eliminado exitosamente', 'success');
-
     } catch (error) {
-      console.error('Error deleting person:', error);
       addNotification(`Error: ${error.message}`, 'error');
     }
   };
-
-  // ... (resto de las funciones que no usan alert)
 
   useEffect(() => {
     const fetchHolidays = async () => {

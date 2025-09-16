@@ -122,24 +122,30 @@ export const CalendarProvider = ({ children, addNotification }) => {
     const dayString = day.toISOString().split('T')[0];
     
     if (!selectedWeek) {
-      return true;
+      return true; // Si no hay semana seleccionada, no aplicar ninguna restricción
     }
 
     const weekDays = getWeekDays(selectedWeek, yearSet).map(d => d.toISOString().split('T')[0]);
 
+    // Verifica si la persona ya está asignada a OTRO turno en el mismo día
     const shiftsToday = schedule[dayString] || {};
     for (const sType in shiftsToday) {
-      if (shiftsToday[sType].some(p => p.id === person.id)) return false;
+      if (sType !== shiftType && shiftsToday[sType].some(p => p.id === person.id)) {
+        return false;
+      }
     }
     
+    // Lógica para el turno de noche del día anterior
     const yesterday = new Date(day);
     yesterday.setDate(day.getDate() - 1);
     const yesterdayString = yesterday.toISOString().split('T')[0];
     const shiftsYesterday = schedule[yesterdayString] || {};
     if (shiftsYesterday.night?.some(p => p.id === person.id)) {
+      // Si trabajó la noche anterior, solo puede tener turno 'night' o 'off' hoy
       if (shiftType !== 'night' && shiftType !== 'off') return false;
     }
 
+    // Lógica para el límite de 6 turnos por semana
     let workShiftCount = 0;
     weekDays.forEach(weekDayString => {
       const dayShifts = schedule[weekDayString] || {};
@@ -148,12 +154,15 @@ export const CalendarProvider = ({ children, addNotification }) => {
       });
     });
 
+    // Si ya tiene 6 turnos, solo se le puede asignar un día libre ('off')
     if (workShiftCount >= 6 && shiftType !== 'off') return false;
 
+    // Si todas las validaciones pasan, la persona es válida
     return true;
   };
 
   const getValidPeopleForShift = (day, shiftType) => {
+    // Ahora filtra correctamente, permitiendo reasignar el mismo turno
     return people.filter(person => isPersonValidForShift(person, day, shiftType));
   };
 

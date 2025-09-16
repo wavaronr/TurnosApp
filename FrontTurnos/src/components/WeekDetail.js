@@ -8,12 +8,11 @@ import '../css/WeekDetail.css';
 function WeekDetail() { 
   const { 
     selectedWeek, 
-    people,
     isDirty,
     saveTemporarySchedule
   } = useCalendar(); 
   const { profile } = useContext(ProfileContext);
-
+ 
   return (
     <div>
       {profile?.role === 'ADM' && isDirty && (
@@ -25,7 +24,7 @@ function WeekDetail() {
         </div>
       )}
 
-      {selectedWeek && <DayList people={people} />}
+      {selectedWeek && <DayList />}
     </div>
   );
 }

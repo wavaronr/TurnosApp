@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 function AssignPerson({ people, selectedWeek, onAssign }) {
   const [selectedPerson, setSelectedPerson] = useState('');
 
-console.log(people)
+//console.log(people)
 
   const handleAssign = () => {
     if (selectedPerson) {
@@ -22,7 +22,7 @@ console.log(people)
         <option value="">Selecciona una persona</option>
         {people.map((person) => (
           <option key={person.id} value={person.id}>
-            {person.name}
+            {person.nombre}
           </option>
         ))}
       </select>

@@ -3,36 +3,13 @@ import '../css/WeekDetail.css';
 import AssignPersonModal from './AssignPersonModal.js';
 import { useCalendar } from '../context/CalendarContext.js';
 import { ProfileContext } from '../context/ProfileContext.js';
+import { createShortName } from '../utils/textUtils.js'; // Importamos la función centralizada
 
 const ShiftSection = ({ title, people, onAdd, onRemove, profile }) => {
+  // Usamos la nueva función de utilidad para generar las siglas
   const finalShortNames = people.reduce((acc, person) => {
-    if (!person.name) {
-      acc[person.id] = '';
-      return acc;
-    }
-    const nameParts = person.name.toLowerCase().split(' ').filter(Boolean);
-    if (nameParts.length === 0) {
-      acc[person.id] = '';
-      return acc;
-    }
-    const firstName = nameParts[0];
-    const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
-    let shortName = `${firstName.charAt(0)}${lastName ? '.' + lastName : ''}`;
-    let prefixLength = 1;
-    while (Object.values(acc).includes(shortName) && firstName.length > prefixLength) {
-      prefixLength++;
-      shortName = `${firstName.substring(0, prefixLength)}${lastName ? '.' + lastName : ''}`;
-    }
-    if (Object.values(acc).includes(shortName)) {
-        let count = 2;
-        let newShortName = `${shortName}${count}`;
-        while(Object.values(acc).includes(newShortName)){
-            count++;
-            newShortName = `${shortName}${count}`;
-        }
-        shortName = newShortName;
-    }
-    acc[person.id] = shortName;
+    // Pasamos las siglas que ya existen (`Object.values(acc)`) para evitar colisiones
+    acc[person.id] = createShortName(person.name, Object.values(acc));
     return acc;
   }, {});
 
@@ -56,7 +33,7 @@ function DayCard({ day, people, weekDays }) {
   const {
     colombianHolidays,
     shifts,
-    assignShifts, // <-- Usamos la nueva función del contexto
+    assignShifts,
     removeShift,
     getValidPeopleForShift,
   } = useCalendar();
@@ -91,7 +68,6 @@ function DayCard({ day, people, weekDays }) {
     setIsModalOpen(true);
   };
 
-  // El manejador ahora es mucho más simple y directo
   const handleAssignToDays = (person, selectedDays) => {
     assignShifts(person, selectedDays, selectedShift);
     setIsModalOpen(false);

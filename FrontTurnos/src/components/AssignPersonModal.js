@@ -1,21 +1,25 @@
-import React, { useState, useMemo, useContext } from 'react';
+import React, { useState, useMemo } from 'react';
 import '../css/AssignPersonModal.css';
 import { useCalendar } from '../context/CalendarContext.js';
 
+// Accept the `people` prop from `DayCard.js`
 function AssignPersonModal({ people, onAssign, onClose, initialDay, weekDays, shiftType }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [selectedDays, setSelectedDays] = useState({ [initialDay.toISOString().split('T')[0]]: true });
 
+  // We only need `isPersonValidForShift` from the context now.
+  // The list of people comes directly from the props.
   const { isPersonValidForShift } = useCalendar();
 
-  const filteredPeople = useMemo(() => 
-    Array.isArray(people) 
-      ? people.filter(person => 
+  const filteredPeople = useMemo(() =>
+    // Use the `people` prop, which is already filtered by the parent.
+    Array.isArray(people)
+      ? people.filter(person =>
           person && person.name && person.name.toLowerCase().includes(searchTerm.toLowerCase())
         )
-      : [], 
-    [people, searchTerm]
+      : [],
+    [people, searchTerm] // The dependency is now the `people` prop.
   );
 
   const handleDayChange = (date) => {
@@ -51,6 +55,7 @@ function AssignPersonModal({ people, onAssign, onClose, initialDay, weekDays, sh
           />
 
           <div className="people-list-container">
+            {/* This will now correctly display the filtered list from DayCard */}
             {filteredPeople.map(person => (
               <div 
                 key={person.id} 

@@ -80,7 +80,11 @@
 }
 
 .day-cell-pro.sunday {
-  background-color: #d0dafc; /* a2c8ee Gris muy claro para los domingos */
+  background-color: #d9e2ff; /* a2c8ee Gris muy claro para los domingos */
+  
+}
+.day-cell-pro.sunday .day-number-pro {
+  color: #4B0082;
 }
 
 .day-cell-pro.holiday .day-number-pro {

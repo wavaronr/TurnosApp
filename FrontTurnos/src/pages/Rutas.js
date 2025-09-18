@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
+import { useCalendar } from '../context/CalendarContext.js';
 import '../css/Rutas.css';
 
-// Helper to get the first and last day of a month
 const getMonthDateRange = (year, month) => {
     const startDate = new Date(year, month, 1);
     const endDate = new Date(year, month + 1, 0);
@@ -13,70 +13,78 @@ const getMonthDateRange = (year, month) => {
 };
 
 const Rutas = () => {
+  const { yearSet, monthCalendario, setYearSet, setMonthCalendario, shifts } = useCalendar();
   const [rutas, setRutas] = useState([]);
-  const [startDate, setStartDate] = useState(getMonthDateRange(2025, 8).start);
-  const [endDate, setEndDate] = useState(getMonthDateRange(2025, 8).end);
-  const [displayMonth, setDisplayMonth] = useState(new Date(2025, 8));
+  const [startDate, setStartDate] = useState(getMonthDateRange(yearSet, monthCalendario).start);
+  const [endDate, setEndDate] = useState(getMonthDateRange(yearSet, monthCalendario).end);
+
+  useEffect(() => {
+    const range = getMonthDateRange(yearSet, monthCalendario);
+    setStartDate(range.start);
+    setEndDate(range.end);
+  }, [yearSet, monthCalendario]);
 
   useEffect(() => {
     const processScheduleData = (data, start, end) => {
-      const rutasData = [];
-      if (!data || !data.days) return [];
+        const rutasData = [];
+        if (!data) return [];
 
-      const startDateObj = start ? new Date(start + 'T00:00:00Z') : null;
-      const endDateObj = end ? new Date(end + 'T23:59:59Z') : null;
+        const startDateObj = start ? new Date(start + 'T00:00:00Z') : null;
+        const endDateObj = end ? new Date(end + 'T23:59:59Z') : null;
 
-      Object.keys(data.days).forEach(dateKey => {
-        const scheduleDate = new Date(dateKey + 'T00:00:00Z');
-        
-        if ((startDateObj && scheduleDate < startDateObj) || (endDateObj && scheduleDate > endDateObj)) {
-          return;
-        }
+        Object.keys(data).forEach(dateKey => {
+            const scheduleDate = new Date(dateKey + 'T00:00:00Z');
 
-        const daySchedule = data.days[dateKey];
-        const formattedDate = scheduleDate.toLocaleDateString('es-ES', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
+            if ((startDateObj && scheduleDate < startDateObj) || (endDateObj && scheduleDate > endDateObj)) {
+                return;
+            }
 
-        const processShift = (shift, origen, destino, hora) => {
-          if (daySchedule[shift]) {
-            daySchedule[shift].forEach(person => {
-              rutasData.push({ CEDULA: person.id, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: origen, DESTINO: destino, HORA: hora });
-            });
-          }
-        };
+            const daySchedule = data[dateKey];
+            const formattedDate = scheduleDate.toLocaleDateString('es-ES', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
 
-        processShift('morning', 'CASA', 'REDEBAN', '06:00:00');
-        processShift('afternoon', 'REDEBAN', 'CASA', '22:00:00');
+            const processShift = (shift, origen, destino, hora) => {
+                if (daySchedule[shift]) {
+                    daySchedule[shift].forEach(person => {
+                        rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: origen, DESTINO: destino, HORA: hora });
+                    });
+                }
+            };
 
-        if (daySchedule.night) {
-          daySchedule.night.forEach(person => {
-            rutasData.push({ CEDULA: person.id, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: 'CASA', DESTINO: 'REDEBAN', HORA: '22:00:00' });
-            const nextDay = new Date(scheduleDate.getTime() + 24 * 60 * 60 * 1000);
-            const nextDayFormatted = nextDay.toLocaleDateString('es-ES', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
-            rutasData.push({ CEDULA: person.id, NOMBRE: person.name, FECHA: nextDayFormatted, ORIGEN: 'REDEBAN', DESTINO: 'CASA', HORA: '06:00:00' });
-          });
-        }
-      });
-      return rutasData;
+            processShift('morning', 'CASA', 'REDEBAN', '06:00:00');
+            processShift('afternoon', 'REDEBAN', 'CASA', '22:00:00');
+
+            if (daySchedule.night) {
+                daySchedule.night.forEach(person => {
+                    rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: 'CASA', DESTINO: 'REDEBAN', HORA: '22:00:00' });
+                    const nextDay = new Date(scheduleDate.getTime() + 24 * 60 * 60 * 1000);
+                    const nextDayFormatted = nextDay.toLocaleDateString('es-ES', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
+                    rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: nextDayFormatted, ORIGEN: 'REDEBAN', DESTINO: 'CASA', HORA: '06:00:00' });
+                });
+            }
+        });
+        return rutasData;
     };
 
-    try {
-      const scheduleData = require('../data/september-2025-schedule.json');
-      const processedRutas = processScheduleData(scheduleData, startDate, endDate);
-      setRutas(processedRutas);
-    } catch(error) {
-      console.error("Error processing schedule data:", error);
-      setRutas([]);
-    }
-  }, [startDate, endDate]);
+    const processedRutas = processScheduleData(shifts, startDate, endDate);
+    setRutas(processedRutas);
+  }, [shifts, startDate, endDate]);
 
   const handleMonthChange = (increment) => {
-    setDisplayMonth(prevDate => {
-        const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() + increment, 1);
-        const { start, end } = getMonthDateRange(newDate.getFullYear(), newDate.getMonth());
-        setStartDate(start);
-        setEndDate(end);
-        return newDate;
-    });
+    if (increment < 0) {
+        if (monthCalendario === 0) {
+            setMonthCalendario(11);
+            setYearSet(yearSet - 1);
+        } else {
+            setMonthCalendario(monthCalendario - 1);
+        }
+    } else {
+        if (monthCalendario === 11) {
+            setMonthCalendario(0);
+            setYearSet(yearSet + 1);
+        } else {
+            setMonthCalendario(monthCalendario + 1);
+        }
+    }
   };
 
   const handleExport = () => {
@@ -86,13 +94,15 @@ const Rutas = () => {
     XLSX.writeFile(workbook, "rutas.xlsx");
   };
 
+  const displayDate = new Date(yearSet, monthCalendario);
+
   return (
     <div className="rutas-container">
       <h2>Gestión de Rutas</h2>
       <div className="filters-container">
         <div className="month-navigator">
           <button onClick={() => handleMonthChange(-1)}>&lt; Anterior</button>
-          <span>{displayMonth.toLocaleString('es-ES', { month: 'long', year: 'numeric' })}</span>
+          <span>{displayDate.toLocaleString('es-ES', { month: 'long', year: 'numeric' })}</span>
           <button onClick={() => handleMonthChange(1)}>Siguiente &gt;</button>
         </div>
         <div className="date-filters">

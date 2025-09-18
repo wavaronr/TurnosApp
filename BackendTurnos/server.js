@@ -12,7 +12,10 @@ app.use(express.json());
 
 // Rutas
 const personasRouter = require('./routes/personas.routes.js');
+const programmingRouter = require('./routes/programming.routes.js'); // Importar rutas de programación
+
 app.use('/api/personas', personasRouter);
+app.use('/api/programming', programmingRouter); // Usar rutas de programación
 
 // Ruta de prueba
 app.get('/', (req, res) => {

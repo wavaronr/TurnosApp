@@ -79,6 +79,10 @@
   background-color: #fff7e6; /* Tono naranja muy claro para festivos */
 }
 
+.day-cell-pro.sunday {
+  background-color: #d0dafc; /* a2c8ee Gris muy claro para los domingos */
+}
+
 .day-cell-pro.holiday .day-number-pro {
   color: #FF8C00;
   font-weight: 700;

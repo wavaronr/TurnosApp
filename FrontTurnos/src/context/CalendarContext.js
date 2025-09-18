@@ -1,8 +1,10 @@
+
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { holidays as getColombianHolidays } from '../utils/holidays.js';
 import { getWeekDays } from '../utils/getWeekDays.js';
 import { capitalize } from '../utils/textUtils.js';
 import { getPeople, savePerson as savePersonService, deletePerson as deletePersonService } from '../services/peopleService.js';
+import { getProgramming, saveProgramming } from '../services/programmingService.js';
 
 export const CalendarContext = createContext();
 
@@ -16,16 +18,12 @@ export const CalendarProvider = ({ children, addNotification }) => {
   const [colombianHolidays, setColombianHolidays] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [people, setPeople] = useState([]);
-
-  const [programmedSchedule, setProgrammedSchedule] = useState({});
-  const [temporarySchedule, setTemporarySchedule] = useState({});
-  const [isDirty, setIsDirty] = useState(false);
+  const [shifts, setShifts] = useState({});
 
   useEffect(() => {
     const fetchPeople = async () => {
       try {
         const data = await getPeople();
-        // SOLUCIÓN: Crear un campo 'name' unificado al cargar los datos
         const adaptedData = data.map(person => ({
           ...person,
           id: person._id,
@@ -40,17 +38,36 @@ export const CalendarProvider = ({ children, addNotification }) => {
     };
 
     fetchPeople();
-    setProgrammedSchedule({});
-    setTemporarySchedule({});
-    setIsDirty(false);
   }, []);
+
+  useEffect(() => {
+    const fetchProgramming = async () => {
+      try {
+        const programming = await getProgramming(yearSet, monthCalendario + 1); 
+        setShifts(programming.schedule || {});
+      } catch (error) {
+        console.error('Error fetching programming:', error);
+        addNotification('Error al cargar la programación', 'error');
+      }
+    };
+
+    fetchProgramming();
+  }, [yearSet, monthCalendario]);
+
+  const saveShifts = async (newShifts) => {
+    try {
+      await saveProgramming(yearSet, monthCalendario + 1, newShifts);
+      addNotification('Programación guardada exitosamente', 'success');
+    } catch (error) {
+      addNotification('Error al guardar la programación', 'error');
+    }
+  };
 
   const savePerson = async (personData, personIdForUpdate) => {
     try {
       const savedOrUpdatedPerson = await savePersonService(personData, personIdForUpdate);
       const rawPerson = savedOrUpdatedPerson.persona;
 
-      // SOLUCIÓN: Asegurar que el campo 'name' también se cree al guardar/actualizar
       const adaptedPerson = {
         ...rawPerson,
         id: rawPerson._id,
@@ -88,23 +105,22 @@ export const CalendarProvider = ({ children, addNotification }) => {
   }, [yearSet]);
 
   const assignShifts = (person, days, shiftType) => {
-    setTemporarySchedule(currentSchedule => {
-      const newShifts = JSON.parse(JSON.stringify(currentSchedule));
-      days.forEach(day => {
-        if (isPersonValidForShift(person, day, shiftType, newShifts)) {
-          const dayString = day.toISOString().split('T')[0];
-          if (!newShifts[dayString]) {
-            newShifts[dayString] = { morning: [], afternoon: [], night: [], off: [] };
-          }
-          const personExists = newShifts[dayString][shiftType].some(p => p.id === person.id);
-          if (!personExists) {
-            newShifts[dayString][shiftType].push(person);
-          }
+    const newShifts = JSON.parse(JSON.stringify(shifts));
+    days.forEach(day => {
+      if (isPersonValidForShift(person, day, shiftType, newShifts)) {
+        const dayString = day.toISOString().split('T')[0];
+        if (!newShifts[dayString]) {
+          newShifts[dayString] = { morning: [], afternoon: [], night: [], off: [] };
         }
-      });
-      return newShifts;
+        const personExists = newShifts[dayString][shiftType].some(p => p.id === person.id);
+        if (!personExists) {
+          newShifts[dayString][shiftType].push(person);
+        }
+      }
     });
-    setIsDirty(true);
+    setShifts(newShifts);
+    saveShifts(newShifts);
+    addNotification('Turno asignado exitosamente.', 'success');
   };
 
   const assignShift = (day, shiftType, person) => {
@@ -112,34 +128,25 @@ export const CalendarProvider = ({ children, addNotification }) => {
   };
 
   const removeShift = (day, shiftType, personId) => {
-    setTemporarySchedule(currentSchedule => {
-      const newShifts = JSON.parse(JSON.stringify(currentSchedule));
-      const dayString = day.toISOString().split('T')[0];
-      if (newShifts[dayString] && newShifts[dayString][shiftType]) {
-        newShifts[dayString][shiftType] = newShifts[dayString][shiftType].filter(p => p.id !== personId);
-      }
-      return newShifts;
-    });
-    setIsDirty(true);
+    const newShifts = JSON.parse(JSON.stringify(shifts));
+    const dayString = day.toISOString().split('T')[0];
+    if (newShifts[dayString] && newShifts[dayString][shiftType]) {
+      newShifts[dayString][shiftType] = newShifts[dayString][shiftType].filter(p => p.id !== personId);
+    }
+    setShifts(newShifts);
+    saveShifts(newShifts);
+    addNotification('Turno eliminado exitosamente.', 'success');
   };
 
-  const saveTemporarySchedule = () => {
-    setProgrammedSchedule(temporarySchedule);
-    setIsDirty(false);
-    addNotification('Cambios de turno guardados localmente', 'success');
-    console.log("Cambios guardados:", temporarySchedule);
-  };
-
-  const isPersonValidForShift = (person, day, shiftType, schedule = temporarySchedule) => {
+  const isPersonValidForShift = (person, day, shiftType, schedule = shifts) => {
     const dayString = day.toISOString().split('T')[0];
     
     if (!selectedWeek) {
-      return true; // Si no hay semana seleccionada, no aplicar ninguna restricción
+      return true; 
     }
 
     const weekDays = getWeekDays(selectedWeek, yearSet).map(d => d.toISOString().split('T')[0]);
 
-    // Verifica si la persona ya está asignada a OTRO turno en el mismo día
     const shiftsToday = schedule[dayString] || {};
     for (const sType in shiftsToday) {
       if (sType !== shiftType && shiftsToday[sType].some(p => p.id === person.id)) {
@@ -147,17 +154,14 @@ export const CalendarProvider = ({ children, addNotification }) => {
       }
     }
     
-    // Lógica para el turno de noche del día anterior
     const yesterday = new Date(day);
     yesterday.setDate(day.getDate() - 1);
     const yesterdayString = yesterday.toISOString().split('T')[0];
     const shiftsYesterday = schedule[yesterdayString] || {};
     if (shiftsYesterday.night?.some(p => p.id === person.id)) {
-      // Si trabajó la noche anterior, solo puede tener turno 'night' o 'off' hoy
       if (shiftType !== 'night' && shiftType !== 'off') return false;
     }
 
-    // Lógica para el límite de 6 turnos por semana
     let workShiftCount = 0;
     weekDays.forEach(weekDayString => {
       const dayShifts = schedule[weekDayString] || {};
@@ -166,15 +170,12 @@ export const CalendarProvider = ({ children, addNotification }) => {
       });
     });
 
-    // Si ya tiene 6 turnos, solo se le puede asignar un día libre ('off')
     if (workShiftCount >= 6 && shiftType !== 'off') return false;
 
-    // Si todas las validaciones pasan, la persona es válida
     return true;
   };
 
   const getValidPeopleForShift = (day, shiftType) => {
-    // Ahora filtra correctamente, permitiendo reasignar el mismo turno
     return people.filter(person => isPersonValidForShift(person, day, shiftType));
   };
 
@@ -187,12 +188,10 @@ export const CalendarProvider = ({ children, addNotification }) => {
     colombianHolidays,
     selectedWeek,
     setSelectedWeek,
-    shifts: temporarySchedule,
+    shifts,
     assignShift,
     assignShifts,
     removeShift,
-    saveTemporarySchedule,
-    isDirty,
     getValidPeopleForShift,
     isPersonValidForShift,
     people,

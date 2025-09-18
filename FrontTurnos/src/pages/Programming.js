@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ProgrammingCalendar from '../components/ProgrammingCalendar.js';
+import { useCalendar } from '../context/CalendarContext.js';
 import '../css/Programming.css';
 
 function Programming() {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const { yearSet, setYearSet, monthCalendario, setMonthCalendario } = useCalendar();
 
   const goToPreviousMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+    if (monthCalendario === 0) {
+      setMonthCalendario(11);
+      setYearSet(yearSet - 1);
+    } else {
+      setMonthCalendario(monthCalendario - 1);
+    }
   };
 
   const goToNextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+    if (monthCalendario === 11) {
+      setMonthCalendario(0);
+      setYearSet(yearSet + 1);
+    } else {
+      setMonthCalendario(monthCalendario + 1);
+    }
   };
+
+  const currentDate = new Date(yearSet, monthCalendario);
 
   return (
     <div className="programming-container">

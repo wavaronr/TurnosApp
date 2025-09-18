@@ -1,4 +1,4 @@
-import WeekDetail from './WeekDetail.js';
+import { WeekDetail } from './WeekDetail.js'; // <-- CORRECCIÓN: Usar importación nombrada
 import { getMonthsTitule } from '../utils/getMonthsTitule.js';
 import { useCalendar } from '../context/CalendarContext.js';
 

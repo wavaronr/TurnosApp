@@ -3,6 +3,8 @@ import * as XLSX from 'xlsx';
 import { useCalendar } from '../context/CalendarContext.js';
 import '../css/Rutas.css';
 
+const weekDayMap = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
 const getMonthDateRange = (year, month) => {
     const startDate = new Date(year, month, 1);
     const endDate = new Date(year, month + 1, 0);
@@ -10,6 +12,24 @@ const getMonthDateRange = (year, month) => {
         start: startDate.toISOString().split('T')[0],
         end: endDate.toISOString().split('T')[0],
     };
+};
+
+const isRouteRequired = (person, shift, date) => {
+    if (!person.routeConfig || !person.routeConfig[shift] || !person.routeConfig[shift].required) {
+        return false;
+    }
+
+    const config = person.routeConfig[shift];
+    if (config.type === 'all') {
+        return true;
+    }
+
+    if (config.type === 'specific') {
+        const dayOfWeek = weekDayMap[date.getUTCDay()];
+        return config.days.includes(dayOfWeek);
+    }
+
+    return false;
 };
 
 const Rutas = () => {
@@ -45,7 +65,9 @@ const Rutas = () => {
             const processShift = (shift, origen, destino, hora) => {
                 if (daySchedule[shift]) {
                     daySchedule[shift].forEach(person => {
-                        rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: origen, DESTINO: destino, HORA: hora });
+                        if (isRouteRequired(person, shift, scheduleDate)) {
+                           rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: origen, DESTINO: destino, HORA: hora });
+                        }
                     });
                 }
             };
@@ -55,10 +77,12 @@ const Rutas = () => {
 
             if (daySchedule.night) {
                 daySchedule.night.forEach(person => {
-                    rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: 'CASA', DESTINO: 'REDEBAN', HORA: '22:00:00' });
-                    const nextDay = new Date(scheduleDate.getTime() + 24 * 60 * 60 * 1000);
-                    const nextDayFormatted = nextDay.toLocaleDateString('es-ES', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
-                    rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: nextDayFormatted, ORIGEN: 'REDEBAN', DESTINO: 'CASA', HORA: '06:00:00' });
+                    if (isRouteRequired(person, 'night', scheduleDate)) {
+                        rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: 'CASA', DESTINO: 'REDEBAN', HORA: '22:00:00' });
+                        const nextDay = new Date(scheduleDate.getTime() + 24 * 60 * 60 * 1000);
+                        const nextDayFormatted = nextDay.toLocaleDateString('es-ES', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
+                        rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: nextDayFormatted, ORIGEN: 'REDEBAN', DESTINO: 'CASA', HORA: '06:00:00' });
+                    }
                 });
             }
         });

@@ -21,32 +21,16 @@
   padding: 2.5rem;
   border-radius: 15px;
   width: 90%;
-  max-width: 480px;
+  max-width: 520px;
   max-height: 90vh;
   overflow-y: auto;
 }
 
-/* --- Scrollbar Personalizado y Elegante --- */
-.modal-content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.modal-content::-webkit-scrollbar-track {
-  background: transparent;
-  margin-top: 15px; /* Evita que el track choque con el borde redondeado superior */
-  margin-bottom: 15px; /* Evita que el track choque con el borde redondeado inferior */
-}
-
-.modal-content::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
-.modal-content::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.3);
-}
+/* Scrollbar */
+.modal-content::-webkit-scrollbar { width: 8px; }
+.modal-content::-webkit-scrollbar-track { background: transparent; margin: 15px 0; }
+.modal-content::-webkit-scrollbar-thumb { background-color: rgba(0, 0, 0, 0.2); border-radius: 10px; border: 2px solid transparent; background-clip: content-box; }
+.modal-content::-webkit-scrollbar-thumb:hover { background-color: rgba(0, 0, 0, 0.3); }
 
 .form-group {
   margin-bottom: 1.25rem;
@@ -75,11 +59,186 @@
   box-shadow: 0 0 0 3px rgba(14, 0, 123, 0.2);
 }
 
+/* --- Route Configuration Styles --- */
+.route-config-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.route-config-section h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.1rem;
+  color: #0e007b;
+  font-weight: 600;
+}
+
+.route-shift-config {
+  margin-bottom: 1.5rem;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.route-shift-header {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.route-shift-header label {
+  font-weight: bold;
+  font-size: 1.05rem;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Custom Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  margin-right: 12px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 28px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #0e007b;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(22px);
+}
+
+.route-options {
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Custom Radio Buttons */
+.radio-group-container {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.custom-radio {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.custom-radio input {
+  display: none;
+}
+
+.radio-dot {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  margin-right: 8px;
+  display: grid;
+  place-items: center;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.radio-dot::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #0e007b;
+  transform: scale(0);
+  transition: transform 0.2s;
+}
+
+.custom-radio:hover .radio-dot {
+  background-color: #f0f0f0;
+}
+
+.custom-radio input:checked + .radio-dot {
+  border-color: #0e007b;
+}
+
+.custom-radio input:checked + .radio-dot::after {
+  transform: scale(1);
+}
+
+/* Custom Checkboxes for days */
+.days-selection-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.day-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: #e9ecef;
+  padding: 6px 12px;
+  border-radius: 15px;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.day-checkbox:hover {
+    background-color: #d1d5db;
+}
+
+.day-checkbox.checked {
+  background-color: #0e007b;
+  color: white;
+}
+
+.day-checkbox input {
+  display: none;
+}
+
+/* --- Form Actions & Buttons --- */
 .form-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between; /* Adjusted */
   gap: 1rem;
   margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .btn-update, .btn-cancel {
@@ -98,6 +257,7 @@
 
 .btn-update {
   background-color: #0e007b;
+  order: 2; /* Ensures update is on the right */
 }
 
 .btn-update:hover {
@@ -106,14 +266,30 @@
 
 .btn-cancel {
   background-color: #868e96;
+  order: 1; /* Ensures cancel is on the left */
 }
 
 .btn-cancel:hover {
   background-color: #5a6268;
 }
 
-/* --- Diseño Responsive de Alta Calidad para Móviles --- */
+/* Responsive Styles */
 @media (max-width: 480px) {
+  .form-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn-update, .btn-cancel {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  
+  .btn-update { order: 1; } /* Stack update button on top */
+  .btn-cancel { order: 2; } /* Stack cancel button below */
+
+  /* Other responsive styles from before */
   .modal-overlay {
     align-items: flex-start;
     background: #fff;
@@ -129,60 +305,17 @@
     background: #fff;
     box-shadow: none;
     border: none;
-    overflow-y: hidden; /* El scroll lo controla el área designada */
+    overflow-y: hidden;
   }
 
-  /* Contenedor del formulario usa Flexbox para distribuir el espacio */
   .modal-content form {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
       padding: 1.5rem;
   }
 
-  .modal-content h2 {
-      flex-shrink: 0; /* Evita que el título se encoja */
-  }
-
   .form-scrollable-area {
-    flex-grow: 1; /* ¡LA CLAVE! Hace que esta área ocupe el espacio sobrante */
-    overflow-y: auto; /* Solo esta área tendrá scroll si es necesario */
+    flex-grow: 1;
+    overflow-y: auto;
     margin-top: 1rem;
-    padding-right: 10px; /* Espacio para el scrollbar personalizado */
-  }
-
-  /* Scrollbar personalizado para el área específica en móvil */
-  .form-scrollable-area::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  .form-scrollable-area::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-  }
-
-  .form-scrollable-area::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 10px;
-  }
-
-  .form-scrollable-area::-webkit-scrollbar-thumb:hover {
-    background: #aaa;
-  }
-
-  .form-actions {
-    flex-direction: column;
-    width: 100%;
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid #e9ecef;
-    gap: 0.75rem;
-    flex-shrink: 0; /* Evita que los botones se encojan */
-  }
-
-  .btn-update, .btn-cancel {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
+    padding-right: 10px;
   }
 }

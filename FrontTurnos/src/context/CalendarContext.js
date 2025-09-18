@@ -71,7 +71,8 @@ export const CalendarProvider = ({ children, addNotification }) => {
       const adaptedPerson = {
         ...rawPerson,
         id: rawPerson._id,
-        name: `${rawPerson.nombre || ''} ${rawPerson.apellido || ''}`.trim()
+        name: `${rawPerson.nombre || ''} ${rawPerson.apellido || ''}`.trim(),
+        routeConfig: rawPerson.routeConfig // Asegurarse de que routeConfig se mantenga
       };
 
       if (personIdForUpdate) {

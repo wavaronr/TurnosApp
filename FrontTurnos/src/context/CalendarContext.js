@@ -38,7 +38,7 @@ const dehydrateSchedule = (schedule) => {
 export const CalendarProvider = ({ children, addNotification }) => {
   const [yearSet, setYearSet] = useState(new Date().getFullYear());
   const [monthCalendario, setMonthCalendario] = useState(new Date().getMonth());
-  const [colombianHolidays, setColombianHolidays] = useState([]); // <-- CORRECCIÓN: Inicializado como array
+  const [colombianHolidays, setColombianHolidays] = useState([]);
   const [people, setPeople] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedWeek, setSelectedWeek] = useState(null);
@@ -92,7 +92,7 @@ export const CalendarProvider = ({ children, addNotification }) => {
           setScheduleCache(prevCache => new Map(prevCache).set(cacheKey, serverData));
           const hydrated = hydrateSchedule(serverData.schedule, people);
           setTemporarySchedule(hydrated);
-          addNotification('Programación actualizada desde el servidor.', 'info');
+          // NOTA: La notificación automática de 'Programación actualizada' fue eliminada en un paso anterior por UX.
         }
       } catch (error) {
         addNotification('Error al sincronizar la programación', 'error');
@@ -134,7 +134,7 @@ export const CalendarProvider = ({ children, addNotification }) => {
     return people.filter(person => isPersonValidForShift(person, day, shiftType));
   };
 
-  // --- MANEJO DE CAMBIOS ---
+  // --- MANEJO DE CAMBIOS DE TURNOS ---
   const assignShifts = (person, days, shiftType) => {
     setTemporarySchedule(currentSchedule => {
       const newSchedule = JSON.parse(JSON.stringify(currentSchedule));
@@ -184,8 +184,49 @@ export const CalendarProvider = ({ children, addNotification }) => {
   };
 
   // --- GESTIÓN DE PERSONAS ---
-  const savePerson = async (personData, personIdForUpdate) => { /* ... */ };
-  const deletePerson = async (personId) => { /* ... */ };
+  const savePerson = async (personData, personIdForUpdate) => {
+    try {
+      const response = await savePersonService(personData, personIdForUpdate);
+      // La respuesta del backend puede venir anidada en un objeto 'persona' o ser el objeto directamente
+      const savedObject = response.persona || response;
+      
+      // Adaptamos el objeto del backend a la estructura del frontend (id, name)
+      const adaptedPerson = { 
+        ...savedObject, 
+        id: savedObject._id, 
+        name: `${savedObject.nombre || ''} ${savedObject.apellido || ''}`.trim() 
+      };
+
+      if (personIdForUpdate) {
+        // Actualizar un perfil existente en la lista
+        setPeople(prevPeople => 
+          prevPeople.map(p => (p.id === personIdForUpdate ? adaptedPerson : p))
+        );
+        addNotification('Perfil actualizado correctamente', 'success');
+      } else {
+        // Agregar un nuevo perfil a la lista
+        setPeople(prevPeople => [...prevPeople, adaptedPerson]);
+        addNotification('Perfil creado correctamente', 'success');
+      }
+    } catch (error) {
+      console.error("Error guardando perfil:", error);
+      addNotification(error.message || 'Error al guardar el perfil', 'error');
+      throw error; // Lanzamos el error para que el formulario pueda manejarlo (ej. no cerrarse)
+    }
+  };
+
+  const deletePerson = async (personId) => {
+    try {
+      await deletePersonService(personId);
+      // Eliminar el perfil de la lista local
+      setPeople(prevPeople => prevPeople.filter(p => p.id !== personId));
+      addNotification('Perfil eliminado correctamente', 'success');
+    } catch (error) {
+      console.error("Error eliminando perfil:", error);
+      addNotification(error.message || 'Error al eliminar el perfil', 'error');
+      throw error; // Lanzamos el error por si algún componente necesita reaccionar
+    }
+  };
 
   // --- VALOR DEL CONTEXTO ---
   const value = {

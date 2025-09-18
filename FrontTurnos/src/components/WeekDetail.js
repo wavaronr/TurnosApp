@@ -1,15 +1,18 @@
+
 import React, { useContext } from 'react';
-import DayList from './DayList.js';
+import { DayList } from './DayList.js'; // CORRECCIÓN: Usar importación nombrada
 import { useCalendar } from '../context/CalendarContext.js';
 import { ProfileContext } from '../context/ProfileContext.js';
-import { SaveIcon } from '../assets/icons.js';
+import { SaveIcon, SpinnerIcon } from '../assets/icons.js';
 import '../css/WeekDetail.css';
 
-function WeekDetail() { 
+// CORRECCIÓN: Usar exportación nombrada
+export const WeekDetail = () => { 
   const { 
     selectedWeek, 
     isDirty,
-    saveTemporarySchedule
+    isLoading,
+    saveSchedule, 
   } = useCalendar(); 
   const { profile } = useContext(ProfileContext);
  
@@ -17,9 +20,12 @@ function WeekDetail() {
     <div>
       {profile?.role === 'ADM' && isDirty && (
         <div className="d-flex justify-content-end mb-3">
-          <button onClick={saveTemporarySchedule} className="btn-save-changes">
-            <SaveIcon />
-            Guardar Cambios
+          <button onClick={saveSchedule} className="btn-save-changes" disabled={isLoading}>
+            {isLoading ? (
+              <><SpinnerIcon /> Guardando...</>
+            ) : (
+              <><SaveIcon /> Guardar Cambios</>
+            )}
           </button>
         </div>
       )}
@@ -28,5 +34,3 @@ function WeekDetail() {
     </div>
   );
 }
-
-export default WeekDetail;

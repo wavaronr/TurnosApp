@@ -8,11 +8,15 @@ const PORT = process.env.PORT || 5000;
 
 // Middlewares
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // Para procesar JSON
+app.use(express.urlencoded({ extended: true })); // Para procesar datos de formularios URL-encoded
 
 // Rutas
 const personasRouter = require('./routes/personas.routes.js');
+const programmingRouter = require('./routes/programming.routes.js'); // Importar las nuevas rutas
+
 app.use('/api/personas', personasRouter);
+app.use('/api/programming', programmingRouter); // Registrar las nuevas rutas de programación
 
 // Ruta de prueba
 app.get('/', (req, res) => {

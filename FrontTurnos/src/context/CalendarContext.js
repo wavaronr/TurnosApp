@@ -1,9 +1,8 @@
-
-import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import { holidays as getColombianHolidays } from '../utils/holidays.js';
+import { getWeekDays } from '../utils/getWeekDays.js';
+import { capitalize } from '../utils/textUtils.js';
 import { getPeople, savePerson as savePersonService, deletePerson as deletePersonService } from '../services/peopleService.js';
-// Importamos el nuevo servicio para el status
-import { getProgramming, saveProgramming, getProgrammingStatus } from '../services/programmingService.js';
 
 export const CalendarContext = createContext();
 
@@ -15,159 +14,171 @@ export const CalendarProvider = ({ children, addNotification }) => {
   const [yearSet, setYearSet] = useState(new Date().getFullYear());
   const [monthCalendario, setMonthCalendario] = useState(new Date().getMonth());
   const [colombianHolidays, setColombianHolidays] = useState([]);
+  const [selectedWeek, setSelectedWeek] = useState(null);
   const [people, setPeople] = useState([]);
-  
-  // El cache ahora almacena un objeto: { schedule, lastModified }
-  const [schedulesCache, setSchedulesCache] = useState({});
+
+  const [programmedSchedule, setProgrammedSchedule] = useState({});
   const [temporarySchedule, setTemporarySchedule] = useState({});
-  
   const [isDirty, setIsDirty] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedWeek, setSelectedWeek] = useState(null); // Estado que faltaba
 
-  // --- LÓGICA DE DATOS PRINCIPAL ---
-
-  // Función para revalidar la programación de un mes contra el servidor
-  const revalidateProgramming = useCallback(async (year, month) => {
-    const cacheKey = `${year}-${month + 1}`;
-    const cachedData = schedulesCache[cacheKey];
-    
-    // Si no hay nada en cache para este mes, no hay nada que revalidar.
-    if (!cachedData) return;
-
-    try {
-      const status = await getProgrammingStatus(year, month + 1);
-      const serverLastModified = status.lastModified;
-      const clientLastModified = cachedData.lastModified;
-
-      // Comparamos las fechas. Si son diferentes, el cache está obsoleto.
-      // La comparación de strings funciona bien para el formato ISO 8601.
-      if (serverLastModified !== clientLastModified) {
-        const newData = await getProgramming(year, month + 1);
-        const newSchedule = newData ? newData.schedule : {};
-        const newLastModified = newData ? newData.lastModified : null;
-        
-        setSchedulesCache(prev => ({ ...prev, [cacheKey]: { schedule: newSchedule, lastModified: newLastModified } }));
-        
-        // Solo actualizamos la vista si el mes revalidado es el que se está viendo
-        if (year === yearSet && month === monthCalendario) {
-          setTemporarySchedule(newSchedule);
-          addNotification('La programación ha sido actualizada.', 'info');
-        }
+  useEffect(() => {
+    const fetchPeople = async () => {
+      try {
+        const data = await getPeople();
+        // SOLUCIÓN: Crear un campo 'name' unificado al cargar los datos
+        const adaptedData = data.map(person => ({
+          ...person,
+          id: person._id,
+          name: `${person.nombre || ''} ${person.apellido || ''}`.trim()
+        }));
+        setPeople(adaptedData);
+      } catch (error) {
+        console.error('Error fetching people data:', error);
+        addNotification('Error al obtener los datos de las personas', 'error');
+        setPeople([]);
       }
-    } catch (error) {
-      addNotification(`No se pudo revalidar la programación: ${error.message}`, 'warning');
-    }
-  }, [schedulesCache, addNotification, yearSet, monthCalendario]);
+    };
 
-  // Función para cargar la programación, ahora usando la estrategia "stale-while-revalidate"
-  const loadProgramming = useCallback(async (year, month) => {
-    const cacheKey = `${year}-${month + 1}`;
-    setIsLoading(true);
+    fetchPeople();
+    setProgrammedSchedule({});
+    setTemporarySchedule({});
+    setIsDirty(false);
+  }, []);
 
-    if (schedulesCache[cacheKey]) {
-      // 1. Muestra datos del cache inmediatamente (stale)
-      setTemporarySchedule(schedulesCache[cacheKey].schedule);
-      setIsLoading(false);
-      // 2. Revalida en segundo plano
-      revalidateProgramming(year, month);
-      return;
-    }
-
-    // Si no está en cache, carga desde la API
+  const savePerson = async (personData, personIdForUpdate) => {
     try {
-      const data = await getProgramming(year, month + 1);
-      const schedule = data ? data.schedule : {};
-      const lastModified = data ? data.lastModified : null;
-      
-      setSchedulesCache(prev => ({ ...prev, [cacheKey]: { schedule, lastModified } }));
-      setTemporarySchedule(schedule);
-    } catch (error) {
-      addNotification(`Error al cargar la programación: ${error.message}`, 'error');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [schedulesCache, addNotification, revalidateProgramming]);
+      const savedOrUpdatedPerson = await savePersonService(personData, personIdForUpdate);
+      const rawPerson = savedOrUpdatedPerson.persona;
 
-  // Función para guardar los cambios en la API
-  const saveChangesToAPI = async () => {
-    setIsLoading(true);
-    try {
-      const updatedProgramming = await saveProgramming(yearSet, monthCalendario + 1, temporarySchedule);
-      const cacheKey = `${yearSet}-${monthCalendario + 1}`;
-      
-      // Actualizamos el cache con los datos frescos del servidor
-      const newCacheEntry = {
-        schedule: updatedProgramming.schedule,
-        lastModified: updatedProgramming.lastModified
+      // SOLUCIÓN: Asegurar que el campo 'name' también se cree al guardar/actualizar
+      const adaptedPerson = {
+        ...rawPerson,
+        id: rawPerson._id,
+        name: `${rawPerson.nombre || ''} ${rawPerson.apellido || ''}`.trim()
       };
 
-      setSchedulesCache(prev => ({ ...prev, [cacheKey]: newCacheEntry }));
-      setTemporarySchedule(updatedProgramming.schedule);
-      setIsDirty(false);
-      addNotification('Programación guardada exitosamente.', 'success');
+      if (personIdForUpdate) {
+        setPeople(people.map(p => (p.id === adaptedPerson.id ? adaptedPerson : p)));
+        addNotification('Perfil actualizado exitosamente', 'success');
+      } else {
+        setPeople(prevPeople => [...prevPeople, adaptedPerson]);
+        addNotification('¡Persona creada exitosamente!', 'success');
+      }
     } catch (error) {
-      addNotification(`Error al guardar: ${error.message}`, 'error');
-    } finally {
-      setIsLoading(false);
+      addNotification(`Error: ${error.message}`, 'error');
     }
   };
-  
-  // --- EFECTOS ---
 
-  // Efecto para revalidar al enfocar la ventana/pestaña
+  const deletePerson = async (personId) => {
+    try {
+      await deletePersonService(personId);
+      setPeople(people.filter(p => p.id !== personId));
+      addNotification('Perfil eliminado exitosamente', 'success');
+    } catch (error) {
+      addNotification(`Error: ${error.message}`, 'error');
+    }
+  };
+
   useEffect(() => {
-    const handleFocus = () => {
-      // Revalida el mes que se está viendo actualmente
-      revalidateProgramming(yearSet, monthCalendario);
+    const fetchHolidays = async () => {
+      const holidays = await getColombianHolidays(yearSet);
+      setColombianHolidays(holidays);
     };
-
-    window.addEventListener('focus', handleFocus);
-    return () => {
-      window.removeEventListener('focus', handleFocus);
-    };
-  }, [revalidateProgramming, yearSet, monthCalendario]);
-
-  // Efecto para cargar la programación cuando cambia el mes/año
-  useEffect(() => {
-    loadProgramming(yearSet, monthCalendario);
-  }, [yearSet, monthCalendario, loadProgramming]);
-  
-  // Efectos para cargar personas y festivos (sin cambios)
-  useEffect(() => {
-    const fetchPeople = async () => { /* ...código sin cambios... */ };
-    fetchPeople();
-  }, [addNotification]);
-  
-  useEffect(() => {
-    const fetchHolidays = async () => { /* ...código sin cambios... */ };
     fetchHolidays();
   }, [yearSet]);
 
-  // --- MANEJO DE TURNOS (operan en temporarySchedule) ---
-
   const assignShifts = (person, days, shiftType) => {
     setTemporarySchedule(currentSchedule => {
-        // ...lógica sin cambios...
-        return newShifts;
+      const newShifts = JSON.parse(JSON.stringify(currentSchedule));
+      days.forEach(day => {
+        if (isPersonValidForShift(person, day, shiftType, newShifts)) {
+          const dayString = day.toISOString().split('T')[0];
+          if (!newShifts[dayString]) {
+            newShifts[dayString] = { morning: [], afternoon: [], night: [], off: [] };
+          }
+          const personExists = newShifts[dayString][shiftType].some(p => p.id === person.id);
+          if (!personExists) {
+            newShifts[dayString][shiftType].push(person);
+          }
+        }
+      });
+      return newShifts;
     });
     setIsDirty(true);
   };
-  
+
+  const assignShift = (day, shiftType, person) => {
+    assignShifts(person, [day], shiftType);
+  };
+
   const removeShift = (day, shiftType, personId) => {
     setTemporarySchedule(currentSchedule => {
-        // ...lógica sin cambios...
-        return newShifts;
+      const newShifts = JSON.parse(JSON.stringify(currentSchedule));
+      const dayString = day.toISOString().split('T')[0];
+      if (newShifts[dayString] && newShifts[dayString][shiftType]) {
+        newShifts[dayString][shiftType] = newShifts[dayString][shiftType].filter(p => p.id !== personId);
+      }
+      return newShifts;
     });
     setIsDirty(true);
   };
 
-  // --- GESTIÓN DE PERSONAS (sin cambios) ---
-  const savePerson = async (personData, personIdForUpdate) => { /* ... */ };
-  const deletePerson = async (personId) => { /* ... */ };
+  const saveTemporarySchedule = () => {
+    setProgrammedSchedule(temporarySchedule);
+    setIsDirty(false);
+    addNotification('Cambios de turno guardados localmente', 'success');
+    console.log("Cambios guardados:", temporarySchedule);
+  };
 
-  // --- VALOR DEL CONTEXTO ---
-  
+  const isPersonValidForShift = (person, day, shiftType, schedule = temporarySchedule) => {
+    const dayString = day.toISOString().split('T')[0];
+    
+    if (!selectedWeek) {
+      return true; // Si no hay semana seleccionada, no aplicar ninguna restricción
+    }
+
+    const weekDays = getWeekDays(selectedWeek, yearSet).map(d => d.toISOString().split('T')[0]);
+
+    // Verifica si la persona ya está asignada a OTRO turno en el mismo día
+    const shiftsToday = schedule[dayString] || {};
+    for (const sType in shiftsToday) {
+      if (sType !== shiftType && shiftsToday[sType].some(p => p.id === person.id)) {
+        return false;
+      }
+    }
+    
+    // Lógica para el turno de noche del día anterior
+    const yesterday = new Date(day);
+    yesterday.setDate(day.getDate() - 1);
+    const yesterdayString = yesterday.toISOString().split('T')[0];
+    const shiftsYesterday = schedule[yesterdayString] || {};
+    if (shiftsYesterday.night?.some(p => p.id === person.id)) {
+      // Si trabajó la noche anterior, solo puede tener turno 'night' o 'off' hoy
+      if (shiftType !== 'night' && shiftType !== 'off') return false;
+    }
+
+    // Lógica para el límite de 6 turnos por semana
+    let workShiftCount = 0;
+    weekDays.forEach(weekDayString => {
+      const dayShifts = schedule[weekDayString] || {};
+      ['morning', 'afternoon', 'night'].forEach(workShiftType => {
+        if (dayShifts[workShiftType]?.some(p => p.id === person.id)) workShiftCount++;
+      });
+    });
+
+    // Si ya tiene 6 turnos, solo se le puede asignar un día libre ('off')
+    if (workShiftCount >= 6 && shiftType !== 'off') return false;
+
+    // Si todas las validaciones pasan, la persona es válida
+    return true;
+  };
+
+  const getValidPeopleForShift = (day, shiftType) => {
+    // Ahora filtra correctamente, permitiendo reasignar el mismo turno
+    return people.filter(person => isPersonValidForShift(person, day, shiftType));
+  };
+
+
   const value = {
     yearSet,
     setYearSet,
@@ -177,16 +188,16 @@ export const CalendarProvider = ({ children, addNotification }) => {
     selectedWeek,
     setSelectedWeek,
     shifts: temporarySchedule,
+    assignShift,
     assignShifts,
     removeShift,
-    saveTemporarySchedule: saveChangesToAPI,
+    saveTemporarySchedule,
     isDirty,
-    isLoading,
+    getValidPeopleForShift,
+    isPersonValidForShift,
     people,
     savePerson,
     deletePerson,
-    isPersonValidForShift: () => true,
-    getValidPeopleForShift: () => people,
   };
 
   return (

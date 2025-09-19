@@ -1,7 +1,22 @@
 const mongoose = require('mongoose');
 
+// Sub-esquema para la configuración de cada turno (mañana, tarde, noche)
+const routeShiftConfigSchema = new mongoose.Schema({
+  required: {
+    type: Boolean,
+    default: false
+  },
+  type: {
+    type: String,
+    enum: ['all', 'specific'],
+    default: 'all'
+  },
+  days: [{
+    type: String
+  }]
+}, { _id: false }); // _id: false para que no cree un ID para cada sub-objeto
+
 const personaSchema = new mongoose.Schema({
-  // Nuevo campo para la cédula, requerido y único
   identificacion: {
     type: String,
     required: true,
@@ -25,17 +40,21 @@ const personaSchema = new mongoose.Schema({
     trim: true,
     lowercase: true
   },
-  // El teléfono ya no es obligatorio
   telefono: {
     type: String,
     required: false,
     trim: true
   },
-  // El cargo tampoco es obligatorio
   cargo: {
     type: String,
     required: false,
     trim: true
+  },
+  // FIX: Definir el esquema CORRECTO para la configuración de rutas
+  routeConfig: {
+    morning: routeShiftConfigSchema,
+    afternoon: routeShiftConfigSchema,
+    night: routeShiftConfigSchema
   },
 }, {
   timestamps: true

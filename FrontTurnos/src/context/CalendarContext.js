@@ -65,14 +65,16 @@ export const CalendarProvider = ({ children, addNotification }) => {
 
   const savePerson = async (personData, personIdForUpdate) => {
     try {
-      const savedOrUpdatedPerson = await savePersonService(personData, personIdForUpdate);
-      const rawPerson = savedOrUpdatedPerson.persona;
+      const savedOrUpdatedResponse = await savePersonService(personData, personIdForUpdate);
+      
+      // FIX: Handle different server responses for CREATE vs UPDATE
+      const rawPerson = personIdForUpdate ? savedOrUpdatedResponse : savedOrUpdatedResponse.persona;
 
       const adaptedPerson = {
         ...rawPerson,
         id: rawPerson._id,
         name: `${rawPerson.nombre || ''} ${rawPerson.apellido || ''}`.trim(),
-        routeConfig: rawPerson.routeConfig // Asegurarse de que routeConfig se mantenga
+        routeConfig: rawPerson.routeConfig
       };
 
       if (personIdForUpdate) {

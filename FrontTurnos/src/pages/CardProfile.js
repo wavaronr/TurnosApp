@@ -31,7 +31,7 @@ function CardProfile() {
       savePerson(formData); // Asume que savePerson maneja la creación
     } else {
       // Updating an existing person
-      savePerson(formData, editingPerson._id); // Envía el ID para la actualización
+      savePerson(formData, editingPerson.identificacion); // Envía el ID para la actualización
     }
     handleClose();
   };

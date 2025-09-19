@@ -12,9 +12,9 @@ exports.getPersonas = async (req, res) => {
 
 // Crear una nueva persona
 exports.createPersona = async (req, res) => {
-  const { identificacion, nombre, apellido, email, cargo, telefono } = req.body;
+  // FIX: Incluir routeConfig en la desestructuración
+  const { identificacion, nombre, apellido, email, cargo, telefono, routeConfig } = req.body;
 
-  // CORRECCIÓN: Añadir 'apellido' a la validación de campos obligatorios
   if (!nombre || !identificacion || !email || !apellido) {
     return res.status(400).json({ message: 'Los campos nombre, apellido, identificación y email son obligatorios.' });
   }
@@ -27,6 +27,7 @@ exports.createPersona = async (req, res) => {
       email,
       cargo,
       telefono,
+      routeConfig, // FIX: Añadir routeConfig al objeto de creación
     });
 
     const personaGuardada = await nuevaPersona.save();
@@ -51,11 +52,13 @@ exports.createPersona = async (req, res) => {
 exports.updatePersona = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombre, apellido, email, telefono, cargo } = req.body;
+    // FIX: Incluir routeConfig en la desestructuración
+    const { nombre, apellido, email, telefono, cargo, routeConfig } = req.body;
 
+    // FIX: Incluir routeConfig en el objeto de actualización
     const updatedPersona = await Persona.findByIdAndUpdate(
       id,
-      { nombre, apellido, email, telefono, cargo },
+      { nombre, apellido, email, telefono, cargo, routeConfig },
       { new: true, runValidators: true }
     );
 
@@ -85,7 +88,6 @@ exports.deletePersona = async (req, res) => {
       return res.status(404).json({ message: 'Persona no encontrada' });
     }
 
-    // En lugar de devolver un HTML, devuelve un JSON
     res.json({ message: 'Persona eliminada exitosamente' });
 
   } catch (error) {

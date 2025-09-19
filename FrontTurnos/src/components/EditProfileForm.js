@@ -26,7 +26,7 @@ function EditProfileForm({ person, onSubmit, onClose }) {
     if (isEditMode && person) {
       const personRouteConfig = person.routeConfig || {};
       return {
-        _id: person._id, // <-- AÑADIDO: Preservar el _id
+        _id: person._id,
         identificacion: person.identificacion || '',
         nombre: person.nombre || '',
         apellido: person.apellido || '',
@@ -58,25 +58,31 @@ function EditProfileForm({ person, onSubmit, onClose }) {
     setFormData(prev => ({ ...prev, [name]: finalValue }));
   }
 
+    // FIX: Replaced with a robust, immutable state update function
     function handleRouteChange(shift, field, value) {
         setFormData(prev => {
-            const newRouteConfig = JSON.parse(JSON.stringify(prev.routeConfig)); // Deep copy
+            // Create a deep copy to avoid any mutation issues.
+            const newRouteConfig = JSON.parse(JSON.stringify(prev.routeConfig));
 
-            if (field === 'required') {
+            if (field === 'day') {
+                const currentDays = newRouteConfig[shift].days || [];
+                const dayName = value;
+                const isPresent = currentDays.includes(dayName);
+
+                if (isPresent) {
+                    // Immutable removal: filter returns a new array
+                    newRouteConfig[shift].days = currentDays.filter(day => day !== dayName);
+                } else {
+                    // Immutable addition: spread operator creates a new array
+                    newRouteConfig[shift].days = [...currentDays, dayName];
+                }
+            } else if (field === 'required') {
                 newRouteConfig[shift].required = value;
             } else if (field === 'type') {
                 newRouteConfig[shift].type = value;
-            } else if (field === 'day') {
-                const currentDays = newRouteConfig[shift].days;
-                const dayName = value.startsWith('-') ? value.substring(1) : value;
-                const isRemoving = currentDays.includes(dayName);
-
-                if (isRemoving) {
-                    newRouteConfig[shift].days = currentDays.filter(day => day !== dayName);
-                } else {
-                    newRouteConfig[shift].days.push(dayName);
-                }
             }
+
+            // Return new state object with the correctly updated routeConfig
             return { ...prev, routeConfig: newRouteConfig };
         });
     }

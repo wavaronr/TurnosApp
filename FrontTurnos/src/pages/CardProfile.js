@@ -14,7 +14,6 @@ function CardProfile() {
   const [editingPerson, setEditingPerson] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
 
-  //console.log(people)
   const handleEdit = (person) => {
     setEditingPerson(person);
     setIsCreating(false);
@@ -31,7 +30,7 @@ function CardProfile() {
       savePerson(formData); // Asume que savePerson maneja la creación
     } else {
       // Updating an existing person
-      savePerson(formData, editingPerson.identificacion); // Envía el ID para la actualización
+      savePerson(formData, editingPerson._id); // Envía el ID para la actualización 
     }
     handleClose();
   };
@@ -58,7 +57,8 @@ function CardProfile() {
           .includes(searchTerm.toLowerCase())
     )
   : [];
-
+  
+  
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -80,7 +80,7 @@ function CardProfile() {
       
       <div className="profile-grid">
         {filteredPersons.map((person) => (
-          <div className="profile-card" key={person.identificacion}>
+          <div className="profile-card" key={person._id}>
             <div className="profile-card-header">
               <div className="profile-avatar">
                 <AvatarIcon />

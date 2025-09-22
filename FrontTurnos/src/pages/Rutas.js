@@ -51,7 +51,7 @@ const Rutas = () => {
 
         const startDateObj = start ? new Date(start + 'T00:00:00Z') : null;
         const endDateObj = end ? new Date(end + 'T23:59:59Z') : null;
-
+      
         Object.keys(data).forEach(dateKey => {
             const scheduleDate = new Date(dateKey + 'T00:00:00Z');
 

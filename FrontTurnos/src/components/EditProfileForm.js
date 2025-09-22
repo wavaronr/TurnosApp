@@ -50,7 +50,7 @@ function EditProfileForm({ person, onSubmit, onClose }) {
   }, [person, isEditMode]);
 
   function handleChange(e) {
-    const { name, value } = e.target;
+    const { name, value } = e.target; 
     let finalValue = value;
     if (name === 'nombre' || name === 'apellido' || name === 'cargo') {
       finalValue = capitalize(value);

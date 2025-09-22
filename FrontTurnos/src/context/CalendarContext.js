@@ -61,12 +61,10 @@ export const CalendarProvider = ({ children, addNotification }) => {
     } catch (error) {
       addNotification('Error al guardar la programación', 'error');
     }
-  };
-
+  };  
   const savePerson = async (personData, personIdForUpdate) => {
     try {
       const savedOrUpdatedResponse = await savePersonService(personData, personIdForUpdate);
-      
       // FIX: Handle different server responses for CREATE vs UPDATE
       const rawPerson = personIdForUpdate ? savedOrUpdatedResponse : savedOrUpdatedResponse.persona;
 
@@ -76,9 +74,9 @@ export const CalendarProvider = ({ children, addNotification }) => {
         name: `${rawPerson.nombre || ''} ${rawPerson.apellido || ''}`.trim(),
         routeConfig: rawPerson.routeConfig
       };
-
+      
       if (personIdForUpdate) {
-        setPeople(people.map(p => (p.id === adaptedPerson.id ? adaptedPerson : p)));
+        setPeople(people.map(p => (p.id === adaptedPerson._id ? adaptedPerson : p)));
         addNotification('Perfil actualizado exitosamente', 'success');
       } else {
         setPeople(prevPeople => [...prevPeople, adaptedPerson]);

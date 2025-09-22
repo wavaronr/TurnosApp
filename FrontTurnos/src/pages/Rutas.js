@@ -34,7 +34,8 @@ const isRouteRequired = (person, shift, date) => {
 };
 
 const Rutas = () => {
-  const { yearSet, monthCalendario, setYearSet, setMonthCalendario, shifts } = useCalendar();
+  // Obtenemos 'people' y 'shifts' del ÚNICO hook que existe: useCalendar
+  const { yearSet, monthCalendario, setYearSet, setMonthCalendario, shifts, people } = useCalendar();
   const [rutas, setRutas] = useState([]);
   const [startDate, setStartDate] = useState(getMonthDateRange(yearSet, monthCalendario).start);
   const [endDate, setEndDate] = useState(getMonthDateRange(yearSet, monthCalendario).end);
@@ -48,7 +49,7 @@ const Rutas = () => {
   useEffect(() => {
     const processScheduleData = (data, start, end) => {
         const rutasData = [];
-        if (!data) return [];
+        if (!data || !people || people.length === 0) return [];
 
         const startDateObj = start ? new Date(start + 'T00:00:00Z') : null;
         const endDateObj = end ? new Date(end + 'T23:59:59Z') : null;
@@ -65,10 +66,13 @@ const Rutas = () => {
 
             const processShift = (shift, origen, destino, hora) => {
                 if (daySchedule[shift]) {
-                    daySchedule[shift].forEach(person => {
-                        if (isRouteRequired(person, shift, scheduleDate)) {
-                          
-                           rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: origen, DESTINO: destino, HORA: hora });
+                    daySchedule[shift].forEach(personInSchedule => {
+                        // Buscamos a la persona completa en el array 'people'
+                        const fullPerson = people.find(p => p.id === personInSchedule.id);
+
+                        // Y la usamos para la verificación
+                        if (fullPerson && isRouteRequired(fullPerson, shift, scheduleDate)) {
+                           rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: formattedDate, ORIGEN: origen, DESTINO: destino, HORA: hora });
                         }
                     });
                 }
@@ -78,12 +82,14 @@ const Rutas = () => {
             processShift('afternoon', 'REDEBAN', 'CASA', '22:00:00');
 
             if (daySchedule.night) {
-                daySchedule.night.forEach(person => {
-                    if (isRouteRequired(person, 'night', scheduleDate)) {
-                        rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: 'CASA', DESTINO: 'REDEBAN', HORA: '22:00:00' });
+                daySchedule.night.forEach(personInSchedule => {
+                    const fullPerson = people.find(p => p.id === personInSchedule.id);
+                    
+                    if (fullPerson && isRouteRequired(fullPerson, 'night', scheduleDate)) {
+                        rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: formattedDate, ORIGEN: 'CASA', DESTINO: 'REDEBAN', HORA: '22:00:00' });
                         const nextDay = new Date(scheduleDate.getTime() + 24 * 60 * 60 * 1000);
                         const nextDayFormatted = nextDay.toLocaleDateString('es-ES', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
-                        rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: nextDayFormatted, ORIGEN: 'REDEBAN', DESTINO: 'CASA', HORA: '06:00:00' });
+                        rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: nextDayFormatted, ORIGEN: 'REDEBAN', DESTINO: 'CASA', HORA: '06:00:00' });
                     }
                 });
             }
@@ -93,7 +99,7 @@ const Rutas = () => {
 
     const processedRutas = processScheduleData(shifts, startDate, endDate);
     setRutas(processedRutas);
-  }, [shifts, startDate, endDate]);
+  }, [shifts, startDate, endDate, people]);
 
   const handleMonthChange = (increment) => {
     if (increment < 0) {

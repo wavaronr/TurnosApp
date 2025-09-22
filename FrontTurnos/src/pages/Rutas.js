@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import { useCalendar } from '../context/CalendarContext.js';
 import '../css/Rutas.css';
+import ExportIcon from '../icons/ExportIcon';
 
 const weekDayMap = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
@@ -66,6 +67,7 @@ const Rutas = () => {
                 if (daySchedule[shift]) {
                     daySchedule[shift].forEach(person => {
                         if (isRouteRequired(person, shift, scheduleDate)) {
+                          
                            rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: origen, DESTINO: destino, HORA: hora });
                         }
                     });
@@ -133,10 +135,7 @@ const Rutas = () => {
           <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
           <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
           <button onClick={handleExport} className="export-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-              <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-            </svg>
+            <ExportIcon/>
             Exportar
           </button>
         </div>

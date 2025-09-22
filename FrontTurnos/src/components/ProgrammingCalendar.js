@@ -11,8 +11,6 @@ const formatShiftTitle = (shift) => {
   return titles[shift] || shift;
 };
 
-// La función local getInitials ha sido eliminada.
-
 // --- Components ---
 
 const ShiftLegend = () => (
@@ -26,8 +24,7 @@ const ShiftLegend = () => (
   </div>
 );
 
-const DayCell = React.memo(({ day, shiftsForDay, isHoliday }) => {
-  // Aplanamos los turnos para tener una lista simple de personas
+const DayCell = React.memo(({ day, shiftsForDay, isHoliday, isSunday }) => { // 1. Recibir isSunday
   const shiftItems = useMemo(() => {
     if (!shiftsForDay) return [];
     return Object.entries(shiftsForDay).flatMap(([shift, people]) =>
@@ -35,13 +32,11 @@ const DayCell = React.memo(({ day, shiftsForDay, isHoliday }) => {
     );
   }, [shiftsForDay]);
 
-  // 2. Generar un mapa de siglas para todas las personas en esta celda
   const shortNamesMap = useMemo(() => {
     const allPeopleInCell = shiftItems.map(item => item.person);
     return allPeopleInCell.reduce((acc, person) => {
-      if (!acc[person.id]) { // Evita procesar la misma persona dos veces
+      if (!acc[person.id]) {
         const existingShorts = Object.values(acc);
-        // Usamos la función centralizada y pasamos las siglas existentes en esta celda
         acc[person.id] = createShortName(person.name, existingShorts);
       }
       return acc;
@@ -49,17 +44,17 @@ const DayCell = React.memo(({ day, shiftsForDay, isHoliday }) => {
   }, [shiftItems]);
 
   return (
-    <div className={`day-cell-pro ${isHoliday ? 'holiday' : ''} ${shiftItems.length === 0 ? 'empty-day' : ''}`}>
+    // 2. Añadir la clase 'sunday' dinámicamente
+    <div className={`day-cell-pro ${isHoliday ? 'holiday' : ''} ${isSunday ? 'sunday' : ''} ${shiftItems.length === 0 ? 'empty-day' : ''}`}>
       <div className="day-number-pro">{day}</div>
       <div className="people-list-pro">
         {shiftItems.map(({ person, shift }) => (
           <div
             key={`${person.id}-${shift}`}
             className="person-bubble"
-            title={`${person.name} (${formatShiftTitle(shift)})`} // Se usa person.name
+            title={`${person.name} (${formatShiftTitle(shift)})`}
             style={{ backgroundColor: shiftColors[shift] }}
           >
-            {/* 3. Usar el mapa para mostrar la sigla correcta */}
             {shortNamesMap[person.id]}
           </div>
         ))}
@@ -81,6 +76,12 @@ function ProgrammingCalendar({ date }) {
   const isHoliday = useCallback((day) => 
     colombianHolidays?.some(h => h.dia === day && h.mes === month + 1)
   , [colombianHolidays, month]);
+
+  // 3. Función para determinar si es domingo
+  const isSunday = useCallback((day) => {
+    const date = new Date(year, month, day);
+    return date.getDay() === 0; // 0 = Domingo
+  }, [year, month]);
 
   const getShiftsForDay = useCallback((day) => 
     shifts?.[`${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`] || null
@@ -112,6 +113,7 @@ function ProgrammingCalendar({ date }) {
               day={day} 
               shiftsForDay={getShiftsForDay(day)} 
               isHoliday={isHoliday(day)}
+              isSunday={isSunday(day)} // 4. Pasar la prop a DayCell
             />
           );
         })}

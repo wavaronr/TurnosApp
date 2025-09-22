@@ -10,6 +10,9 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   color: #333;
+  /* Impide que el contenedor principal se estire innecesariamente */
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .rutas-container h2 {
@@ -21,6 +24,7 @@
 
 .filters-container {
   display: flex;
+  flex-wrap: wrap; /* Permite que los controles pasen a la siguiente línea si no caben */
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
@@ -33,7 +37,8 @@
   padding: 10px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  flex-grow: 1;
+  /* Ajuste para que ocupe el espacio disponible sin desbordar */
+  flex: 1 1 300px;
 }
 
 .month-navigator span {
@@ -41,6 +46,7 @@
   font-weight: 500;
   font-size: 1.2em;
   margin: 0 10px;
+  white-space: nowrap; /* Evita que el texto del mes se rompa */
 }
 
 .month-navigator button,
@@ -67,6 +73,8 @@
   display: flex;
   gap: 10px;
   align-items: center;
+  /* Ajuste para que ocupe el espacio sin desbordar */
+  flex: 1 1 250px;
 }
 
 .date-filters input[type="date"] {
@@ -76,18 +84,23 @@
   background: rgba(255, 255, 255, 0.2);
   color: #333;
   font-family: inherit;
+  width: 100%; /* Hace que los inputs de fecha sean más flexibles */
 }
 
+/* Contenedor específico para la tabla que manejará el scroll */
 .table-responsive {
-  overflow-x: auto;
+  width: 100%;
+  overflow-x: auto; /* La clave para el scroll horizontal SÓLO en la tabla */
+  border-radius: 8px; /* Redondea las esquinas del contenedor del scroll */
+  border: 1px solid rgba(0, 0, 0, 0.05); /* Borde sutil */
 }
 
 .rutas-table {
   width: 100%;
   border-collapse: collapse;
   background-color: #fff;
-  border-radius: 8px;
-  overflow: hidden;
+  /* La tabla debe ocupar al menos el ancho de su contenedor */
+  min-width: 800px; /* Un ancho mínimo para asegurar que las columnas no se aplasten demasiado */
 }
 
 .rutas-table th,
@@ -96,12 +109,32 @@
   padding: 12px 15px;
   text-align: left;
   color: #555;
+  white-space: nowrap; /* Evita que el contenido de las celdas se parta en varias líneas */
 }
 
 .rutas-table th {
-  background-color: #f9f9f9;
+  background-color: #f8f9fa;
   color: #333;
   font-weight: 600;
+  position: sticky; /* Fija los encabezados al hacer scroll vertical (opcional pero recomendado) */
+  top: 0;
+  z-index: 1;
+}
+
+.rutas-table .filter-row th,
+.rutas-table .filter-row td {
+  position: sticky;
+  top: 49px; /* Posiciona la fila de filtros debajo de los encabezados */
+  background-color: #f8f9fa;
+  z-index: 1;
+}
+
+.filter-row input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .rutas-table tbody tr:nth-of-type(even) {
@@ -109,5 +142,5 @@
 }
 
 .rutas-table tbody tr:hover {
-  background-color: #e9ecef;
+  background-color: #eef2f7;
 }

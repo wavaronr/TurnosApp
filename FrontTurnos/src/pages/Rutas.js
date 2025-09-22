@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import { useCalendar } from '../context/CalendarContext.js';
 import '../css/Rutas.css';
+import ExportIcon from '../icons/ExportIcon';
 
 const weekDayMap = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
@@ -33,7 +34,8 @@ const isRouteRequired = (person, shift, date) => {
 };
 
 const Rutas = () => {
-  const { yearSet, monthCalendario, setYearSet, setMonthCalendario, shifts } = useCalendar();
+  // Obtenemos 'people' y 'shifts' del ÚNICO hook que existe: useCalendar
+  const { yearSet, monthCalendario, setYearSet, setMonthCalendario, shifts, people } = useCalendar();
   const [rutas, setRutas] = useState([]);
   const [startDate, setStartDate] = useState(getMonthDateRange(yearSet, monthCalendario).start);
   const [endDate, setEndDate] = useState(getMonthDateRange(yearSet, monthCalendario).end);
@@ -47,7 +49,7 @@ const Rutas = () => {
   useEffect(() => {
     const processScheduleData = (data, start, end) => {
         const rutasData = [];
-        if (!data) return [];
+        if (!data || !people || people.length === 0) return [];
 
         const startDateObj = start ? new Date(start + 'T00:00:00Z') : null;
         const endDateObj = end ? new Date(end + 'T23:59:59Z') : null;
@@ -64,9 +66,13 @@ const Rutas = () => {
 
             const processShift = (shift, origen, destino, hora) => {
                 if (daySchedule[shift]) {
-                    daySchedule[shift].forEach(person => {
-                        if (isRouteRequired(person, shift, scheduleDate)) {
-                           rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: origen, DESTINO: destino, HORA: hora });
+                    daySchedule[shift].forEach(personInSchedule => {
+                        // Buscamos a la persona completa en el array 'people'
+                        const fullPerson = people.find(p => p.id === personInSchedule.id);
+
+                        // Y la usamos para la verificación
+                        if (fullPerson && isRouteRequired(fullPerson, shift, scheduleDate)) {
+                           rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: formattedDate, ORIGEN: origen, DESTINO: destino, HORA: hora });
                         }
                     });
                 }
@@ -76,12 +82,14 @@ const Rutas = () => {
             processShift('afternoon', 'REDEBAN', 'CASA', '22:00:00');
 
             if (daySchedule.night) {
-                daySchedule.night.forEach(person => {
-                    if (isRouteRequired(person, 'night', scheduleDate)) {
-                        rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: formattedDate, ORIGEN: 'CASA', DESTINO: 'REDEBAN', HORA: '22:00:00' });
+                daySchedule.night.forEach(personInSchedule => {
+                    const fullPerson = people.find(p => p.id === personInSchedule.id);
+                    
+                    if (fullPerson && isRouteRequired(fullPerson, 'night', scheduleDate)) {
+                        rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: formattedDate, ORIGEN: 'CASA', DESTINO: 'REDEBAN', HORA: '22:00:00' });
                         const nextDay = new Date(scheduleDate.getTime() + 24 * 60 * 60 * 1000);
                         const nextDayFormatted = nextDay.toLocaleDateString('es-ES', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
-                        rutasData.push({ CEDULA: person.identificacion, NOMBRE: person.name, FECHA: nextDayFormatted, ORIGEN: 'REDEBAN', DESTINO: 'CASA', HORA: '06:00:00' });
+                        rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: nextDayFormatted, ORIGEN: 'REDEBAN', DESTINO: 'CASA', HORA: '06:00:00' });
                     }
                 });
             }
@@ -91,7 +99,7 @@ const Rutas = () => {
 
     const processedRutas = processScheduleData(shifts, startDate, endDate);
     setRutas(processedRutas);
-  }, [shifts, startDate, endDate]);
+  }, [shifts, startDate, endDate, people]);
 
   const handleMonthChange = (increment) => {
     if (increment < 0) {
@@ -133,10 +141,7 @@ const Rutas = () => {
           <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
           <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
           <button onClick={handleExport} className="export-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-              <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-            </svg>
+            <ExportIcon/>
             Exportar
           </button>
         </div>

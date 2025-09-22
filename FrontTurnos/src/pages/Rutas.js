@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import * as XLSX from 'xlsx';
 import { useCalendar } from '../context/CalendarContext.js';
 import '../css/Rutas.css';
@@ -19,26 +19,32 @@ const isRouteRequired = (person, shift, date) => {
     if (!person.routeConfig || !person.routeConfig[shift] || !person.routeConfig[shift].required) {
         return false;
     }
-
     const config = person.routeConfig[shift];
     if (config.type === 'all') {
         return true;
     }
-
     if (config.type === 'specific') {
         const dayOfWeek = weekDayMap[date.getUTCDay()];
         return config.days.includes(dayOfWeek);
     }
-
     return false;
 };
 
 const Rutas = () => {
-  // Obtenemos 'people' y 'shifts' del ÚNICO hook que existe: useCalendar
   const { yearSet, monthCalendario, setYearSet, setMonthCalendario, shifts, people } = useCalendar();
   const [rutas, setRutas] = useState([]);
   const [startDate, setStartDate] = useState(getMonthDateRange(yearSet, monthCalendario).start);
   const [endDate, setEndDate] = useState(getMonthDateRange(yearSet, monthCalendario).end);
+  
+  // 1. Estado para manejar los valores de los filtros
+  const [filters, setFilters] = useState({
+    CEDULA: '',
+    FECHA: '',
+    NOMBRE: '',
+    ORIGEN: '',
+    DESTINO: '',
+    HORA: ''
+  });
 
   useEffect(() => {
     const range = getMonthDateRange(yearSet, monthCalendario);
@@ -50,41 +56,30 @@ const Rutas = () => {
     const processScheduleData = (data, start, end) => {
         const rutasData = [];
         if (!data || !people || people.length === 0) return [];
-
         const startDateObj = start ? new Date(start + 'T00:00:00Z') : null;
         const endDateObj = end ? new Date(end + 'T23:59:59Z') : null;
-      
         Object.keys(data).forEach(dateKey => {
             const scheduleDate = new Date(dateKey + 'T00:00:00Z');
-
             if ((startDateObj && scheduleDate < startDateObj) || (endDateObj && scheduleDate > endDateObj)) {
                 return;
             }
-
             const daySchedule = data[dateKey];
             const formattedDate = scheduleDate.toLocaleDateString('es-ES', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
-
             const processShift = (shift, origen, destino, hora) => {
                 if (daySchedule[shift]) {
                     daySchedule[shift].forEach(personInSchedule => {
-                        // Buscamos a la persona completa en el array 'people'
                         const fullPerson = people.find(p => p.id === personInSchedule.id);
-
-                        // Y la usamos para la verificación
                         if (fullPerson && isRouteRequired(fullPerson, shift, scheduleDate)) {
                            rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: formattedDate, ORIGEN: origen, DESTINO: destino, HORA: hora });
                         }
                     });
                 }
             };
-
             processShift('morning', 'CASA', 'REDEBAN', '06:00:00');
             processShift('afternoon', 'REDEBAN', 'CASA', '22:00:00');
-
             if (daySchedule.night) {
                 daySchedule.night.forEach(personInSchedule => {
                     const fullPerson = people.find(p => p.id === personInSchedule.id);
-                    
                     if (fullPerson && isRouteRequired(fullPerson, 'night', scheduleDate)) {
                         rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: formattedDate, ORIGEN: 'CASA', DESTINO: 'REDEBAN', HORA: '22:00:00' });
                         const nextDay = new Date(scheduleDate.getTime() + 24 * 60 * 60 * 1000);
@@ -96,34 +91,43 @@ const Rutas = () => {
         });
         return rutasData;
     };
-
     const processedRutas = processScheduleData(shifts, startDate, endDate);
     setRutas(processedRutas);
   }, [shifts, startDate, endDate, people]);
 
+  // 2. Lógica para filtrar las rutas usando useMemo para eficiencia
+  const filteredRutas = useMemo(() => {
+    return rutas.filter(ruta => {
+      return Object.keys(filters).every(key => {
+        const filterValue = filters[key].toLowerCase();
+        const rutaValue = String(ruta[key]).toLowerCase();
+        return rutaValue.includes(filterValue);
+      });
+    });
+  }, [rutas, filters]);
+
+  // 3. Manejador para actualizar el estado de los filtros
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [name]: value
+    }));
+  };
+
   const handleMonthChange = (increment) => {
-    if (increment < 0) {
-        if (monthCalendario === 0) {
-            setMonthCalendario(11);
-            setYearSet(yearSet - 1);
-        } else {
-            setMonthCalendario(monthCalendario - 1);
-        }
-    } else {
-        if (monthCalendario === 11) {
-            setMonthCalendario(0);
-            setYearSet(yearSet + 1);
-        } else {
-            setMonthCalendario(monthCalendario + 1);
-        }
-    }
+    const newMonth = increment < 0 ? (monthCalendario === 0 ? 11 : monthCalendario - 1) : (monthCalendario === 11 ? 0 : monthCalendario + 1);
+    const newYear = increment < 0 && newMonth === 11 ? yearSet - 1 : (increment > 0 && newMonth === 0 ? yearSet + 1 : yearSet);
+    setMonthCalendario(newMonth);
+    setYearSet(newYear);
   };
 
   const handleExport = () => {
-    const worksheet = XLSX.utils.json_to_sheet(rutas);
+    // Se exportan las rutas ya filtradas
+    const worksheet = XLSX.utils.json_to_sheet(filteredRutas);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Rutas");
-    XLSX.writeFile(workbook, "rutas.xlsx");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Rutas Filtradas");
+    XLSX.writeFile(workbook, "rutas_filtradas.xlsx");
   };
 
   const displayDate = new Date(yearSet, monthCalendario);
@@ -157,18 +161,34 @@ const Rutas = () => {
               <th>DESTINO</th>
               <th>HORA</th>
             </tr>
+            {/* 4. Fila con los inputs para filtrar */}
+            <tr className="filter-row">
+              <td><input type="text" name="CEDULA" value={filters.CEDULA} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
+              <td><input type="text" name="FECHA" value={filters.FECHA} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
+              <td><input type="text" name="NOMBRE" value={filters.NOMBRE} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
+              <td><input type="text" name="ORIGEN" value={filters.ORIGEN} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
+              <td><input type="text" name="DESTINO" value={filters.DESTINO} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
+              <td><input type="text" name="HORA" value={filters.HORA} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
+            </tr>
           </thead>
           <tbody>
-            {rutas.map((ruta, index) => (
-              <tr key={index}>
-                <td>{ruta.CEDULA}</td>
-                <td>{ruta.FECHA}</td>
-                <td>{ruta.NOMBRE}</td>
-                <td>{ruta.ORIGEN}</td>
-                <td>{ruta.DESTINO}</td>
-                <td>{ruta.HORA}</td>
+            {/* 5. Se mapean las rutas ya filtradas */}
+            {filteredRutas.length > 0 ? (
+              filteredRutas.map((ruta, index) => (
+                <tr key={index}>
+                  <td>{ruta.CEDULA}</td>
+                  <td>{ruta.FECHA}</td>
+                  <td>{ruta.NOMBRE}</td>
+                  <td>{ruta.ORIGEN}</td>
+                  <td>{ruta.DESTINO}</td>
+                  <td>{ruta.HORA}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6">No se encontraron rutas con los filtros aplicados.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

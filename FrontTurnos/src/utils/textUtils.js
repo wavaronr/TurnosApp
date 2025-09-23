@@ -26,7 +26,18 @@ export const createShortName = (name, existingShorts) => {
   return shortName;
 };
 
+/**
+ * Capitaliza la primera letra de cada palabra en un texto.
+ * Ejemplo: "wilmer alexander" se convierte en "Wilmer Alexander".
+ * @param {string} text - El texto a capitalizar.
+ * @returns {string} - El texto con cada palabra capitalizada.
+ */
 export const capitalize = (text) => {
   if (!text) return '';
-  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+  // Divide el texto por espacios, capitaliza la primera letra de cada palabra
+  // y luego las une de nuevo con un espacio.
+  const arrayText =text.split(' ')
+  return arrayText.map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  ).join(' ');
 };

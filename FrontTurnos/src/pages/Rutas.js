@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import * as XLSX from 'xlsx';
+import Papa from 'papaparse';
+import { saveAs } from 'file-saver';
 import { useCalendar } from '../context/CalendarContext.js';
 import '../css/Rutas.css';
 import ExportIcon from '../icons/ExportIcon';
@@ -36,7 +37,6 @@ const Rutas = () => {
   const [startDate, setStartDate] = useState(getMonthDateRange(yearSet, monthCalendario).start);
   const [endDate, setEndDate] = useState(getMonthDateRange(yearSet, monthCalendario).end);
   
-  // 1. Estado para manejar los valores de los filtros
   const [filters, setFilters] = useState({
     CEDULA: '',
     FECHA: '',
@@ -95,7 +95,6 @@ const Rutas = () => {
     setRutas(processedRutas);
   }, [shifts, startDate, endDate, people]);
 
-  // 2. Lógica para filtrar las rutas usando useMemo para eficiencia
   const filteredRutas = useMemo(() => {
     return rutas.filter(ruta => {
       return Object.keys(filters).every(key => {
@@ -106,7 +105,6 @@ const Rutas = () => {
     });
   }, [rutas, filters]);
 
-  // 3. Manejador para actualizar el estado de los filtros
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters(prevFilters => ({
@@ -123,11 +121,13 @@ const Rutas = () => {
   };
 
   const handleExport = () => {
-    // Se exportan las rutas ya filtradas
-    const worksheet = XLSX.utils.json_to_sheet(filteredRutas);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Rutas Filtradas");
-    XLSX.writeFile(workbook, "rutas_filtradas.xlsx");
+    if (filteredRutas.length === 0) {
+      console.log("No hay datos para exportar.");
+      return; 
+    }
+    const csv = Papa.unparse(filteredRutas);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'rutas_filtradas.csv');
   };
 
   const displayDate = new Date(yearSet, monthCalendario);
@@ -161,7 +161,6 @@ const Rutas = () => {
               <th>DESTINO</th>
               <th>HORA</th>
             </tr>
-            {/* 4. Fila con los inputs para filtrar */}
             <tr className="filter-row">
               <td><input type="text" name="CEDULA" value={filters.CEDULA} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
               <td><input type="text" name="FECHA" value={filters.FECHA} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
@@ -172,7 +171,6 @@ const Rutas = () => {
             </tr>
           </thead>
           <tbody>
-            {/* 5. Se mapean las rutas ya filtradas */}
             {filteredRutas.length > 0 ? (
               filteredRutas.map((ruta, index) => (
                 <tr key={index}>

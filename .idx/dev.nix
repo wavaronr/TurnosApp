@@ -1,6 +1,6 @@
 {pkgs}: {
   channel = "stable-24.05";
-  packages = [   pkgs.nodejs_20, pkgs.concurrently, pkgs.mongodb];
+  packages = [   pkgs.nodejs_20, pkgs.mongodb];
   
   idx.extensions = [
     "svelte.svelte-vscode",
@@ -12,7 +12,7 @@
         command = [
           "sh",
           "-c",
-          "concurrently \"cd FrontTurnos && pnpm install && pnpm start\" \"cd BackendTurnos && pnpm install && pnpm start\""
+          "cd BackendTurnos && pnpm install && pnpm start & sleep 10 && cd ../FrontTurnos && pnpm install && pnpm start"
         ];
         env = {
           PORT = "$PORT";

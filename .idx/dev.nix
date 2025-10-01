@@ -12,7 +12,7 @@
         command = [
           "sh",
           "-c",
-          "concurrently \"cd FrontTurnos && pnpm install && pnpm start\" \"node BackendTurnos/server.js\""
+          "concurrently \"cd FrontTurnos && pnpm install && pnpm start\" \"cd BackendTurnos && pnpm install && pnpm start\""
         ];
         env = {
           PORT = "$PORT";

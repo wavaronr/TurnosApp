@@ -1,0 +1,89 @@
+.user-info-desktop {
+  display: block;
+}
+
+.user-info-mobile {
+  display: none;
+}
+
+/* Specific style for the mobile menu toggle button */
+.mobile-menu-toggle {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1051;
+}
+
+/* Overlay for the background when menu is open */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1052;
+}
+
+/* Mobile Menu general styles */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #0e007b; /* Primary color */
+  color: white;
+  padding: 20px;
+  z-index: 1053; /* Highest z-index */
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu.open {
+  transform: translateX(0);
+}
+
+.mobile-menu-header {
+  margin-bottom: 20px;
+}
+
+.mobile-menu hr {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #444;
+  margin: 15px 0;
+}
+
+.mobile-menu-logout {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+/* Media query for mobile */
+@media (max-width: 768px) {
+  .user-info-desktop {
+    display: none;
+  }
+
+  .user-info-mobile {
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+    .mobile-menu, .overlay {
+        display: none; /* Ensure mobile menu is not shown on desktop */
+    }
+}

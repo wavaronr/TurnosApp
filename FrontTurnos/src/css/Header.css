@@ -1,3 +1,49 @@
+.nav-menu-desktop {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .nav-menu-desktop {
+    display: none !important;
+  }
+}
+/* Menú de rutas vertical en offcanvas móvil */
+.mobile-nav-menu {
+  width: 100%;
+  margin-bottom: 10px;
+  
+}
+
+.mobile-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mobile-nav-item {
+  width: 100%;
+}
+
+.mobile-nav-button {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 12px 0;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.mobile-nav-button:active,
+.mobile-nav-button:hover {
+  background: #2d1e8c;
+}
 .user-info-desktop {
   display: block;
 }
@@ -9,13 +55,21 @@
 /* Specific style for the mobile menu toggle button */
 .mobile-menu-toggle {
   position: absolute;
-  top: 10px;
-  right: 20px;
+  top: 22px;
+  right: 18px;
   background: transparent;
   border: none;
   cursor: pointer;
-  z-index: 1051;
+  z-index: 1060;
+  padding: 4px;
+  transition: background 0.2s;
 }
+
+/* Cambia el color del icono hamburguesa cuando está en la ruta /programacion */
+.mobile-menu-toggle.programming svg {
+  stroke: #ffb300 !important; /* Amarillo contraste */
+}
+
 
 /* Overlay for the background when menu is open */
 .overlay {

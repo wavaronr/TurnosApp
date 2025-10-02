@@ -1,3 +1,26 @@
+@media (max-width: 767px) {
+  .mobile-menu-toggle {
+    display: block;
+    top: 14px;
+    right: 12px;
+    padding: 4px;
+  }
+  .mobile-menu {
+    width: 220px;
+    padding: 14px;
+  }
+}
+@media (max-width: 375px) {
+  .mobile-menu-toggle {
+    top: 12px;
+    right: 8px;
+    padding: 2px;
+  }
+  .mobile-menu {
+    width: 200px;
+    padding: 12px;
+  }
+}
 .nav-menu-desktop {
   display: block;
 }
@@ -73,6 +96,7 @@
 
 /* Overlay for the background when menu is open */
 .overlay {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -83,7 +107,9 @@
 }
 
 /* Mobile Menu general styles */
+/* Mobile Menu general styles */
 .mobile-menu {
+  display: none;
   position: fixed;
   top: 0;
   right: 0;
@@ -95,12 +121,17 @@
   z-index: 1053; /* Highest z-index */
   transform: translateX(100%);
   transition: transform 0.3s ease-in-out;
-  display: flex;
   flex-direction: column;
 }
 
 .mobile-menu.open {
+  display: flex;
   transform: translateX(0);
+}
+/* Mostrar overlay solo cuando el menú está abierto */
+.mobile-menu.open ~ .overlay,
+.overlay.open {
+  display: block;
 }
 
 .mobile-menu-header {
@@ -126,18 +157,33 @@
 }
 
 /* Media query for mobile */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .user-info-desktop {
-    display: none;
+    display: none !important;
   }
-
   .user-info-mobile {
-    display: block;
+    display: block !important;
   }
+  .nav-menu-desktop {
+    display: none !important;
+  }
+  .mobile-menu-toggle {
+    display: block !important;
+  }
+ /* .mobile-menu, .overlay {
+    display: flex;
+  }*/
 }
 
-@media (min-width: 769px) {
-    .mobile-menu, .overlay {
-        display: none; /* Ensure mobile menu is not shown on desktop */
-    }
+@media (min-width: 768px) {
+  .user-info-mobile,
+  .mobile-menu,
+  .overlay,
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+  .user-info-desktop,
+  .nav-menu-desktop {
+    display: block !important;
+  }
 }

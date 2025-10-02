@@ -59,11 +59,11 @@ function Header() {
                 onClick={toggleMenu}
                 className={`mobile-menu-toggle${location.pathname === '/programacion' ? ' programming' : ''}`}
                 style={{ top: 22, right: 18 }}
+                aria-label="Abrir menú"
               >
                 <MenuIcon />
               </button>
-              {menuOpen && <div className="overlay" onClick={closeMenu}></div>}
-              <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}> 
+              <div className={`mobile-menu${menuOpen ? ' open' : ''}`}> 
                 <div className="mobile-menu-header">
                   <span>{profile.email} ({profile.role})</span>
                 </div>
@@ -92,6 +92,10 @@ function Header() {
                   <span style={{ marginLeft: '10px' }}>Logout</span>
                 </button>
               </div>
+              <div
+                className={`overlay${menuOpen ? ' open' : ''}`}
+                onClick={closeMenu}
+              />
             </div>
           </>
         )}

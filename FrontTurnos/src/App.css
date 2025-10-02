@@ -1,4 +1,3 @@
-
 .App {
   font-family: sans-serif;
 }
@@ -63,4 +62,13 @@
 
 .offcanvas.offcanvas-start.offcanvas-wide {
   width: calc(100vw * 2 / 3);
+}
+
+@media (max-width: 767px) {
+  .offcanvas.offcanvas-start.offcanvas-wide {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-width: 100vw !important;
+    border-radius: 0 !important;
+  }
 }

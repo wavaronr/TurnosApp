@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react'; // 1. Importar useContext
 import { ProfileContext } from '../context/ProfileContext'; // 2. Importar el contexto
+import HeaderBackground from '../icons/HeaderBackground';
 import '../css/Login.css';
 
 function Login() {
@@ -47,8 +48,21 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
+    <div className="login-container" style={{ position: 'relative' }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 0,
+          width: '100%',
+          minHeight: 0,
+        }}
+      >
+        <HeaderBackground style={{ maxHeight: 120 }} />
+      </div>
+      <div className="login-card" style={{ position: 'relative', zIndex: 1 }}>
         <h2 className="login-title">Iniciar Sesión</h2>
         <form onSubmit={submitHandler}>
           {error && (
@@ -86,6 +100,14 @@ function Login() {
           </button>
         </form>
       </div>
+      {/* Media query para móvil: SVG más pequeño */}
+      <style>{`
+        @media (max-width: 600px) {
+          .login-container > div:first-child svg {
+            max-height: 70px !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

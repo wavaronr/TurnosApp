@@ -1,6 +1,14 @@
-import React, { useContext, useState } from 'react';
 import NavMenu from './NavMenu';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+// Botones de rutas para menú móvil
+const mobileMenuButtons = [
+  { label: 'Home', path: '/home' },
+  { label: 'Calendario', path: '/calendario' },
+  { label: 'Programacion', path: '/programacion' },
+  { label: 'Perfiles', path: '/perfiles' },
+  { label: 'Rutas', path: '/rutas' },
+];
 import { ProfileContext } from '../context/ProfileContext';
 import LogoutIcon from '../icons/LogoutIcon';
 import HeaderBackground from '../icons/HeaderBackground';
@@ -9,8 +17,12 @@ import '../css/Header.css';
 
 function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { profile, logout } = useContext(ProfileContext);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Si no hay perfil, no renderizar nada (protección contra errores)
+  if (!profile) return null;
 
   const handleLogout = () => {
     logout();
@@ -29,7 +41,8 @@ function Header() {
   return (
     <>
       <div style={{ position: 'relative' }}>
-        <NavMenu />
+  {/* NavMenu solo para escritorio, el menú móvil va abajo */}
+  <div className="nav-menu-desktop"><NavMenu /></div>
         {profile && (
           <>
             <div className="user-info-desktop">
@@ -42,20 +55,47 @@ function Header() {
             </div>
 
             <div className="user-info-mobile">
-              <button onClick={toggleMenu} className="mobile-menu-toggle">
+              <button
+                onClick={toggleMenu}
+                className={`mobile-menu-toggle${location.pathname === '/programacion' ? ' programming' : ''}`}
+                style={{ top: 22, right: 18 }}
+                aria-label="Abrir menú"
+              >
                 <MenuIcon />
               </button>
-              {menuOpen && <div className="overlay" onClick={closeMenu}></div>}
-              <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
+              <div className={`mobile-menu${menuOpen ? ' open' : ''}`}> 
                 <div className="mobile-menu-header">
                   <span>{profile.email} ({profile.role})</span>
                 </div>
+                <hr />
+                {/* Menú de rutas vertical */}
+                <nav className="mobile-nav-menu">
+                  <ul className="mobile-nav-list">
+                    {mobileMenuButtons.map(btn => (
+                      <li key={btn.path} className="mobile-nav-item">
+                        <button
+                          className="mobile-nav-button"
+                          onClick={() => {
+                            navigate(btn.path);
+                            closeMenu();
+                          }}
+                        >
+                          {btn.label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
                 <hr />
                 <button onClick={handleLogout} className="mobile-menu-logout">
                   <LogoutIcon />
                   <span style={{ marginLeft: '10px' }}>Logout</span>
                 </button>
               </div>
+              <div
+                className={`overlay${menuOpen ? ' open' : ''}`}
+                onClick={closeMenu}
+              />
             </div>
           </>
         )}

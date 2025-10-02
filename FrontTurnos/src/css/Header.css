@@ -76,16 +76,29 @@
 }
 
 /* Specific style for the mobile menu toggle button */
+
 .mobile-menu-toggle {
   position: absolute;
   top: 22px;
   right: 18px;
-  background: transparent;
+  background: rgba(14, 0, 123, 0.12); /* azul semitransparente */
   border: none;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   cursor: pointer;
   z-index: 1060;
-  padding: 4px;
+  padding: 8px;
   transition: background 0.2s;
+}
+
+.mobile-menu-toggle:hover,
+.mobile-menu-toggle:focus {
+  background: rgba(14, 0, 123, 0.25);
+}
+
+.mobile-menu-toggle svg {
+  stroke: #0e007b;
+  stroke-width: 2.5;
 }
 
 /* Cambia el color del icono hamburguesa cuando está en la ruta /programacion */

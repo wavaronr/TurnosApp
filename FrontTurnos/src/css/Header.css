@@ -80,12 +80,20 @@
   position: absolute;
   top: 22px;
   right: 18px;
-  background: transparent;
+  background: rgba(68, 68, 207, 0.7);
   border: none;
   cursor: pointer;
   z-index: 1060;
-  padding: 4px;
+  padding: 8px 10px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
   transition: background 0.2s;
+.mobile-menu-toggle:hover {
+  background: rgba(255,255,255,0.18);
+}
+}
+.mobile-menu-toggle:hover {
+  background: rgba(255,255,255,0.18);
 }
 
 /* Cambia el color del icono hamburguesa cuando está en la ruta /programacion */

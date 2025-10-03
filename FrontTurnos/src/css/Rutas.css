@@ -16,10 +16,16 @@
 }
 
 .rutas-container h2 {
-  color: #ffffff;
+  color: #fff;
   text-align: center;
   margin-bottom: 25px;
   font-weight: 600;
+  text-shadow: 0 2px 8px rgba(21, 12, 150, 0.596), 0 1px 0 #222;
+  background: rgba(115, 115, 228, 0.25);
+  border-radius: 10px;
+  padding: 8px 18px;
+  display: inline-block;
+  margin-top: 18px;
 }
 
 .filters-container {

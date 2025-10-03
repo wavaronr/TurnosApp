@@ -1,4 +1,4 @@
-@media (max-width: 767px) {
+@media (max-width: 988px) {
   .mobile-menu-toggle {
     display: block;
     top: 14px;
@@ -25,7 +25,7 @@
   display: block;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 988px) {
   .nav-menu-desktop {
     display: none !important;
   }
@@ -76,29 +76,16 @@
 }
 
 /* Specific style for the mobile menu toggle button */
-
 .mobile-menu-toggle {
   position: absolute;
   top: 22px;
   right: 18px;
-  background: rgba(14, 0, 123, 0.12); /* azul semitransparente */
+  background: transparent;
   border: none;
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   cursor: pointer;
   z-index: 1060;
-  padding: 8px;
+  padding: 4px;
   transition: background 0.2s;
-}
-
-.mobile-menu-toggle:hover,
-.mobile-menu-toggle:focus {
-  background: rgba(14, 0, 123, 0.25);
-}
-
-.mobile-menu-toggle svg {
-  stroke: #0e007b;
-  stroke-width: 2.5;
 }
 
 /* Cambia el color del icono hamburguesa cuando está en la ruta /programacion */
@@ -170,7 +157,7 @@
 }
 
 /* Media query for mobile */
-@media (max-width: 767px) {
+@media (max-width: 988px) {
   .user-info-desktop {
     display: none !important;
   }
@@ -183,12 +170,9 @@
   .mobile-menu-toggle {
     display: block !important;
   }
- /* .mobile-menu, .overlay {
-    display: flex;
-  }*/
 }
 
-@media (min-width: 768px) {
+@media (min-width: 988px) {
   .user-info-mobile,
   .mobile-menu,
   .overlay,

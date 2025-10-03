@@ -147,3 +147,15 @@ li.numerW-title{
   justify-items: center;
   padding: 20px;
 }
+
+@media (max-width: 768px) {
+  .calendar-grid {
+    max-height: 80vh;
+    overflow-y: auto;
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+  .month-card {
+    margin-bottom: 24px;
+  }
+}

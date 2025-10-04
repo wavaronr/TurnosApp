@@ -38,10 +38,10 @@ exports.saveProgramming = async (req, res) => {
       { new: true, upsert: true, runValidators: true }
     );
 
-    console.log('Respuesta saveProgramming:', updatedProgramming);
+  //  console.log('Respuesta saveProgramming:', updatedProgramming);
     res.status(200).json(updatedProgramming);
   } catch (error) {
-    console.error('Error en saveProgramming:', error);
+  //  console.error('Error en saveProgramming:', error);
     res.status(500).json({ message: 'Error al guardar la programación', error: error.message });
   }
 };

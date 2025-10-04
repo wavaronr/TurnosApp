@@ -52,8 +52,8 @@
   .rutas-cards-mobile {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    margin: 18px 0;
+    gap: 8px;
+    margin: 2px 0 0 0;
   }
   .ruta-card-h {
     background: linear-gradient(120deg, #f8f9fa 60%, #e9eefd 100%);
@@ -149,42 +149,98 @@
 
 @media (max-width: 767px) {
   .filters-container {
-    flex-direction: column;
-    gap: 10px;
+    /* flex-direction: column; */
+    gap: 8px;
     position: sticky;
     top: 0;
     z-index: 10;
     background: #fff;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    border-radius: 0 0 12px 12px;
+    padding: 7px 6px 7px 6px;
+    border-radius: 0 0 14px 14px;
     box-shadow: 0 2px 8px rgba(14,0,123,0.05);
+    margin-bottom: 2px;
   }
   .month-navigator {
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 6px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 7px;
+    padding: 0;
     background: none;
     border-radius: 0;
-  }
-  .month-navigator button,
-  .export-button {
-    padding: 6px 8px;
-    font-size: 0.95em;
-    min-width: 36px;
-    min-height: 36px;
-    border-radius: 8px;
-  }
-  .date-filters {
-    gap: 6px;
-    flex-direction: row;
-    justify-content: space-between;
     width: 100%;
   }
+  .month-navigator button {
+    padding: 8px 0;
+    font-size: 1.08em;
+    min-width: 100%;
+    border-radius: 8px;
+    background: #0e007b;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(14,0,123,0.07);
+    transition: background 0.2s;
+    margin-bottom: 2px;
+  }
+  .month-navigator button:active {
+    background: #0022a1;
+  }
+  .month-navigator span {
+    color: #0e007b;
+    font-weight: 600;
+    font-size: 1.08em;
+    margin: 0 0 2px 0;
+    white-space: nowrap;
+    background: #e9eefd;
+    border-radius: 8px;
+    padding: 7px 0;
+    box-shadow: 0 1px 4px rgba(14,0,123,0.04);
+    text-align: center;
+    width: 100%;
+    display: block;
+  }
+  .date-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: 100%;
+    align-items: stretch;
+    justify-content: flex-start;
+    margin-top: 2px;
+  }
   .date-filters input[type="date"] {
-    font-size: 0.95em;
-    padding: 6px 4px;
+    font-size: 1em;
+    padding: 8px 6px;
+    border-radius: 8px;
+    border: 1.5px solid #bfc8e6;
+    background: #f8f9fa;
+    color: #0e007b;
+    font-family: inherit;
+    width: 100%;
     min-width: 0;
+    box-shadow: 0 1px 4px rgba(14,0,123,0.03);
+  }
+  .export-button {
+    padding: 9px 0;
+    font-size: 1.08em;
+    border-radius: 8px;
+    background: #0e007b;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(14,0,123,0.07);
+    transition: background 0.2s;
+    width: 100%;
+    margin: 0;
+  }
+  .export-button:active {
+    background: #0022a1;
   }
   .table-responsive {
     overflow-x: auto;
@@ -257,7 +313,7 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   /* Ajuste para que ocupe el espacio disponible sin desbordar */
-  flex: 1 1 300px;
+  flex: 1 1 100px;
 }
 
 .month-navigator span {

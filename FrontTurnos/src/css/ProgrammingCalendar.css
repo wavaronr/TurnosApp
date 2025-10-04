@@ -1,3 +1,27 @@
+@media (max-width: 768px) {
+  .bubble-name-tooltip {
+    position: absolute;
+    left: 50%;
+    top: 110%;
+    transform: translateX(-50%);
+    background: #0e007b;
+    color: #fff;
+    font-size: 0.98em;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(14,0,123,0.13);
+    white-space: nowrap;
+    z-index: 20;
+    opacity: 0.97;
+    pointer-events: none;
+    animation: fadeInTooltip 0.18s;
+  }
+  @keyframes fadeInTooltip {
+    from { opacity: 0; transform: translateX(-50%) scale(0.95); }
+    to { opacity: 0.97; transform: translateX(-50%) scale(1); }
+  }
+}
 @media (max-width: 767px) {
   .shift-legend {
     width: auto;

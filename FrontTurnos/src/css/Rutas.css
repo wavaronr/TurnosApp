@@ -1,3 +1,272 @@
+/* Fechas en lista vertical y detalles tipo acordeón en card persona móvil */
+@media (max-width: 768px) {
+  .ruta-card-h-fechas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 12px 0 0 0;
+  }
+  .ruta-card-h-fecha-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .ruta-card-h-fecha-btn {
+    background: #e9eefd;
+    border: 1.5px solid #bfc8e6;
+    border-radius: 10px;
+    padding: 7px 18px;
+    font-size: 1rem;
+    color: #0e007b;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s, border 0.18s, color 0.18s;
+    outline: none;
+    margin-bottom: 2px;
+    width: 100%;
+    text-align: left;
+  }
+  .ruta-card-h-fecha-btn.selected, .ruta-card-h-fecha-btn:active {
+    background: #0e007b;
+    color: #fff;
+    border-color: #0e007b;
+  }
+  .ruta-card-h-details.open {
+    margin-top: 2px;
+    margin-bottom: 8px;
+    max-height: 200px;
+    transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1);
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(14,0,123,0.04);
+    padding: 10px 12px 8px 12px;
+    width: 100%;
+  }
+}
+/* --- Card-table híbrida para móvil --- */
+@media (max-width: 768px) {
+  .table-responsive {
+    display: none;
+  }
+  .rutas-cards-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 2px 0 0 0;
+  }
+  .ruta-card-h {
+    background: linear-gradient(120deg, #f8f9fa 60%, #e9eefd 100%);
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(14,0,123,0.10);
+    padding: 18px 16px 10px 16px;
+    position: relative;
+    transition: box-shadow 0.2s, background 0.2s;
+    border: 1px solid #e3e8f0;
+  }
+  .ruta-card-h-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .ruta-card-h-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0e007b;
+    margin-bottom: 2px;
+  }
+  .ruta-card-h-date {
+    font-size: 0.98rem;
+    color: #555;
+    font-weight: 500;
+  }
+  .ruta-card-h-expand {
+    background: #fff;
+    border: 1px solid #bfc8e6;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: #0e007b;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(14,0,123,0.07);
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .ruta-card-h-expand:active {
+    background: #e9eefd;
+  }
+  .ruta-card-h-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1);
+    padding-left: 2px;
+  }
+  .ruta-card-h-details.open {
+    max-height: 200px;
+    margin-top: 10px;
+    transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .ruta-card-h-detail-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.98rem;
+    color: #333;
+    margin-bottom: 6px;
+  }
+  .ruta-card-h-detail-label {
+    font-weight: 600;
+    color: #0e007b;
+    margin-right: 8px;
+  }
+}
+/* --- Scroll horizontal y columnas clave en móvil --- */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+  .rutas-table {
+    min-width: 600px;
+    width: max-content;
+    table-layout: auto;
+  }
+  .rutas-table th, .rutas-table td {
+    scroll-snap-align: start;
+    min-width: 140px;
+    white-space: nowrap;
+  }
+  /* Ocultar columnas no clave en móvil */
+  .rutas-table th.hide-mobile,
+  .rutas-table td.hide-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .filters-container {
+    /* flex-direction: column; */
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    padding: 7px 6px 7px 6px;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 2px 8px rgba(14,0,123,0.05);
+    margin-bottom: 2px;
+  }
+  .month-navigator {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 7px;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+    width: 100%;
+  }
+  .month-navigator button {
+    padding: 8px 0;
+    font-size: 1.08em;
+    min-width: 100%;
+    border-radius: 8px;
+    background: #0e007b;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(14,0,123,0.07);
+    transition: background 0.2s;
+    margin-bottom: 2px;
+  }
+  .month-navigator button:active {
+    background: #0022a1;
+  }
+  .month-navigator span {
+    color: #0e007b;
+    font-weight: 600;
+    font-size: 1.08em;
+    margin: 0 0 2px 0;
+    white-space: nowrap;
+    background: #e9eefd;
+    border-radius: 8px;
+    padding: 7px 0;
+    box-shadow: 0 1px 4px rgba(14,0,123,0.04);
+    text-align: center;
+    width: 100%;
+    display: block;
+  }
+  .date-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: 100%;
+    align-items: stretch;
+    justify-content: flex-start;
+    margin-top: 2px;
+  }
+  .date-filters input[type="date"] {
+    font-size: 1em;
+    padding: 8px 6px;
+    border-radius: 8px;
+    border: 1.5px solid #bfc8e6;
+    background: #f8f9fa;
+    color: #0e007b;
+    font-family: inherit;
+    width: 100%;
+    min-width: 0;
+    box-shadow: 0 1px 4px rgba(14,0,123,0.03);
+  }
+  .export-button {
+    padding: 9px 0;
+    font-size: 1.08em;
+    border-radius: 8px;
+    background: #0e007b;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(14,0,123,0.07);
+    transition: background 0.2s;
+    width: 100%;
+    margin: 0;
+  }
+  .export-button:active {
+    background: #0022a1;
+  }
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 0 0 12px 12px;
+    margin-top: 0;
+  }
+  .rutas-table {
+    min-width: 600px;
+    font-size: 0.97em;
+  }
+  .rutas-table th, .rutas-table td {
+    padding: 8px 6px;
+  }
+  .rutas-table th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    z-index: 2;
+  }
+  .rutas-table .filter-row th,
+  .rutas-table .filter-row td {
+    top: 38px;
+    z-index: 2;
+  }
+}
 /* src/css/Rutas.css */
 
 .rutas-container {
@@ -44,7 +313,7 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   /* Ajuste para que ocupe el espacio disponible sin desbordar */
-  flex: 1 1 300px;
+  flex: 1 1 100px;
 }
 
 .month-navigator span {
@@ -101,38 +370,47 @@
   border: 1px solid rgba(0, 0, 0, 0.05); /* Borde sutil */
 }
 
+
 .rutas-table {
   width: 100%;
-  border-collapse: collapse;
-  background-color: #fff;
-  /* La tabla debe ocupar al menos el ancho de su contenedor */
-  min-width: 800px; /* Un ancho mínimo para asegurar que las columnas no se aplasten demasiado */
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(14,0,123,0.06);
+  overflow: hidden;
+  min-width: 800px;
 }
+
 
 .rutas-table th,
 .rutas-table td {
-  border: 1px solid #e9ecef;
-  padding: 12px 15px;
+  padding: 14px 18px;
   text-align: left;
+  font-size: 1rem;
+  border-bottom: 1px solid #f0f0f0;
   color: #555;
-  white-space: nowrap; /* Evita que el contenido de las celdas se parta en varias líneas */
+  white-space: nowrap;
 }
 
+
 .rutas-table th {
-  background-color: #f8f9fa;
-  color: #333;
-  font-weight: 600;
-  position: sticky; /* Fija los encabezados al hacer scroll vertical (opcional pero recomendado) */
+  background: #f8f9fa;
+  font-weight: 700;
+  color: #0e007b;
+  position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(14,0,123,0.03);
 }
+
 
 .rutas-table .filter-row th,
 .rutas-table .filter-row td {
   position: sticky;
-  top: 49px; /* Posiciona la fila de filtros debajo de los encabezados */
+  top: 49px;
   background-color: #f8f9fa;
-  z-index: 1;
+  z-index: 2;
 }
 
 .filter-row input {
@@ -143,10 +421,47 @@
   box-sizing: border-box;
 }
 
-.rutas-table tbody tr:nth-of-type(even) {
-  background-color: #f9f9f9;
+
+.rutas-table tbody tr:nth-child(even) {
+  background: #f8f9fa;
 }
 
+
 .rutas-table tbody tr:hover {
-  background-color: #eef2f7;
+  background: rgba(14,0,123,0.07);
+  transition: background 0.2s;
+}
+
+/* Responsive: tabla apilada en móvil */
+@media (max-width: 768px) {
+  .rutas-table, .rutas-table thead, .rutas-table tbody, .rutas-table th, .rutas-table td, .rutas-table tr {
+    display: block;
+  }
+  .rutas-table th {
+    position: static;
+    box-shadow: none;
+  }
+  .rutas-table td {
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+    min-height: 48px;
+  }
+  .rutas-table td:before {
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: bold;
+    color: #0e007b;
+    content: attr(data-label);
+  }
+  .rutas-table tbody tr {
+    margin-bottom: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(14,0,123,0.04);
+    background: #fff;
+  }
 }

@@ -150,6 +150,7 @@ const Rutas = () => {
           </button>
         </div>
       </div>
+      {/* Tabla tradicional en escritorio */}
       <div className="table-responsive">
         <table className="rutas-table">
           <thead>
@@ -157,29 +158,29 @@ const Rutas = () => {
               <th>CÉDULA</th>
               <th>FECHA</th>
               <th>NOMBRE</th>
-              <th>ORIGEN</th>
-              <th>DESTINO</th>
-              <th>HORA</th>
+              <th className="hide-mobile">ORIGEN</th>
+              <th className="hide-mobile">DESTINO</th>
+              <th className="hide-mobile">HORA</th>
             </tr>
             <tr className="filter-row">
               <td><input type="text" name="CEDULA" value={filters.CEDULA} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
               <td><input type="text" name="FECHA" value={filters.FECHA} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
               <td><input type="text" name="NOMBRE" value={filters.NOMBRE} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
-              <td><input type="text" name="ORIGEN" value={filters.ORIGEN} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
-              <td><input type="text" name="DESTINO" value={filters.DESTINO} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
-              <td><input type="text" name="HORA" value={filters.HORA} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
+              <td className="hide-mobile"><input type="text" name="ORIGEN" value={filters.ORIGEN} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
+              <td className="hide-mobile"><input type="text" name="DESTINO" value={filters.DESTINO} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
+              <td className="hide-mobile"><input type="text" name="HORA" value={filters.HORA} onChange={handleFilterChange} placeholder="Filtrar..." /></td>
             </tr>
           </thead>
           <tbody>
             {filteredRutas.length > 0 ? (
               filteredRutas.map((ruta, index) => (
                 <tr key={index}>
-                  <td>{ruta.CEDULA}</td>
-                  <td>{ruta.FECHA}</td>
-                  <td>{ruta.NOMBRE}</td>
-                  <td>{ruta.ORIGEN}</td>
-                  <td>{ruta.DESTINO}</td>
-                  <td>{ruta.HORA}</td>
+                  <td data-label="CÉDULA">{ruta.CEDULA}</td>
+                  <td data-label="FECHA">{ruta.FECHA}</td>
+                  <td data-label="NOMBRE">{ruta.NOMBRE}</td>
+                  <td data-label="ORIGEN" className="hide-mobile">{ruta.ORIGEN}</td>
+                  <td data-label="DESTINO" className="hide-mobile">{ruta.DESTINO}</td>
+                  <td data-label="HORA" className="hide-mobile">{ruta.HORA}</td>
                 </tr>
               ))
             ) : (
@@ -190,8 +191,67 @@ const Rutas = () => {
           </tbody>
         </table>
       </div>
+      {/* Card-table híbrida en móvil: UNA card por persona */}
+      <div className="rutas-cards-mobile">
+        {filteredRutas.length > 0 ? (
+          <>
+            {Object.entries(
+              filteredRutas.reduce((acc, ruta) => {
+                if (!acc[ruta.CEDULA]) acc[ruta.CEDULA] = { nombre: ruta.NOMBRE, fechas: [] };
+                acc[ruta.CEDULA].fechas.push({ ...ruta });
+                return acc;
+              }, {})
+            ).map(([cedula, { nombre, fechas }]) => (
+              <CardPersonaRutasMobile key={cedula} cedula={cedula} nombre={nombre} fechas={fechas} />
+            ))}
+          </>
+        ) : (
+          <div className="ruta-card-h empty">No se encontraron rutas con los filtros aplicados.</div>
+        )}
+      </div>
     </div>
   );
-};
+}
+
+
+// --- Card-table híbrida para móvil: UNA card por persona ---
+function CardPersonaRutasMobile({ cedula, nombre, fechas }) {
+  const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState(null);
+  return (
+    <div className="ruta-card-h">
+      <div className="ruta-card-h-header" onClick={() => setOpen(o => !o)} style={{cursor:'pointer'}}>
+        <div>
+          <div className="ruta-card-h-title">{nombre}</div>
+          <div className="ruta-card-h-date">Cédula: {cedula}</div>
+        </div>
+        <button className="ruta-card-h-expand" aria-label={open ? 'Ocultar fechas' : 'Ver fechas'} tabIndex={-1}>
+          {open ? '−' : '+'}
+        </button>
+      </div>
+      {open && (
+        <div className="ruta-card-h-fechas-list">
+          {fechas.map((f, idx) => (
+            <div key={f.FECHA + f.HORA + idx} className="ruta-card-h-fecha-row">
+              <button
+                className={`ruta-card-h-fecha-btn${selected === idx ? ' selected' : ''}`}
+                onClick={() => setSelected(selected === idx ? null : idx)}
+              >
+                {f.FECHA}
+              </button>
+              {selected === idx && (
+                <div className="ruta-card-h-details open">
+                  <div className="ruta-card-h-detail-row"><span className="ruta-card-h-detail-label">Origen:</span> {f.ORIGEN}</div>
+                  <div className="ruta-card-h-detail-row"><span className="ruta-card-h-detail-label">Destino:</span> {f.DESTINO}</div>
+                  <div className="ruta-card-h-detail-row"><span className="ruta-card-h-detail-label">Hora:</span> {f.HORA}</div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default Rutas;

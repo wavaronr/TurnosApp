@@ -30,20 +30,18 @@ exports.saveProgramming = async (req, res) => {
   try {
     const { year, month } = req.params;
     const { schedule } = req.body;
+   // console.log('POST /api/programming:', { year, month, schedule });
 
-    // Utiliza `findOneAndUpdate` para buscar un documento por año y mes y actualizarlo.
-    // La opción `{ new: true }` asegura que la respuesta devuelva el documento ya actualizado.
-    // `{ upsert: true }` indica que si no se encuentra el documento, se debe crear uno nuevo.
-    // `{ runValidators: true }` asegura que se apliquen las validaciones del esquema de Mongoose.
     const updatedProgramming = await Programming.findOneAndUpdate(
       { year, month },
-      { schedule }, // El objeto a actualizar. Mongoose se encargará de actualizar `lastModified` por el middleware del schema.
+      { schedule },
       { new: true, upsert: true, runValidators: true }
     );
 
-    // Se devuelve la programación recién guardada, que incluye el nuevo `lastModified`.
+  //  console.log('Respuesta saveProgramming:', updatedProgramming);
     res.status(200).json(updatedProgramming);
   } catch (error) {
+  //  console.error('Error en saveProgramming:', error);
     res.status(500).json({ message: 'Error al guardar la programación', error: error.message });
   }
 };

@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middlewares
 app.use(cors());
-app.use(express.json()); // Para procesar JSON
+app.use(express.json({ limit: '2mb' })); // Para procesar JSON y permitir payloads grandes
 app.use(express.urlencoded({ extended: true })); // Para procesar datos de formularios URL-encoded
 
 // Rutas

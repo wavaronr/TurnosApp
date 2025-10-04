@@ -55,13 +55,22 @@ export const CalendarProvider = ({ children, addNotification }) => {
   }, [yearSet, monthCalendario]);
 
   const saveShifts = async (newShifts) => {
+    // Filtrar solo los días del mes y año en curso
+    const month = monthCalendario + 1;
+    const year = yearSet;
+    const filteredShifts = Object.fromEntries(
+      Object.entries(newShifts).filter(([dateStr]) => {
+        const [y, m] = dateStr.split('-');
+        return parseInt(y) === year && parseInt(m) === month;
+      })
+    );
     try {
-      await saveProgramming(yearSet, monthCalendario + 1, newShifts);
+      await saveProgramming(year, month, filteredShifts);
       addNotification('Programación guardada exitosamente', 'success');
     } catch (error) {
       addNotification('Error al guardar la programación', 'error');
     }
-  };  
+  };
   const savePerson = async (personData, personIdForUpdate) => {
     try {
       const savedOrUpdatedResponse = await savePersonService(personData, personIdForUpdate);

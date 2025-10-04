@@ -1,4 +1,9 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
+import { useCalendar } from '../context/CalendarContext.js';
+import { shiftColors } from '../utils/shiftColors.js';
+import { createShortName } from '../utils/textUtils.js';
+import '../css/ProgrammingCalendar.css';
+
 // Hook seguro para detectar móvil
 function useIsMobile(breakpoint = 767) {
   const [isMobile, setIsMobile] = useState(false);
@@ -11,10 +16,6 @@ function useIsMobile(breakpoint = 767) {
   }, [breakpoint]);
   return isMobile;
 }
-import { useCalendar } from '../context/CalendarContext.js';
-import { shiftColors } from '../utils/shiftColors.js';
-import { createShortName } from '../utils/textUtils.js'; // 1. Importar la función central
-import '../css/ProgrammingCalendar.css';
 
 // --- Helper Functions ---
 
@@ -109,59 +110,83 @@ function ProgrammingCalendar({ date }) {
 
   // Detectar si es móvil de forma segura
   const isMobile = useIsMobile(767);
-  if (isMobile) {
-      // Vista tipo lista para móvil
-      const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-      return (
-        <div className="calendar-pro-wrapper">
-          <ShiftLegend />
-          <div className="calendar-pro-mobile">
-            {Array.from({ length: daysInMonth }, (_, i) => {
-              const day = i + 1;
-              const dateObj = new Date(year, month, day);
-              const nombre = diasSemana[dateObj.getDay()];
-              const holiday = isHoliday(day);
-              const sunday = isSunday(day);
-              return (
-                <div
-                  key={day}
-                  className={
-                    'calendar-mobile-day' +
-                    (holiday ? ' holiday' : '') +
-                    (sunday ? ' sunday' : '')
-                  }
-                >
-                  <div className="calendar-mobile-day-header">
-                    <span className="calendar-mobile-day-name">{nombre}</span>
-                    <span className="calendar-mobile-day-number">{day}</span>
-                  </div>
-                  <div className="calendar-mobile-shifts">
-                    {/* burbujas de turnos */}
-                    {(() => {
-                      const shiftsForDay = getShiftsForDay(day);
-                      if (!shiftsForDay) return null;
-                      const shiftItems = Object.entries(shiftsForDay).flatMap(([shift, people]) =>
-                        people.map(person => ({ person, shift }))
-                      );
-                      return shiftItems.map(({ person, shift }) => (
-                        <div
-                          key={`${person.id}-${shift}`}
-                          className="person-bubble"
-                          title={`${person.name} (${formatShiftTitle(shift)})`}
-                          style={{ backgroundColor: shiftColors[shift] }}
-                        >
-                          {createShortName(person.name, [])}
-                        </div>
-                      ));
-                    })()}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      );
+  // Estado global para tooltip de burbuja en móvil
+  // bubbleName: { personId, day } | null
+  const [bubbleName, setBubbleName] = useState(null);
+  useEffect(() => {
+    if (bubbleName) {
+      const timeout = setTimeout(() => setBubbleName(null), 1500);
+      return () => clearTimeout(timeout);
     }
+  }, [bubbleName]);
+  useEffect(() => {
+    if (!bubbleName) return;
+    const close = () => setBubbleName(null);
+    window.addEventListener('touchstart', close, { once: true });
+    return () => window.removeEventListener('touchstart', close, { once: true });
+  }, [bubbleName]);
+
+  if (isMobile) {
+    // Vista tipo lista para móvil
+    const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+    return (
+      <div className="calendar-pro-wrapper">
+        <ShiftLegend />
+        <div className="calendar-pro-mobile">
+          {Array.from({ length: daysInMonth }, (_, i) => {
+            const day = i + 1;
+            const dateObj = new Date(year, month, day);
+            const nombre = diasSemana[dateObj.getDay()];
+            const holiday = isHoliday(day);
+            const sunday = isSunday(day);
+            const shiftsForDay = getShiftsForDay(day);
+            let shiftItems = [];
+            if (shiftsForDay) {
+              shiftItems = Object.entries(shiftsForDay).flatMap(([shift, people]) =>
+                people.map(person => ({ person, shift }))
+              );
+            }
+            return (
+              <div
+                key={day}
+                className={
+                  'calendar-mobile-day' +
+                  (holiday ? ' holiday' : '') +
+                  (sunday ? ' sunday' : '')
+                }
+              >
+                <div className="calendar-mobile-day-header">
+                  <span className="calendar-mobile-day-name">{nombre}</span>
+                  <span className="calendar-mobile-day-number">{day}</span>
+                </div>
+                <div className="calendar-mobile-shifts">
+                  {shiftItems.map(({ person, shift }) => (
+                    <div key={`${person.id}-${shift}`} style={{ position: 'relative', display: 'inline-block' }}>
+                      <div
+                        className="person-bubble"
+                        style={{ backgroundColor: shiftColors[shift] }}
+                        onTouchStart={e => {
+                          e.stopPropagation();
+                          setBubbleName({ personId: person.id, day });
+                        }}
+                      >
+                        {createShortName(person.name, [])}
+                      </div>
+                      {bubbleName && bubbleName.personId === person.id && bubbleName.day === day && (
+                        <div className="bubble-name-tooltip">
+                          {person.name}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
     // Desktop: grid tradicional
     return (
       <div className="calendar-pro-wrapper">

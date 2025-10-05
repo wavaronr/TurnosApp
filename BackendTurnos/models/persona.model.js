@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 // Sub-esquema para la configuración de cada turno (mañana, tarde, noche)
 const routeShiftConfigSchema = new mongoose.Schema({
@@ -50,6 +51,10 @@ const personaSchema = new mongoose.Schema({
     required: false,
     trim: true
   },
+  
+password: { type: String, required: false }, 
+  role: { type: String, required: false },    
+
   // FIX: Definir el esquema CORRECTO para la configuración de rutas
   routeConfig: {
     morning: routeShiftConfigSchema,
@@ -59,6 +64,12 @@ const personaSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+
+personaSchema.methods.comparePassword = function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
 
 const Persona = mongoose.model('Persona', personaSchema);
 

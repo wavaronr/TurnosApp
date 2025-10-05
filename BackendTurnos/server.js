@@ -14,9 +14,11 @@ app.use(express.urlencoded({ extended: true })); // Para procesar datos de formu
 // Rutas
 const personasRouter = require('./routes/personas.routes.js');
 const programmingRouter = require('./routes/programming.routes.js'); // Importar las nuevas rutas
+const authRoutes = require('./routes/auth');
 
 app.use('/api/personas', personasRouter);
 app.use('/api/programming', programmingRouter); // Registrar las nuevas rutas de programación
+app.use('/api/auth', authRoutes)
 
 // Ruta de prueba
 app.get('/', (req, res) => {

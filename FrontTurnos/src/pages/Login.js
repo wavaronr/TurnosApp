@@ -17,8 +17,8 @@ function Login() {
       navigate('/Home', { replace: true });
     }
   }, [navigate]);
-
-  const submitHandler = (e) => {
+  //EN CASO DE NECESITAR INHABILITAR LOGIN, DESCOMENTAR ESTA PARTE Y COMENTAR LA OTRA
+  /*const submitHandler = (e) => {
     e.preventDefault();
     setError('');
     const email = e.target.email.value;
@@ -45,7 +45,37 @@ function Login() {
     } else {
       setError('Credenciales incorrectas');
     }
-  };
+  };*/
+
+  const submitHandler = async (e) => {
+  e.preventDefault();
+  setError('');
+  const email = e.target.email.value;
+  const password = e.target.password.value;
+
+  try {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.error || 'Error al iniciar sesión');
+      return;
+    }
+
+    const { token, persona } = data;
+    login(persona, token); // Usar el contexto
+    navigate('/Home', { replace: true });
+  } catch (err) {
+    console.error('Error en login:', err);
+    setError('Error de conexión con el servidor');
+  }
+};
+
 
   return (
     <div className="login-container" style={{ position: 'relative' }}>

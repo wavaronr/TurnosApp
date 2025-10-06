@@ -36,6 +36,7 @@ const Rutas = () => {
   const [rutas, setRutas] = useState([]);
   const [startDate, setStartDate] = useState(getMonthDateRange(yearSet, monthCalendario).start);
   const [endDate, setEndDate] = useState(getMonthDateRange(yearSet, monthCalendario).end);
+ // console.log(people)
   
   const [filters, setFilters] = useState({
     CEDULA: '',
@@ -43,7 +44,8 @@ const Rutas = () => {
     NOMBRE: '',
     ORIGEN: '',
     DESTINO: '',
-    HORA: ''
+    HORA: '',
+    CORREO: ''
   });
 
   useEffect(() => {
@@ -70,7 +72,7 @@ const Rutas = () => {
                     daySchedule[shift].forEach(personInSchedule => {
                         const fullPerson = people.find(p => p.id === personInSchedule.id);
                         if (fullPerson && isRouteRequired(fullPerson, shift, scheduleDate)) {
-                           rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: formattedDate, ORIGEN: origen, DESTINO: destino, HORA: hora });
+                           rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: formattedDate, ORIGEN: origen, DESTINO: destino, HORA: hora, CORREO: fullPerson.email });
                         }
                     });
                 }
@@ -81,10 +83,10 @@ const Rutas = () => {
                 daySchedule.night.forEach(personInSchedule => {
                     const fullPerson = people.find(p => p.id === personInSchedule.id);
                     if (fullPerson && isRouteRequired(fullPerson, 'night', scheduleDate)) {
-                        rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: formattedDate, ORIGEN: 'CASA', DESTINO: 'REDEBAN', HORA: '22:00:00' });
+                        rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: formattedDate, ORIGEN: 'CASA', DESTINO: 'REDEBAN', HORA: '22:00:00', CORREO: fullPerson.email });
                         const nextDay = new Date(scheduleDate.getTime() + 24 * 60 * 60 * 1000);
                         const nextDayFormatted = nextDay.toLocaleDateString('es-ES', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' });
-                        rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: nextDayFormatted, ORIGEN: 'REDEBAN', DESTINO: 'CASA', HORA: '06:00:00' });
+                        rutasData.push({ CEDULA: fullPerson.identificacion, NOMBRE: fullPerson.name, FECHA: nextDayFormatted, ORIGEN: 'REDEBAN', DESTINO: 'CASA', HORA: '06:00:00', CORREO: fullPerson.email });
                     }
                 });
             }
@@ -104,6 +106,7 @@ const Rutas = () => {
       });
     });
   }, [rutas, filters]);
+//  console.log(filteredRutas)
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;

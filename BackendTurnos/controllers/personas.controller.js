@@ -1,4 +1,5 @@
 const Persona = require('../models/persona.model.js');
+const bcrypt = require('bcrypt');
 
 // Obtener todas las personas
 exports.getPersonas = async (req, res) => {
@@ -52,13 +53,18 @@ exports.createPersona = async (req, res) => {
 exports.updatePersona = async (req, res) => {
   try {
     const { id } = req.params;
-    // FIX: Incluir routeConfig en la desestructuración
-    const { nombre, apellido, email, telefono, cargo, routeConfig } = req.body;
+    const { nombre, apellido, email, telefono, cargo, routeConfig, password, role } = req.body;
 
-    // FIX: Incluir routeConfig en el objeto de actualización
+    const updateData = { nombre, apellido, email, telefono, cargo, routeConfig, role };
+
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(password, salt);
+    }
+
     const updatedPersona = await Persona.findByIdAndUpdate(
       id,
-      { nombre, apellido, email, telefono, cargo, routeConfig },
+      { $set: updateData },
       { new: true, runValidators: true }
     );
 

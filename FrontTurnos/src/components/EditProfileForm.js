@@ -4,7 +4,7 @@ import { capitalize } from '../utils/textUtils.js';
 
 const weekDays = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
-function EditProfileForm({ person, onSubmit, onClose }) {
+function EditProfileForm({ person, onSubmit, onClose, profile }) {
   const isEditMode = Boolean(person);
 
   const getInitialState = () => {
@@ -14,7 +14,9 @@ function EditProfileForm({ person, onSubmit, onClose }) {
       apellido: '',
       email: '',
       telefono: '',
-      cargo: ''
+      cargo: '',
+      password: '',
+      role: 'OPR'
     };
 
     const routeConfigDefault = {
@@ -33,6 +35,8 @@ function EditProfileForm({ person, onSubmit, onClose }) {
         email: person.email || '',
         telefono: person.telefono || '',
         cargo: person.cargo || '',
+        password: '',
+        role: person.role || 'OPR',
         routeConfig: {
             morning: { ...routeConfigDefault.morning, ...personRouteConfig.morning },
             afternoon: { ...routeConfigDefault.afternoon, ...personRouteConfig.afternoon },
@@ -50,10 +54,13 @@ function EditProfileForm({ person, onSubmit, onClose }) {
   }, [person, isEditMode]);
 
   function handleChange(e) {
-    const { name, value } = e.target; 
+    const { name, value, type, checked } = e.target; 
     let finalValue = value;
     if (name === 'nombre' || name === 'apellido' || name === 'cargo') {
       finalValue = capitalize(value);
+    }
+    if (type === 'checkbox') {
+      finalValue = checked ? 'ADM' : 'OPR';
     }
     setFormData(prev => ({ ...prev, [name]: finalValue }));
   }
@@ -111,6 +118,28 @@ function EditProfileForm({ person, onSubmit, onClose }) {
             <div className="form-group"><label>Email</label><input type="email" name="email" value={formData.email} onChange={handleChange} required /></div>
             <div className="form-group"><label>Teléfono</label><input type="tel" name="telefono" value={formData.telefono} onChange={handleChange} /></div>
             <div className="form-group"><label>Cargo</label><input type="text" name="cargo" value={formData.cargo} onChange={handleChange} /></div>
+            <div className="form-group"><label>Nueva Contraseña</label><input type="password" name="password" value={formData.password} onChange={handleChange} /></div>
+            
+            {profile?.role === 'ADM' && (
+              <div className="form-group">
+                {/* <label className="custom-checkbox">
+                   <input type="radio" name="role" value="all" checked={formData.role === 'ADM'} onChange={() => handleRouteChange(shift, 'type', 'all')} />
+                  <span className="checkbox-icon"></span>
+                  Administrador
+                </label> */}
+
+<label className="toggle-switch">
+  <input
+    type="checkbox"
+    name="role"
+    checked={formData.role === 'ADM'}
+    onChange={handleChange}
+  />
+  <span className="toggle-slider"></span>
+  <span style={{marginLeft: 8}}>Administrador</span>
+</label>
+              </div>
+            )}
             
             <div className="route-config-section">
                 <h3>Configuración de Rutas</h3>

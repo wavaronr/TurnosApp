@@ -120,8 +120,9 @@ function EditProfileForm({ person, onSubmit, onClose, profile }) {
       onChange={handleChange}
       />
   <span className="toggle-slider"></span>
-  <span style={{marginLeft: 8 }}>Administrador</span>
+ 
     </label>
+     <span style={{marginLeft: 8 }}>Administrador</span>
               </div>
             </div>
             )}

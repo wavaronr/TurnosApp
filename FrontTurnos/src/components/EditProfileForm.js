@@ -106,12 +106,33 @@ function EditProfileForm({ person, onSubmit, onClose, profile }) {
           <h2>{isEditMode ? 'Editar Perfil' : 'Crear Perfil'}</h2>
           
           <div className="form-scrollable-area">
-            {!isEditMode && (
+            
+{profile?.role === 'ADM' && (
+              <div className="form-group">
+                
+
+<div className="route-shift-config">
+    <label className="toggle-switch">
+    <input
+     type="checkbox"
+     name="role"
+      checked={formData.role === 'ADM'}
+      onChange={handleChange}
+      />
+  <span className="toggle-slider"></span>
+  <span style={{marginLeft: 8 }}>Administrador</span>
+    </label>
+              </div>
+            </div>
+            )}
+
+{!isEditMode && (
               <div className="form-group">
                 <label htmlFor="identificacion">Identificación</label>
                 <input type="text" id="identificacion" name="identificacion" value={formData.identificacion} onChange={handleChange} required />
               </div>
             )}
+
             
             <div className="form-group"><label>Nombre</label><input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required /></div>
             <div className="form-group"><label>Apellido</label><input type="text" name="apellido" value={formData.apellido} onChange={handleChange} required /></div>
@@ -120,26 +141,7 @@ function EditProfileForm({ person, onSubmit, onClose, profile }) {
             <div className="form-group"><label>Cargo</label><input type="text" name="cargo" value={formData.cargo} onChange={handleChange} /></div>
             <div className="form-group"><label>Nueva Contraseña</label><input type="password" name="password" value={formData.password} onChange={handleChange} /></div>
             
-            {profile?.role === 'ADM' && (
-              <div className="form-group">
-                {/* <label className="custom-checkbox">
-                   <input type="radio" name="role" value="all" checked={formData.role === 'ADM'} onChange={() => handleRouteChange(shift, 'type', 'all')} />
-                  <span className="checkbox-icon"></span>
-                  Administrador
-                </label> */}
-
-<label className="toggle-switch">
-  <input
-    type="checkbox"
-    name="role"
-    checked={formData.role === 'ADM'}
-    onChange={handleChange}
-  />
-  <span className="toggle-slider"></span>
-  <span style={{marginLeft: 8}}>Administrador</span>
-</label>
-              </div>
-            )}
+            
             
             <div className="route-config-section">
                 <h3>Configuración de Rutas</h3>

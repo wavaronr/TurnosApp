@@ -111,6 +111,7 @@ function CardProfile() {
           onSubmit={handleSave}
           onClose={handleClose}
           isEditMode={!isCreating}
+          profile={profile}
         />
       )}
     </div>

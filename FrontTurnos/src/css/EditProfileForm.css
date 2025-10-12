@@ -1,3 +1,15 @@
+.admin-role-toggle {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 1rem;
+}
+
+.admin-role-label {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #333;
+}
 /* Estilo base del modal - Glassmorphism */
 .modal-overlay {
   position: fixed;

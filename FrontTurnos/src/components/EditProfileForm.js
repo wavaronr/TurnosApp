@@ -111,19 +111,18 @@ function EditProfileForm({ person, onSubmit, onClose, profile }) {
               <div className="form-group">
                 
 
-<div className="route-shift-config">
-    <label className="toggle-switch">
+<div className="route-shift-config admin-role-toggle">
+  <label className="toggle-switch">
     <input
-     type="checkbox"
-     name="role"
+      type="checkbox"
+      name="role"
       checked={formData.role === 'ADM'}
       onChange={handleChange}
-      />
-  <span className="toggle-slider"></span>
- 
-    </label>
-     <span style={{marginLeft: 8 }}>Administrador</span>
-              </div>
+    />
+    <span className="toggle-slider"></span>
+  </label>
+  <span className="admin-role-label">Administrador</span>
+</div>
             </div>
             )}
 
